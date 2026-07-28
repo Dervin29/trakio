@@ -125,7 +125,7 @@ export default function ProductCard({ product, onDelete }) {
               loading="lazy"
               onLoad={() => setImgLoaded(true)}
               onError={() => setImgError(true)}
-              className={`h-full w-full object-contain p-6 transition-all duration-700 group-hover:scale-110 ${
+              className={`h-full w-full object-contain p-4 sm:p-6 transition-all duration-700 group-hover:scale-110 ${
                 imgLoaded ? "opacity-100" : "opacity-0"
               }`}
             />

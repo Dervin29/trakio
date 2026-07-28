@@ -148,10 +148,10 @@ export default async function ProductsPage({ searchParams }) {
         </nav>
 
         {/* Page Header */}
-        <div className="mb-8 flex animate-fade-in-up flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div className="mb-8 flex animate-fade-in-up flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
-            <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl md:text-4xl">
                 Tracked Products
               </h1>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/60 bg-emerald-50/80 dark:border-emerald-800/40 dark:bg-emerald-900/30 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
@@ -191,7 +191,7 @@ export default async function ProductsPage({ searchParams }) {
                 price, and get instant alerts when the price hits your goal.
               </p>
 
-              <div className="mx-auto mb-10 grid gap-4 text-left sm:grid-cols-3">
+              <div className="mx-auto mb-10 grid gap-4 text-left md:grid-cols-3">
                 {[
                   {
                     icon: Search,
@@ -238,16 +238,16 @@ export default async function ProductsPage({ searchParams }) {
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <Link
                   href="/"
-                  className="inline-flex h-12 items-center gap-2 rounded-2xl bg-gradient-to-r from-brand to-brand-dark px-8 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand/30 active:scale-[0.97]"
+                  className="inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand to-brand-dark px-8 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand/30 active:scale-[0.97]"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-4 w-4 shrink-0" />
                   Add Your First Product
                 </Link>
                 <Link
                   href="/"
-                  className="inline-flex h-12 items-center gap-2 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-8 text-sm font-medium text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white hover:shadow-md active:scale-[0.97]"
+                  className="inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-8 text-sm font-medium text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white hover:shadow-md active:scale-[0.97]"
                 >
-                  <Sparkles className="h-4 w-4" />
+                  <Sparkles className="h-4 w-4 shrink-0" />
                   Learn How It Works
                 </Link>
               </div>

@@ -194,7 +194,7 @@ export default function ProductDetails({ product }) {
                     loading="lazy"
                     onLoad={() => setImgLoaded(true)}
                     onError={() => setImgError(true)}
-                    className={`h-full w-full object-contain p-8 transition-all duration-700 group-hover:scale-110 ${
+                    className={`h-full w-full object-contain p-4 sm:p-8 transition-all duration-700 group-hover:scale-110 ${
                       imgLoaded ? "opacity-100" : "opacity-0"
                     }`}
                   />
@@ -388,7 +388,7 @@ export default function ProductDetails({ product }) {
                 {getStoreName(product.url)}
               </span>
             </div>
-            <h1 className="mt-2 text-xl font-bold leading-tight text-gray-900 sm:text-2xl dark:text-white">
+            <h1 className="mt-2 text-lg font-bold leading-tight text-gray-900 sm:text-xl md:text-2xl dark:text-white">
               {product.name}
             </h1>
           </div>
@@ -400,7 +400,7 @@ export default function ProductDetails({ product }) {
             </p>
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <span className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
+                <span className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl dark:text-white">
                   {formatPrice(product.current_price, product.currency)}
                 </span>
                 {prevPrice !== null && (
@@ -476,7 +476,7 @@ export default function ProductDetails({ product }) {
                   {formatPrice(product.target_price, product.currency)}
                 </span>
               </div>
-              <div className="mt-4 grid grid-cols-2 gap-4">
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
                 <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-800/50">
                   <p className="text-xs text-gray-500 dark:text-gray-400">Current</p>
                   <p className="mt-0.5 font-semibold text-gray-900 dark:text-white">

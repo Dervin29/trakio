@@ -18,7 +18,6 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import {
-  Package,
   BarChart3,
   LogOut,
   LogIn,
@@ -27,8 +26,13 @@ import {
   LayoutDashboard,
   Menu,
   X,
-  Activity,
+  TrendingUp,
 } from "lucide-react";
+
+const NAV_ITEMS = [
+  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/products", label: "Products", icon: BarChart3 },
+];
 
 export default function Header({ user }) {
   const pathname = usePathname();
@@ -47,6 +51,16 @@ export default function Header({ user }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    setMenuOpen(false);
+    setMobileOpen(false);
+  }, [pathname]);
+
   const isActive = (path) => pathname === path;
 
   const avatarLetter =
@@ -56,66 +70,79 @@ export default function Header({ user }) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 py-3">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <nav className="flex items-center justify-between rounded-2xl border border-gray-200/50 bg-white/80 px-5 py-2.5 shadow-sm backdrop-blur-xl transition-all duration-200 dark:border-gray-700/50 dark:bg-gray-900/80">
-            {/* Brand */}
-            <Link href="/" className="group flex shrink-0 items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-dark shadow-sm shadow-brand-300/30 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:shadow-brand-300/50">
-                <Package className="h-5 w-5 text-white" />
-              </div>
-              <div className="flex items-baseline gap-2">
-                <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                  Trakio
-                </span>
-                <span className="hidden text-[10px] font-medium text-gray-400 dark:text-gray-500 sm:inline-block">
-                  Smart Price Tracker
-                </span>
-              </div>
-            </Link>
+      <header className="sticky top-3 z-50 px-3 sm:px-6">
+        <nav className="mx-auto max-w-7xl flex items-center justify-between rounded-2xl bg-white/80 px-3 py-2 shadow-sm ring-1 ring-gray-200/50 backdrop-blur-xl transition-all duration-300 hover:shadow-md sm:px-5 dark:bg-gray-950/80 dark:ring-gray-800/50">
+          <Link href="/" className="group flex shrink-0 items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand to-brand-dark shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:shadow-brand-300/40 group-hover:scale-105">
+              <TrendingUp className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-[15px] font-bold tracking-tight text-gray-900 dark:text-white">
+              Trakio
+            </span>
+          </Link>
 
-            {/* Right Side */}
-            <div className="flex items-center gap-1.5">
-              <ThemeToggle />
+          {user && (
+            <div className="hidden md:flex items-center gap-1 mx-4">
+              {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`relative flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200 ${
+                    isActive(href)
+                      ? "text-brand"
+                      : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  {label}
+                  {isActive(href) && (
+                    <span className="absolute inset-x-2 -bottom-0 h-0.5 rounded-full bg-gradient-to-r from-brand to-brand-dark" />
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
 
-              {/* Mobile Menu Toggle */}
-              <button
-                onClick={() => setMobileOpen(true)}
-                aria-label="Open navigation menu"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 md:hidden"
-              >
-                <Menu className="h-5 w-5" />
-              </button>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <ThemeToggle />
 
-              {user ? (
-                <div className="relative" ref={menuRef}>
+            {user ? (
+              <>
+                <button
+                  onClick={() => setMobileOpen(true)}
+                  aria-label="Open navigation menu"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 md:hidden dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                >
+                  <Menu className="h-4 w-4" />
+                </button>
+
+                <div className="relative hidden md:block" ref={menuRef}>
                   <button
                     onClick={() => setMenuOpen((v) => !v)}
-                    className="flex items-center gap-2 rounded-xl border border-gray-200/60 bg-white px-2.5 py-1.5 shadow-sm transition-all duration-200 hover:border-gray-300 hover:shadow-md dark:border-gray-700/60 dark:bg-gray-800 dark:hover:border-gray-600"
+                    className="flex items-center gap-2 rounded-lg border border-gray-200/60 bg-white/50 px-2.5 py-1.5 text-sm text-gray-600 shadow-sm transition-all hover:bg-gray-50 hover:shadow md:px-3 dark:border-gray-700/50 dark:bg-gray-900/50 dark:text-gray-400 dark:hover:bg-gray-800"
                   >
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-muted to-brand-dark text-xs font-semibold text-white shadow-sm">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-brand-muted to-brand-dark text-[10px] font-semibold text-white">
                       {avatarLetter}
                     </div>
-                    <span className="hidden max-w-[100px] truncate text-sm font-medium text-gray-700 dark:text-gray-200 sm:inline-block">
+                    <span className="hidden max-w-[100px] truncate sm:inline">
                       {user?.user_metadata?.full_name || user?.email}
                     </span>
                     <ChevronDown
-                      className={`hidden h-4 w-4 text-gray-400 transition-transform duration-200 sm:inline-block ${
+                      className={`hidden h-3.5 w-3.5 text-gray-400 transition-transform duration-200 sm:inline-block ${
                         menuOpen ? "rotate-180" : ""
                       }`}
                     />
                   </button>
 
                   {menuOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-64 animate-scale-in origin-top-right rounded-2xl border border-gray-200/50 bg-white/95 p-2 shadow-xl backdrop-blur-xl dark:border-gray-700/50 dark:bg-gray-900/95">
-                      {/* User Info */}
-                      <div className="rounded-xl bg-gradient-to-br from-gray-50 to-white p-4 dark:from-gray-800 dark:to-gray-900">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-muted to-brand-dark text-sm font-bold text-white shadow-sm">
+                    <div className="absolute right-0 top-full mt-2 w-56 origin-top-right animate-scale-in rounded-xl border border-gray-200/50 bg-white/95 p-1.5 shadow-lg backdrop-blur-xl dark:border-gray-700/50 dark:bg-gray-900/95">
+                      <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
+                        <div className="flex items-center gap-2.5">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-muted to-brand-dark text-xs font-bold text-white">
                             {avatarLetter}
                           </div>
                           <div className="min-w-0">
-                            <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+                            <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
                               {user?.user_metadata?.full_name || "User"}
                             </p>
                             <p className="truncate text-xs text-gray-500 dark:text-gray-400">
@@ -123,39 +150,30 @@ export default function Header({ user }) {
                             </p>
                           </div>
                         </div>
-                        <div className="mt-2 flex items-center gap-1.5 text-[11px] text-emerald-600 dark:text-emerald-400">
-                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]" />
-                          Tracking Active
-                        </div>
                       </div>
 
-                      {/* Quick Links */}
                       <div className="mt-1 space-y-0.5">
-                        <Link
-                          href="/"
-                          onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-brand-light hover:text-brand dark:text-gray-300 dark:hover:bg-gray-800"
-                        >
-                          <LayoutDashboard className="h-4 w-4" />
-                          Dashboard
-                        </Link>
-                        <Link
-                          href="/products"
-                          onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-brand-light hover:text-brand dark:text-gray-300 dark:hover:bg-gray-800"
-                        >
-                          <BarChart3 className="h-4 w-4" />
-                          Products
-                        </Link>
+                        {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+                          <Link
+                            key={href}
+                            href={href}
+                            onClick={() => setMenuOpen(false)}
+                            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                              isActive(href)
+                                ? "bg-brand-light text-brand"
+                                : "text-gray-600 hover:bg-brand-light hover:text-brand dark:text-gray-300 dark:hover:bg-gray-800"
+                            }`}
+                          >
+                            <Icon className="h-4 w-4" />
+                            {label}
+                          </Link>
+                        ))}
                       </div>
 
                       <div className="my-1 border-t border-gray-100 dark:border-gray-700/50" />
 
-                      {/* Danger Section */}
                       <Dialog>
-                        <DialogTrigger
-                          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-900/20"
-                        >
+                        <DialogTrigger className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20">
                           <LogOut className="h-4 w-4" />
                           Sign Out
                         </DialogTrigger>
@@ -198,36 +216,36 @@ export default function Header({ user }) {
                     </div>
                   )}
                 </div>
-              ) : (
-                <Button
-                  onClick={() => setShowAuthModal(true)}
-                  variant="default"
-                  className="h-9 gap-2 rounded-xl bg-gradient-to-r from-brand to-brand-dark px-5 text-sm font-semibold text-white shadow-md shadow-brand/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-brand/30 active:scale-[0.97]"
-                >
-                  <LogIn className="h-4 w-4" />
-                  <span className="hidden sm:inline">Sign In</span>
-                </Button>
-              )}
-            </div>
-          </nav>
-        </div>
+              </>
+            ) : (
+              <Button
+                onClick={() => setShowAuthModal(true)}
+                variant="default"
+                className="hidden md:inline-flex h-8 gap-1.5 rounded-lg bg-brand px-3.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:bg-brand-dark active:scale-[0.97]"
+              >
+                <LogIn className="h-4 w-4" />
+                <span className="hidden sm:inline">Sign In</span>
+              </Button>
+            )}
+          </div>
+        </nav>
       </header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile sidebar overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div
             className="absolute inset-0 bg-black/20 backdrop-blur-sm dark:bg-black/40"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="absolute right-0 top-0 flex h-full w-72 animate-slide-up flex-col bg-white shadow-xl dark:bg-gray-900">
-            <div className="flex items-center justify-between border-b border-gray-100 p-4 dark:border-gray-800">
-              <div className="flex items-center gap-2">
+          <div className="absolute right-0 top-0 flex h-full w-72 max-w-[85vw] flex-col bg-white shadow-2xl animate-slide-up dark:bg-gray-900">
+            <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4 dark:border-gray-800">
+              <Link href="/" className="flex items-center gap-2.5" onClick={() => setMobileOpen(false)}>
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand to-brand-dark shadow-sm">
-                  <Package className="h-4 w-4 text-white" />
+                  <TrendingUp className="h-4 w-4 text-white" />
                 </div>
                 <span className="text-base font-bold text-gray-900 dark:text-white">Trakio</span>
-              </div>
+              </Link>
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close navigation menu"
@@ -238,9 +256,9 @@ export default function Header({ user }) {
             </div>
 
             {user && (
-              <div className="border-b border-gray-100 p-4 dark:border-gray-800">
+              <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-muted to-brand-dark text-sm font-bold text-white">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand-muted to-brand-dark text-sm font-bold text-white">
                     {avatarLetter}
                   </div>
                   <div className="min-w-0">
@@ -255,37 +273,34 @@ export default function Header({ user }) {
               </div>
             )}
 
-            <div className="flex-1 space-y-1 p-3">
+            <div className="flex-1 space-y-0.5 px-3 py-4">
+              <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                Navigation
+              </p>
               {user ? (
                 <>
-                  <Link
-                    href="/"
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
-                      isActive("/")
-                        ? "bg-brand-light text-brand"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
-                    }`}
-                  >
-                    <LayoutDashboard className="h-5 w-5" />
-                    Dashboard
-                  </Link>
-                  <Link
-                    href="/products"
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
-                      isActive("/products")
-                        ? "bg-brand-light text-brand"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
-                    }`}
-                  >
-                    <BarChart3 className="h-5 w-5" />
-                    Products
-                  </Link>
-                  <div className="my-2 border-t border-gray-100 dark:border-gray-800" />
+                  {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+                        isActive(href)
+                          ? "bg-brand-light text-brand shadow-sm"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                      }`}
+                    >
+                      <Icon className={`h-4 w-4 ${isActive(href) ? "text-brand" : ""}`} />
+                      {label}
+                    </Link>
+                  ))}
+                  <div className="my-3 border-t border-gray-100 dark:border-gray-800" />
+                  <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                    Account
+                  </p>
                   <Dialog>
-                    <DialogTrigger className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-900/20">
-                      <LogOut className="h-5 w-5" />
+                    <DialogTrigger className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20">
+                      <LogOut className="h-4 w-4" />
                       Sign Out
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-sm">
@@ -326,17 +341,29 @@ export default function Header({ user }) {
                   </Dialog>
                 </>
               ) : (
-                <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    setShowAuthModal(true);
-                  }}
-                  className="flex w-full items-center gap-3 rounded-xl bg-gradient-to-r from-brand to-brand-dark px-4 py-3 text-sm font-semibold text-white shadow-md"
-                >
-                  <LogIn className="h-5 w-5" />
-                  Sign In
-                </button>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
+                      setShowAuthModal(true);
+                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand to-brand-dark px-3 py-3 text-sm font-medium text-white shadow-lg shadow-brand/25 transition-all hover:shadow-xl hover:shadow-brand/30 active:scale-[0.98]"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    Sign In to Track Prices
+                  </button>
+                  <p className="px-1 text-center text-xs text-gray-400 dark:text-gray-500">
+                    Track prices and get alerts on drops
+                  </p>
+                </div>
               )}
+            </div>
+
+            <div className="border-t border-gray-100 px-5 py-4 dark:border-gray-800">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-400 dark:text-gray-500">Theme</span>
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </div>

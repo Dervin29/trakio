@@ -5,10 +5,8 @@ import { createClient } from "@/utils/supabase/server";
 import { getProducts } from "@/app/actions";
 import {
   Bell,
-  Rabbit,
   Shield,
   TrendingDown,
-  Package,
   ArrowRight,
   Sparkles,
   Zap,
@@ -29,21 +27,21 @@ export default async function Home() {
       title: "Lightning Fast",
       description:
         "Trakio extracts prices in seconds, handling JavaScript and dynamic content across all major platforms.",
-      gradient: "from-yellow-400 to-brand",
+      gradient: "from-brand to-brand-dark",
     },
     {
       icon: Shield,
       title: "Always Reliable",
       description:
         "Works seamlessly across all major e-commerce sites with built-in anti-bot protection and smart retry logic.",
-      gradient: "from-blue-400 to-indigo-500",
+      gradient: "from-brand to-brand-dark",
     },
     {
       icon: Bell,
       title: "Smart Alerts",
       description:
         "Get notified instantly when prices drop below your target. Never miss a deal on your favorite products.",
-      gradient: "from-purple-400 to-pink-500",
+      gradient: "from-brand to-brand-dark",
     },
   ];
 
@@ -63,7 +61,7 @@ export default async function Home() {
     <main className="min-h-screen bg-gradient-to-br from-slate-50 dark:from-gray-950 via-white dark:via-gray-900 to-brand-light/30 dark:to-brand-dark/10">
       <Header user={user} />
 
-      <section className="relative py-20 sm:py-28 lg:py-36 px-4 overflow-hidden">
+      <section className="relative py-16 sm:py-28 lg:py-36 px-4 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 -right-20 w-72 h-72 bg-brand-300/30 rounded-full blur-3xl" />
           <div className="absolute bottom-0 -left-20 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl" />
@@ -75,7 +73,7 @@ export default async function Home() {
             Built by Alan Derwin
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-[1.1]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-[1.1]">
             Never miss a{" "}
             <span className="bg-gradient-to-r from-brand to-brand-dark bg-clip-text text-transparent">
               deal

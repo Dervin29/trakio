@@ -75,7 +75,7 @@ export default async function ProductDetailsPage({ params }) {
         {/* Page Header */}
         <div className="mb-8 flex animate-fade-in-up flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
+            <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl md:text-3xl dark:text-white">
               Product Details
             </h1>
             <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">

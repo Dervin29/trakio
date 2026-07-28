@@ -121,17 +121,17 @@ export default function PriceChart({ productId, currency = "INR" }) {
   if (!filteredData.length) {
     return (
       <div className="space-y-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
-              <History className="h-4 w-4 text-brand" />
-              Price History
-            </h3>
-            <p className="text-xs text-gray-400 dark:text-gray-500">
-              {data.length} price checks recorded
-            </p>
-          </div>
-          <div className="inline-flex gap-1 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-800">
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <div>
+          <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
+            <History className="h-4 w-4 text-brand" />
+            Price History
+          </h3>
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            {data.length} price checks recorded
+          </p>
+        </div>
+        <div className="inline-flex gap-1 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-800">
             {RANGES.map((r) => (
               <button
                 key={r.label}
@@ -199,14 +199,14 @@ export default function PriceChart({ productId, currency = "INR" }) {
         </div>
 
         {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-800/50">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <div className="rounded-xl bg-gray-50 p-2 sm:p-3 dark:bg-gray-800/50">
           <p className="text-xs text-gray-500 dark:text-gray-400">Current</p>
           <p className="mt-1 font-bold text-gray-900 dark:text-white">
             {formatPrice(currentPrice, currency)}
           </p>
         </div>
-        <div className="rounded-xl bg-emerald-50 p-3 dark:bg-emerald-900/30">
+        <div className="rounded-xl bg-emerald-50 p-2 sm:p-3 dark:bg-emerald-900/30">
           <p className="flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-300">
             <ArrowDown className="h-3 w-3" />
             Lowest
@@ -215,7 +215,7 @@ export default function PriceChart({ productId, currency = "INR" }) {
             {formatPrice(lowest, currency)}
           </p>
         </div>
-        <div className="rounded-xl bg-red-50 p-3 dark:bg-red-900/30">
+        <div className="rounded-xl bg-red-50 p-2 sm:p-3 dark:bg-red-900/30">
           <p className="flex items-center gap-1 text-xs text-red-700 dark:text-red-300">
             <ArrowUp className="h-3 w-3" />
             Highest
@@ -250,11 +250,11 @@ export default function PriceChart({ productId, currency = "INR" }) {
       </div>
 
       {/* Chart */}
-      <ResponsiveContainer width="100%" height={260}>
-        <AreaChart
-          data={filteredData}
-          margin={{ top: 10, right: 5, left: -20, bottom: 0 }}
-        >
+      <ResponsiveContainer width="100%" height={220}>
+          <AreaChart
+            data={filteredData}
+            margin={{ top: 10, right: 5, left: -25, bottom: 0 }}
+          >
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="var(--brand)" stopOpacity={0.25} />

@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="border-t border-gray-200/50 bg-white dark:border-gray-800/50 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="flex flex-col items-center justify-between gap-6 py-10 sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-6 py-8 sm:py-10 sm:flex-row">
           {/* Brand */}
           <div className="flex flex-col items-center gap-3 sm:items-start">
             <Link href="/" className="group inline-flex items-center gap-2.5">
@@ -48,7 +48,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-100 py-6 sm:flex-row dark:border-gray-800">
-          <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
+          <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4 text-center sm:text-left">
             <p className="text-sm text-gray-400 dark:text-gray-500">
               &copy; {currentYear} Trakio
             </p>
@@ -69,7 +69,7 @@ export default function Footer() {
               v1.0
             </span>
           </div>
-          <div className="flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400">
+          <div className="flex items-center gap-2 text-xs text-emerald-600 sm:text-left dark:text-emerald-400">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
