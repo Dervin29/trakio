@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { scrapeProduct } from "@/lib/firecrawl";
 import { sendPriceDropAlert } from "@/lib/email";
+import { normalizeCurrency } from "@/utils/currency";
 
 export async function POST(request) {
   try {
@@ -50,7 +51,7 @@ export async function POST(request) {
           .from("products")
           .update({
             current_price: newPrice,
-            currency: productData.currencyCode || product.currency,
+            currency: normalizeCurrency(productData.currencyCode) || product.currency,
             name: productData.productName || product.name,
             image_url: productData.productImageUrl || product.image_url,
             updated_at: new Date().toISOString(),
@@ -61,7 +62,7 @@ export async function POST(request) {
           await supabase.from("price_history").insert({
             product_id: product.id,
             price: newPrice,
-            currency: productData.currencyCode || product.currency,
+            currency: normalizeCurrency(productData.currencyCode) || product.currency,
           });
 
           results.priceChanges++;

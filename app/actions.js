@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { scrapeProduct } from "@/lib/firecrawl";
+import { normalizeCurrency } from "@/utils/currency";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -32,7 +33,7 @@ export async function addProduct(formData) {
     }
 
     const newPrice = parseFloat(productData.currentPrice);
-    const currency = productData.currencyCode || "INR";
+    const currency = normalizeCurrency(productData.currencyCode);
 
     // Check if product exists to determine if it's an update
     const { data: existingProduct } = await supabase

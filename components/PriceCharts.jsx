@@ -23,13 +23,7 @@ import {
 
 import { getPriceHistory } from "@/app/actions";
 
-function formatPrice(price, currency) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency || "INR",
-    minimumFractionDigits: 2,
-  }).format(price);
-}
+import { formatPrice } from "@/utils/currency";
 
 function CustomTooltip({ active, payload, label, currency }) {
   if (!active || !payload?.length) return null;

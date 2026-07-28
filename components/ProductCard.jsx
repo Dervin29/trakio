@@ -23,13 +23,7 @@ import { deleteProduct } from "@/app/actions";
 import { toast } from "sonner";
 import PriceChart from "./PriceCharts";
 
-function formatPrice(price, currency) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency || "INR",
-    minimumFractionDigits: 2,
-  }).format(price);
-}
+import { formatPrice } from "@/utils/currency";
 
 function getStoreName(url) {
   try {
