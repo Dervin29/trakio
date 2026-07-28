@@ -22,7 +22,7 @@ export default function Pagination({ page, totalPages }) {
       {page > 1 ? (
         <Link
           href={`/products?page=${page - 1}`}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition hover:bg-orange-50 hover:text-orange-600"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition hover:bg-brand-light hover:text-brand-dark"
         >
           <ChevronLeft className="h-4 w-4" />
         </Link>
@@ -43,8 +43,8 @@ export default function Pagination({ page, totalPages }) {
             href={`/products?page=${p}`}
             className={`flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium transition ${
               p === page
-                ? "bg-orange-500 text-white shadow-sm"
-                : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
+                ? "bg-brand text-white shadow-sm"
+                : "text-gray-600 hover:bg-brand-light hover:text-brand-dark"
             }`}
           >
             {p}
@@ -55,7 +55,7 @@ export default function Pagination({ page, totalPages }) {
       {page < totalPages ? (
         <Link
           href={`/products?page=${page + 1}`}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition hover:bg-orange-50 hover:text-orange-600"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition hover:bg-brand-light hover:text-brand-dark"
         >
           <ChevronRight className="h-4 w-4" />
         </Link>

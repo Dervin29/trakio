@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="border-t border-slate-200 bg-white/80 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center">
             <Package className="w-4 h-4 text-white" />
           </div>
           <span className="font-semibold text-gray-900">Trakio</span>

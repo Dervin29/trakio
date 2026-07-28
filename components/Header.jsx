@@ -36,14 +36,14 @@ export default function Header({ user }) {
     <header className="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-md shadow-orange-200/50 transition-transform group-hover:scale-105 duration-200">
+          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand to-brand-dark shadow-md shadow-brand-300/50 transition-transform group-hover:scale-105 duration-200">
             <Package className="w-5 h-5 text-white" />
           </div>
           <div>
             <span className="text-xl font-bold text-gray-900 tracking-tight">
               Trakio
             </span>
-            <span className="hidden sm:inline-block text-xs font-medium text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full ml-2">
+            <span className="hidden sm:inline-block text-xs font-medium text-brand bg-brand-light px-2 py-0.5 rounded-full ml-2">
               v1.0
             </span>
           </div>
@@ -56,7 +56,7 @@ export default function Header({ user }) {
                 onClick={() => setMenuOpen((v) => !v)}
                 className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 px-3 py-2 rounded-full border border-slate-200 transition-colors"
               >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-xs font-semibold">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-muted to-brand-dark flex items-center justify-center text-white text-xs font-semibold">
                   {user.user_metadata?.full_name?.[0] || user.email?.[0] || "U"}
                 </div>
                 <span className="hidden sm:inline text-sm text-gray-700 font-medium max-w-[120px] truncate">
@@ -79,7 +79,7 @@ export default function Header({ user }) {
                   <Link
                     href="/products"
                     onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-brand-light hover:text-brand-700 transition-colors"
                   >
                     <BarChart3 className="w-4 h-4" />
                     Products
@@ -129,7 +129,7 @@ export default function Header({ user }) {
               onClick={() => setShowAuthModal(true)}
               variant="default"
               size="sm"
-              className="bg-orange-500 hover:bg-orange-600 gap-2"
+              className="bg-brand hover:bg-brand-dark gap-2"
             >
               <LogIn className="w-4 h-4" />
               Sign In

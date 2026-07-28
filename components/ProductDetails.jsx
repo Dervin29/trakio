@@ -124,7 +124,7 @@ export default function ProductDetails({ product }) {
               </Badge>
 
               {isGoodDeal && (
-                <Badge className="border-0 bg-orange-500 text-white px-3 py-1.5">
+                <Badge className="border-0 bg-brand text-white px-3 py-1.5">
                   Deal
                 </Badge>
               )}
@@ -192,9 +192,9 @@ export default function ProductDetails({ product }) {
               </div>
 
               {product.target_price && (
-                <div className="flex items-center justify-between rounded-xl bg-orange-50 px-5 py-4">
+                <div className="flex items-center justify-between rounded-xl bg-brand-light px-5 py-4">
                   <div className="flex items-center gap-2">
-                    <Target className="h-5 w-5 text-orange-500" />
+                    <Target className="h-5 w-5 text-brand" />
                     <span className="text-sm text-gray-600">Target Price</span>
                   </div>
                   <span className="font-semibold text-lg">

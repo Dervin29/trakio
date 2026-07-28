@@ -23,7 +23,7 @@ export default async function ProductsPage({ searchParams }) {
   const { products, total, page, totalPages } = await getProducts(currentPage);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/20">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/20">
       <Header user={user} />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -49,7 +49,7 @@ export default async function ProductsPage({ searchParams }) {
             </div>
             
             <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-5 py-2.5 rounded-2xl border border-gray-200/50 shadow-sm">
-              <TrendingUp className="w-5 h-5 text-orange-500" />
+              <TrendingUp className="w-5 h-5 text-brand" />
               <span className="text-sm font-medium text-gray-700">
                 <span className="text-gray-900 font-semibold">{total}</span>{" "}
                 {total === 1 ? "product" : "products"} tracked
@@ -75,8 +75,8 @@ export default async function ProductsPage({ searchParams }) {
           </>
         ) : (
           <div className="text-center py-16 sm:py-24">
-            <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-orange-200/50">
-              <Package className="w-12 h-12 text-orange-500" />
+            <div className="w-24 h-24 bg-gradient-to-br from-brand-light/80 to-brand-300 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-brand-300/50">
+              <Package className="w-12 h-12 text-brand" />
             </div>
             <h2 className="text-2xl font-semibold text-gray-900 mb-2">
               No products tracked yet
@@ -86,7 +86,7 @@ export default async function ProductsPage({ searchParams }) {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-3.5 rounded-2xl font-medium hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40 transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand to-brand-dark text-white px-8 py-3.5 rounded-2xl font-medium hover:from-brand-dark hover:to-brand-700 transition-all duration-200 shadow-lg shadow-brand/30 hover:shadow-brand/40 transform hover:-translate-y-0.5"
             >
               <span>Add Your First Product</span>
               <ArrowLeft className="w-4 h-4 rotate-180" />

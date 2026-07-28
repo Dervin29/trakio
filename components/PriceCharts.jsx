@@ -125,7 +125,7 @@ export default function PriceChart({ productId, currency = "INR" }) {
       <div className="flex items-center justify-between">
         <div>
           <h4 className="flex items-center gap-2 text-sm font-semibold">
-            <History className="h-4 w-4 text-orange-500" />
+            <History className="h-4 w-4 text-brand" />
             Price History
           </h4>
 
@@ -201,9 +201,9 @@ export default function PriceChart({ productId, currency = "INR" }) {
         >
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#f97316" stopOpacity={0.25} />
+              <stop offset="0%" stopColor="var(--brand)" stopOpacity={0.25} />
 
-              <stop offset="100%" stopColor="#f97316" stopOpacity={0} />
+              <stop offset="100%" stopColor="var(--brand)" stopOpacity={0} />
             </linearGradient>
           </defs>
 
@@ -232,7 +232,7 @@ export default function PriceChart({ productId, currency = "INR" }) {
           <Area
             type="monotone"
             dataKey="price"
-            stroke="#f97316"
+            stroke="var(--brand)"
             strokeWidth={3}
             fill={`url(#${gradientId})`}
             animationDuration={800}
@@ -240,7 +240,7 @@ export default function PriceChart({ productId, currency = "INR" }) {
               data.length <= 8
                 ? {
                     r: 4,
-                    fill: "#f97316",
+                    fill: "var(--brand)",
                   }
                 : false
             }

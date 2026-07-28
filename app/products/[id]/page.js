@@ -24,7 +24,7 @@ export default async function ProductDetailsPage({ params }) {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/30">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/30">
       <Header user={user} />
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">

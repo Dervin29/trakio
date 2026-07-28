@@ -120,7 +120,7 @@ export default function ProductCard({ product, onDelete }) {
             bg-gradient-to-br
             from-gray-50
             via-white
-            to-orange-50
+            to-brand-light
           "
         >
           {!imgError && product.image_url ? (
@@ -238,8 +238,8 @@ export default function ProductCard({ product, onDelete }) {
                   rounded-lg
                   text-gray-400
                   transition
-                  hover:bg-orange-50
-                  hover:text-orange-500
+                  hover:bg-brand-light
+                  hover:text-brand
                 "
               >
                 <ExternalLink className="mx-auto h-4 w-4" />
@@ -360,7 +360,7 @@ export default function ProductCard({ product, onDelete }) {
               <div
                 className="
                   rounded-xl
-                  bg-orange-50
+                  bg-brand-light
                   px-3 py-2
                 "
               >
@@ -368,7 +368,7 @@ export default function ProductCard({ product, onDelete }) {
                   className="
                   flex items-center gap-1
                   text-[10px]
-                  text-orange-500
+                  text-brand
                 "
                 >
                   <Target className="h-3 w-3" />
@@ -379,7 +379,7 @@ export default function ProductCard({ product, onDelete }) {
                   className="
                   text-xs
                   font-semibold
-                  text-orange-700
+                  text-brand-700
                 "
                 >
                   {formatPrice(product.target_price, product.currency)}

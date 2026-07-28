@@ -29,7 +29,7 @@ export default async function Home() {
       title: "Lightning Fast",
       description:
         "Trakio extracts prices in seconds, handling JavaScript and dynamic content across all major platforms.",
-      gradient: "from-yellow-400 to-orange-500",
+      gradient: "from-yellow-400 to-brand",
     },
     {
       icon: Shield,
@@ -60,24 +60,24 @@ export default async function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/30">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/30">
       <Header user={user} />
 
       <section className="relative py-16 sm:py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 -right-20 w-72 h-72 bg-orange-200/30 rounded-full blur-3xl" />
+          <div className="absolute top-0 -right-20 w-72 h-72 bg-brand-300/30 rounded-full blur-3xl" />
           <div className="absolute bottom-0 -left-20 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-orange-50 text-orange-700 px-6 py-2 rounded-full text-sm font-medium mb-6 border border-orange-200/50 shadow-sm">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-light/80 to-brand-light text-brand-700 px-6 py-2 rounded-full text-sm font-medium mb-6 border border-brand-300/50 shadow-sm">
             <Sparkles className="w-4 h-4" />
             Built by Alan Derwin
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 tracking-tight leading-[1.1]">
             Never miss a{" "}
-            <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand to-brand-dark bg-clip-text text-transparent">
               deal
             </span>
           </h1>
@@ -95,7 +95,7 @@ export default async function Home() {
             <div className="mt-8">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-medium text-sm bg-orange-50 hover:bg-orange-100 px-6 py-3 rounded-full border border-orange-200 transition-colors"
+                className="inline-flex items-center gap-2 text-brand-dark hover:text-brand-700 font-medium text-sm bg-brand-light hover:bg-brand-light/80 px-6 py-3 rounded-full border border-brand-300 transition-colors"
               >
                 <BarChart3 className="w-4 h-4" />
                 View your tracked products
@@ -125,7 +125,7 @@ export default async function Home() {
               {FEATURES.map(({ icon: Icon, title, description, gradient }) => (
                 <div
                   key={title}
-                  className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-200 hover:border-orange-200 transition-all duration-300 hover:shadow-lg hover:shadow-orange-100/50 hover:-translate-y-1"
+                  className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-200 hover:border-brand-300 transition-all duration-300 hover:shadow-lg hover:shadow-brand-light/50 hover:-translate-y-1"
                 >
                   <div
                     className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 mx-auto shadow-lg`}
@@ -145,9 +145,9 @@ export default async function Home() {
 
       {user && products.length === 0 && (
         <section className="max-w-2xl mx-auto px-4 pb-20">
-          <div className="bg-white rounded-2xl border-2 border-dashed border-slate-300 p-12 text-center transition-all hover:border-orange-300 hover:bg-orange-50/30">
-            <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <TrendingDown className="w-10 h-10 text-orange-500" />
+          <div className="bg-white rounded-2xl border-2 border-dashed border-slate-300 p-12 text-center transition-all hover:border-brand-muted hover:bg-brand-light/30">
+            <div className="w-20 h-20 bg-gradient-to-br from-brand-light/80 to-brand-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <TrendingDown className="w-10 h-10 text-brand" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
               No products yet
@@ -158,15 +158,15 @@ export default async function Home() {
             </p>
             <div className="mt-6 flex justify-center gap-2 text-sm text-gray-400">
               <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
                 Enter product URL
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
                 Set target price
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
                 Get alerts
               </span>
             </div>
