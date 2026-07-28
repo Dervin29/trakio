@@ -96,7 +96,7 @@ export default function ProductCard({ product, onDelete }) {
   }
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 transition-colors">
+    <div className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
       {/* Image Section */}
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-50 dark:bg-gray-900">
         {!imgError && product.image_url ? (
@@ -111,7 +111,7 @@ export default function ProductCard({ product, onDelete }) {
               loading="lazy"
               onLoad={() => setImgLoaded(true)}
               onError={() => setImgError(true)}
-              className={`h-full w-full object-contain p-4 transition-opacity ${
+              className={`h-full w-full object-contain p-4 transition-opacity duration-300 ${
                 imgLoaded ? "opacity-100" : "opacity-0"
               }`}
             />
@@ -125,7 +125,7 @@ export default function ProductCard({ product, onDelete }) {
         {/* Badges */}
         <div className="absolute left-3 top-3 flex flex-col gap-1.5">
           {isGoodDeal && (
-            <span className="inline-flex items-center gap-1 rounded bg-emerald-500 px-2 py-0.5 text-xs font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded bg-emerald-500 px-2 py-0.5 text-xs font-medium text-white shadow-sm">
               <Tag className="h-3 w-3" />
               Best Deal
             </span>
@@ -148,7 +148,7 @@ export default function ProductCard({ product, onDelete }) {
                 </span>
               )}
             </div>
-            <h3 className="line-clamp-2 text-sm font-medium text-gray-900 dark:text-white">
+            <h3 className="line-clamp-2 text-sm font-medium text-gray-900 dark:text-white leading-snug">
               {product.name}
             </h3>
           </div>
@@ -199,7 +199,7 @@ export default function ProductCard({ product, onDelete }) {
 
         {/* Target Progress */}
         {hasTarget && (
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between text-sm">
               <span className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
                 <Target className="h-4 w-4" />
@@ -211,7 +211,7 @@ export default function ProductCard({ product, onDelete }) {
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
               <div
-                className="h-full rounded-full bg-brand transition-all"
+                className="h-full rounded-full bg-brand transition-all duration-500"
                 style={{ width: `${targetProgress}%` }}
               />
             </div>
@@ -219,10 +219,10 @@ export default function ProductCard({ product, onDelete }) {
         )}
 
         {/* Actions */}
-        <div className="flex items-center gap-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+        <div className="flex items-center gap-1 pt-3 mt-auto border-t border-gray-100 dark:border-gray-800">
           <button
             onClick={() => window.open(product.url, "_blank", "noopener,noreferrer")}
-            className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+            className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
             aria-label="Open product"
           >
             <ExternalLink className="h-4 w-4" />
@@ -230,7 +230,7 @@ export default function ProductCard({ product, onDelete }) {
 
           <Link
             href={`/products/${product.id}`}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             <Eye className="h-4 w-4" />
             Details
@@ -240,7 +240,7 @@ export default function ProductCard({ product, onDelete }) {
             <DialogTrigger asChild>
               <button
                 disabled={deleting}
-                className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:text-gray-500 dark:hover:text-red-400 dark:hover:bg-red-900/20 transition-colors"
+                className="p-2 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 dark:text-gray-500 dark:hover:text-red-400 dark:hover:bg-red-900/20 transition-colors"
                 aria-label="Delete product"
               >
                 <Trash2 className="h-4 w-4" />
