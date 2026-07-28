@@ -63,7 +63,7 @@ export default async function Home() {
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/30">
       <Header user={user} />
 
-      <section className="relative py-16 sm:py-20 px-4 overflow-hidden">
+      <section className="relative py-20 sm:py-28 lg:py-36 px-4 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 -right-20 w-72 h-72 bg-brand-300/30 rounded-full blur-3xl" />
           <div className="absolute bottom-0 -left-20 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl" />
@@ -105,7 +105,7 @@ export default async function Home() {
           )}
 
           {user && products.length > 0 && (
-            <div className="mt-8 flex flex-wrap justify-center gap-6 sm:gap-8">
+            <div className="mt-10 flex flex-wrap justify-center gap-6 sm:gap-8">
               {STATS.map((stat, index) => (
                 <div
                   key={index}
@@ -121,7 +121,7 @@ export default async function Home() {
           )}
 
           {products.length === 0 && (
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-16">
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-20">
               {FEATURES.map(({ icon: Icon, title, description, gradient }) => (
                 <div
                   key={title}
@@ -144,7 +144,7 @@ export default async function Home() {
       </section>
 
       {user && products.length === 0 && (
-        <section className="max-w-2xl mx-auto px-4 pb-20">
+        <section className="max-w-2xl mx-auto px-4 pb-28 -mt-8">
           <div className="bg-white rounded-2xl border-2 border-dashed border-slate-300 p-12 text-center transition-all hover:border-brand-muted hover:bg-brand-light/30">
             <div className="w-20 h-20 bg-gradient-to-br from-brand-light/80 to-brand-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <TrendingDown className="w-10 h-10 text-brand" />

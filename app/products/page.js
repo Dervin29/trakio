@@ -26,9 +26,9 @@ export default async function ProductsPage({ searchParams }) {
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/20">
       <Header user={user} />
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {/* Page Header */}
-        <div className="mb-10">
+        <div className="mb-12">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200 mb-4 group"
@@ -61,7 +61,7 @@ export default async function ProductsPage({ searchParams }) {
         {/* Content */}
         {products.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -74,7 +74,7 @@ export default async function ProductsPage({ searchParams }) {
             )}
           </>
         ) : (
-          <div className="text-center py-16 sm:py-24">
+          <div className="text-center py-20 sm:py-28">
             <div className="w-24 h-24 bg-gradient-to-br from-brand-light/80 to-brand-300 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-brand-300/50">
               <Package className="w-12 h-12 text-brand" />
             </div>
