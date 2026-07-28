@@ -12,7 +12,10 @@ import {
   ChevronUp,
   Store,
   Clock,
+  Target,
+  Activity,
 } from "lucide-react";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,8 +33,7 @@ function formatPrice(price, currency) {
 
 function getStoreName(url) {
   try {
-    const hostname = new URL(url).hostname.replace("www.", "");
-    return hostname.split(".")[0];
+    return new URL(url).hostname.replace("www.", "").split(".")[0];
   } catch {
     return "Store";
   }
@@ -40,20 +42,28 @@ function getStoreName(url) {
 function getRelativeTime(dateString) {
   const now = new Date();
   const date = new Date(dateString);
-  const diffMs = now - date;
-  const diffMins = Math.floor(diffMs / 60000);
 
-  if (diffMins < 1) return "Just now";
-  if (diffMins < 60) return `${diffMins}m ago`;
-  const diffHours = Math.floor(diffMins / 60);
-  if (diffHours < 24) return `${diffHours}h ago`;
-  const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7) return `${diffDays}d ago`;
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const diff = now - date;
+
+  const mins = Math.floor(diff / 60000);
+
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins}m ago`;
+
+  const hours = Math.floor(mins / 60);
+
+  if (hours < 24) return `${hours}h ago`;
+
+  const days = Math.floor(hours / 24);
+
+  if (days < 7) return `${days}d ago`;
+
+  return date.toLocaleDateString();
 }
 
 export default function ProductCard({ product, onDelete }) {
   const router = useRouter();
+
   const [showChart, setShowChart] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -70,29 +80,36 @@ export default function ProductCard({ product, onDelete }) {
   const priceChange = product.price_change;
   const isGoodDeal = priceChange !== null && priceChange < -10;
 
-  const handleDelete = async () => {
+  async function handleDelete() {
     setDeleting(true);
+
     const result = await deleteProduct(product.id);
+
     setDeleting(false);
 
     if (result.success) {
-      toast.success(`${product.name} removed from tracking`);
-      if (onDelete) onDelete(product.id);
+      toast.success("Product removed");
+
+      onDelete?.(product.id);
+
       router.refresh();
     } else {
-      toast.error(result.error || "Failed to remove product");
+      toast.error(result.error);
     }
-  };
+  }
 
   return (
-    <Card className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <Card className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl">
+      {/* IMAGE */}
+
       <div className="relative">
-        <div className="aspect-square bg-gray-50">
+        <div className="aspect-[4/3] bg-gradient-to-b from-gray-50 to-white">
           {!imgError && product.image_url ? (
             <>
               {!imgLoaded && (
                 <div className="absolute inset-0 animate-pulse bg-gray-100" />
               )}
+
               <img
                 ref={imgRef}
                 src={product.image_url}
@@ -100,7 +117,7 @@ export default function ProductCard({ product, onDelete }) {
                 loading="lazy"
                 onLoad={() => setImgLoaded(true)}
                 onError={() => setImgError(true)}
-                className="h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-105"
+                className="h-full w-full object-contain p-6 transition duration-500 group-hover:scale-105"
               />
             </>
           ) : (
@@ -110,123 +127,154 @@ export default function ProductCard({ product, onDelete }) {
           )}
         </div>
 
-        {isGoodDeal && (
-          <div className="absolute left-3 top-3">
-            <Badge className="border-0 bg-green-500 text-white shadow-sm">
-              <TrendingDown className="mr-0.5 h-3 w-3" />
-              {Math.abs(priceChange).toFixed(0)}%
-            </Badge>
-          </div>
-        )}
+        <div className="absolute left-3 top-3 flex items-center gap-2">
+          <Badge className="border-0 bg-green-500 text-white">
+            <Activity className="mr-1 h-3 w-3" />
+            Tracking
+          </Badge>
+
+          {isGoodDeal && (
+            <Badge className="border-0 bg-orange-500 text-white">Deal</Badge>
+          )}
+        </div>
 
         <Button
-          variant="secondary"
           size="icon"
-          onClick={handleDelete}
+          variant="secondary"
           disabled={deleting}
-          aria-label={`Delete ${product.name}`}
-          className="absolute right-3 top-3 h-9 w-9 rounded-full shadow-sm hover:bg-red-50 hover:text-red-600"
+          onClick={handleDelete}
+          className="absolute right-3 top-3 h-9 w-9 rounded-full opacity-0 shadow transition group-hover:opacity-100 hover:bg-red-50 hover:text-red-600"
         >
           <Trash2 className="h-4 w-4" />
         </Button>
       </div>
 
-      <CardContent className="p-5">
-        <div className="mb-3 flex items-center justify-between gap-2">
-          <Badge
-            variant="secondary"
-            className="shrink-0 rounded-full px-3 py-1 text-xs font-medium capitalize"
-          >
+      <CardContent className="space-y-5 p-5">
+        {/* STORE */}
+
+        <div className="flex items-center justify-between">
+          <Badge variant="outline" className="rounded-full capitalize">
             <Store className="mr-1 h-3 w-3" />
             {getStoreName(product.url)}
           </Badge>
+
           {product.updated_at && (
-            <span className="flex shrink-0 items-center gap-1 text-[11px] text-gray-400">
+            <span className="flex items-center gap-1 text-xs text-gray-500">
               <Clock className="h-3 w-3" />
               {getRelativeTime(product.updated_at)}
             </span>
           )}
         </div>
 
+        {/* TITLE */}
+
         <h3
-          className="line-clamp-2 text-[15px] font-semibold leading-6 text-gray-900"
+          className="line-clamp-2 text-base font-semibold leading-6"
           title={product.name}
         >
           {product.name}
         </h3>
 
-        <div className="mt-4 flex items-baseline justify-between gap-3">
-          <p className="text-2xl font-bold tracking-tight text-gray-900">
-            {formatPrice(product.current_price, product.currency)}
-          </p>
+        {/* PRICE */}
+
+        <div className="flex items-end justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-wide text-gray-500">
+              Current Price
+            </p>
+
+            <h2 className="text-3xl font-bold">
+              {formatPrice(product.current_price, product.currency)}
+            </h2>
+          </div>
 
           {priceChange !== null && (
             <Badge
-              className={`shrink-0 gap-1 rounded-full px-3 py-1 text-xs font-medium ${
+              className={
                 priceChange < 0
-                  ? "border border-green-200 bg-green-50 text-green-700"
+                  ? "bg-green-50 text-green-700 border border-green-200"
                   : priceChange > 0
-                    ? "border border-red-200 bg-red-50 text-red-700"
-                    : "border border-gray-200 bg-gray-100 text-gray-600"
-              }`}
+                    ? "bg-red-50 text-red-700 border border-red-200"
+                    : "bg-gray-100 text-gray-600"
+              }
             >
               {priceChange < 0 ? (
-                <TrendingDown className="h-3.5 w-3.5" />
+                <TrendingDown className="mr-1 h-3 w-3" />
               ) : priceChange > 0 ? (
-                <TrendingUp className="h-3.5 w-3.5" />
+                <TrendingUp className="mr-1 h-3 w-3" />
               ) : (
-                <Minus className="h-3.5 w-3.5" />
+                <Minus className="mr-1 h-3 w-3" />
               )}
+
               {priceChange === 0
-                ? "No Change"
+                ? "0%"
                 : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
             </Badge>
           )}
         </div>
 
-        {isGoodDeal && (
-          <p className="mt-1.5 text-sm font-medium text-green-600">
-            Great deal &mdash; price dropped significantly
-          </p>
+        {/* TARGET */}
+
+        {product.target_price && (
+          <div className="flex items-center justify-between rounded-xl bg-orange-50 px-4 py-3">
+            <div className="flex items-center gap-2">
+              <Target className="h-4 w-4 text-orange-500" />
+
+              <span className="text-sm text-gray-600">Target Price</span>
+            </div>
+
+            <span className="font-semibold">
+              {formatPrice(product.target_price, product.currency)}
+            </span>
+          </div>
         )}
 
-        <div className="mt-5 grid grid-cols-2 gap-3">
+        {isGoodDeal && (
+          <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+            🎉 Great deal! This product dropped significantly.
+          </div>
+        )}
+
+        {/* ACTIONS */}
+
+        <div className="grid grid-cols-2 gap-3">
           <Button
-            variant="outline"
             className="rounded-xl"
-            onClick={() => window.open(product.url, "_blank", "noopener,noreferrer")}
-            aria-label={`View ${product.name} on store`}
+            onClick={() =>
+              window.open(product.url, "_blank", "noopener,noreferrer")
+            }
           >
             <ExternalLink className="mr-2 h-4 w-4" />
-            View
+            View Product
           </Button>
 
           <Button
-            variant="secondary"
+            variant="outline"
             className="rounded-xl"
-            onClick={() => setShowChart(!showChart)}
-            aria-label={showChart ? "Hide price chart" : "Show price chart"}
+            onClick={() => setShowChart((v) => !v)}
           >
             {showChart ? (
               <>
                 <ChevronUp className="mr-2 h-4 w-4" />
-                Hide
+                Hide Chart
               </>
             ) : (
               <>
                 <ChevronDown className="mr-2 h-4 w-4" />
-                Chart
+                Price Chart
               </>
             )}
           </Button>
         </div>
 
+        {/* CHART */}
+
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            showChart ? "mt-5 max-h-96 opacity-100" : "max-h-0 opacity-0"
+          className={`overflow-hidden transition-all duration-500 ${
+            showChart ? "max-h-[450px] opacity-100 pt-5" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="border-t border-gray-100 pt-5">
+          <div className="border-t pt-5">
             <PriceChart productId={product.id} currency={product.currency} />
           </div>
         </div>
