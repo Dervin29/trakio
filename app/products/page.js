@@ -43,7 +43,7 @@ function computeMetrics(products, total) {
 function MetricCard({ icon: Icon, label, value, subtext, delay }) {
   return (
     <div
-      className="group relative animate-fade-in-up rounded-2xl border border-gray-200/50 bg-white/70 p-5 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+      className="group relative animate-fade-in-up rounded-2xl border border-gray-200/50 bg-white/70 dark:border-gray-700/50 dark:bg-gray-900/70 p-5 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
       style={{ animationDelay: `${delay}s` }}
     >
       <div className="flex items-start justify-between">
@@ -53,13 +53,13 @@ function MetricCard({ icon: Icon, label, value, subtext, delay }) {
       </div>
       <div className="mt-3">
         <div className="flex items-baseline gap-1">
-          <span className="text-2xl font-bold tracking-tight text-gray-900">
+          <span className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             {value}
           </span>
         </div>
-        <p className="mt-0.5 text-sm font-medium text-gray-600">{label}</p>
+        <p className="mt-0.5 text-sm font-medium text-gray-600 dark:text-gray-300">{label}</p>
         {subtext && (
-          <p className="mt-0.5 text-xs text-gray-400">{subtext}</p>
+          <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">{subtext}</p>
         )}
       </div>
     </div>
@@ -69,7 +69,7 @@ function MetricCard({ icon: Icon, label, value, subtext, delay }) {
 function MetricCardCurrency({ icon: Icon, label, value, subtext, delay }) {
   return (
     <div
-      className="group relative animate-fade-in-up rounded-2xl border border-gray-200/50 bg-white/70 p-5 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+      className="group relative animate-fade-in-up rounded-2xl border border-gray-200/50 bg-white/70 dark:border-gray-700/50 dark:bg-gray-900/70 p-5 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
       style={{ animationDelay: `${delay}s` }}
     >
       <div className="flex items-start justify-between">
@@ -78,12 +78,12 @@ function MetricCardCurrency({ icon: Icon, label, value, subtext, delay }) {
         </div>
       </div>
       <div className="mt-3">
-        <span className="text-2xl font-bold tracking-tight text-gray-900">
+        <span className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {value}
         </span>
-        <p className="mt-0.5 text-sm font-medium text-gray-600">{label}</p>
+        <p className="mt-0.5 text-sm font-medium text-gray-600 dark:text-gray-300">{label}</p>
         {subtext && (
-          <p className="mt-0.5 text-xs text-gray-400">{subtext}</p>
+          <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">{subtext}</p>
         )}
       </div>
     </div>
@@ -126,7 +126,7 @@ export default async function ProductsPage({ searchParams }) {
   const isEmpty = products.length === 0 && total === 0;
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/20">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/20 dark:from-gray-950 dark:via-gray-900 dark:to-brand-dark/10">
       <BackgroundEffects />
       <Header user={user} />
 
@@ -134,39 +134,39 @@ export default async function ProductsPage({ searchParams }) {
         {/* Breadcrumb */}
         <nav
           aria-label="Breadcrumb"
-          className="mb-6 flex animate-fade-in items-center gap-1.5 text-sm text-gray-400"
+          className="mb-6 flex animate-fade-in items-center gap-1.5 text-sm text-gray-400 dark:text-gray-500"
         >
           <Link
             href="/"
-            className="flex items-center gap-1 transition-colors hover:text-gray-600"
+            className="flex items-center gap-1 transition-colors hover:text-gray-600 dark:hover:text-gray-300"
           >
             <Home className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Home</span>
           </Link>
           <ChevronRight className="h-3.5 w-3.5" />
-          <span className="font-medium text-gray-700">Products</span>
+          <span className="font-medium text-gray-700 dark:text-gray-200">Products</span>
         </nav>
 
         {/* Page Header */}
         <div className="mb-8 flex animate-fade-in-up flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                 Tracked Products
               </h1>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/60 bg-emerald-50/80 px-3 py-1 text-xs font-medium text-emerald-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/60 bg-emerald-50/80 dark:border-emerald-800/40 dark:bg-emerald-900/30 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]" />
                 Active Monitoring
               </span>
             </div>
-            <p className="flex items-center gap-2 text-sm text-gray-500">
+            <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
               <Activity className="h-4 w-4" />
               Monitor prices and get notified when they drop
             </p>
           </div>
           <Link
             href="/"
-            className="inline-flex h-9 items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 shadow-sm transition-all duration-200 hover:-translate-x-0.5 hover:border-gray-300 hover:text-gray-900 hover:shadow-md active:scale-[0.97]"
+            className="inline-flex h-9 items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 text-sm font-medium text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-200 hover:-translate-x-0.5 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white hover:shadow-md active:scale-[0.97]"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Home
@@ -176,17 +176,17 @@ export default async function ProductsPage({ searchParams }) {
         {isEmpty ? (
           /* ── Empty State ── */
           <div className="animate-fade-in-up">
-            <div className="mx-auto max-w-2xl rounded-3xl border border-gray-200/50 bg-white/60 p-8 text-center shadow-sm backdrop-blur-xl sm:p-12 lg:p-16">
+            <div className="mx-auto max-w-2xl rounded-3xl border border-gray-200/50 bg-white/60 dark:border-gray-700/50 dark:bg-gray-900/60 p-8 text-center shadow-sm backdrop-blur-xl sm:p-12 lg:p-16">
               <div className="relative mx-auto mb-8 flex h-28 w-28 items-center justify-center">
                 <div className="absolute inset-0 animate-float rounded-3xl bg-gradient-to-br from-brand-light/60 to-brand-300/30" />
                 <div className="absolute inset-2 animate-pulse-soft rounded-2xl bg-gradient-to-br from-brand-light/80 to-brand-300/20" />
                 <Package className="relative h-12 w-12 text-brand" />
               </div>
 
-              <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+              <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Start tracking your first product
               </h2>
-              <p className="mx-auto mb-10 max-w-md text-sm leading-relaxed text-gray-500">
+              <p className="mx-auto mb-10 max-w-md text-sm leading-relaxed text-gray-500 dark:text-gray-400">
                 Never miss a price drop again. Add a product URL, set your target
                 price, and get instant alerts when the price hits your goal.
               </p>
@@ -214,7 +214,7 @@ export default async function ProductsPage({ searchParams }) {
                 ].map((item, i) => (
                   <div
                     key={item.step}
-                    className="animate-slide-up rounded-2xl border border-gray-100 bg-white/80 p-5 shadow-sm transition-all duration-200 hover:border-brand-light/40 hover:shadow-md"
+                    className="animate-slide-up rounded-2xl border border-gray-100 bg-white/80 dark:border-gray-800 dark:bg-gray-800/80 p-5 shadow-sm transition-all duration-200 hover:border-brand-light/40 dark:hover:border-brand-dark/40 hover:shadow-md"
                     style={{ animationDelay: `${0.2 + i * 0.12}s` }}
                   >
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-light/60 text-brand">
@@ -225,10 +225,10 @@ export default async function ProductsPage({ searchParams }) {
                         Step {item.step}
                       </span>
                     </div>
-                    <h3 className="mb-0.5 text-sm font-semibold text-gray-900">
+                    <h3 className="mb-0.5 text-sm font-semibold text-gray-900 dark:text-white">
                       {item.title}
                     </h3>
-                    <p className="text-xs leading-relaxed text-gray-500">
+                    <p className="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
                       {item.desc}
                     </p>
                   </div>
@@ -245,7 +245,7 @@ export default async function ProductsPage({ searchParams }) {
                 </Link>
                 <Link
                   href="/"
-                  className="inline-flex h-12 items-center gap-2 rounded-2xl border border-gray-200 bg-white px-8 text-sm font-medium text-gray-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-300 hover:text-gray-900 hover:shadow-md active:scale-[0.97]"
+                  className="inline-flex h-12 items-center gap-2 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-8 text-sm font-medium text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white hover:shadow-md active:scale-[0.97]"
                 >
                   <Sparkles className="h-4 w-4" />
                   Learn How It Works
@@ -305,7 +305,7 @@ export default async function ProductsPage({ searchParams }) {
             {/* ── Pagination ── */}
             {totalPages > 1 && (
               <div className="mt-12 flex flex-col items-center gap-4">
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-400 dark:text-gray-500">
                   Showing page {page} of {totalPages} ({total}{" "}
                   {total === 1 ? "product" : "products"} total)
                 </p>

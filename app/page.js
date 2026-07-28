@@ -60,7 +60,7 @@ export default async function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/30">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 dark:from-gray-950 via-white dark:via-gray-900 to-brand-light/30 dark:to-brand-dark/10">
       <Header user={user} />
 
       <section className="relative py-20 sm:py-28 lg:py-36 px-4 overflow-hidden">
@@ -75,14 +75,14 @@ export default async function Home() {
             Built by Alan Derwin
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 tracking-tight leading-[1.1]">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-[1.1]">
             Never miss a{" "}
             <span className="bg-gradient-to-r from-brand to-brand-dark bg-clip-text text-transparent">
               deal
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
             Track prices from any major e-commerce site with just a few clicks.
             Get instant alerts when prices drop below your target.
           </p>
@@ -109,12 +109,12 @@ export default async function Home() {
               {STATS.map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm px-6 py-3 rounded-xl border border-slate-200 shadow-sm"
+                  className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm px-6 py-3 rounded-xl border border-slate-200 dark:border-gray-700 shadow-sm"
                 >
-                  <div className="text-2xl font-bold text-gray-900">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-gray-500">{stat.label}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -125,15 +125,15 @@ export default async function Home() {
               {FEATURES.map(({ icon: Icon, title, description, gradient }) => (
                 <div
                   key={title}
-                  className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-200 hover:border-brand-300 transition-all duration-300 hover:shadow-lg hover:shadow-brand-light/50 hover:-translate-y-1"
+                  className="group bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-200 dark:border-gray-700 hover:border-brand-300 transition-all duration-300 hover:shadow-lg hover:shadow-brand-light/50 hover:-translate-y-1"
                 >
                   <div
                     className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 mx-auto shadow-lg`}
                   >
                     <Icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                     {description}
                   </p>
                 </div>
@@ -145,18 +145,18 @@ export default async function Home() {
 
       {user && products.length === 0 && (
         <section className="max-w-2xl mx-auto px-4 pb-28 -mt-8">
-          <div className="bg-white rounded-2xl border-2 border-dashed border-slate-300 p-12 text-center transition-all hover:border-brand-muted hover:bg-brand-light/30">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border-2 border-dashed border-slate-300 dark:border-gray-600 p-12 text-center transition-all hover:border-brand-muted hover:bg-brand-light/30">
             <div className="w-20 h-20 bg-gradient-to-br from-brand-light/80 to-brand-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <TrendingDown className="w-10 h-10 text-brand" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               No products yet
             </h3>
-            <p className="text-gray-600 max-w-sm mx-auto">
+            <p className="text-gray-600 dark:text-gray-300 max-w-sm mx-auto">
               Add your first product above to start tracking prices and never
               miss a deal
             </p>
-            <div className="mt-6 flex justify-center gap-2 text-sm text-gray-400">
+            <div className="mt-6 flex justify-center gap-2 text-sm text-gray-400 dark:text-gray-500">
               <span className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
                 Enter product URL

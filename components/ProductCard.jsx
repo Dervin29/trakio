@@ -110,13 +110,13 @@ export default function ProductCard({ product, onDelete }) {
   }
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200/50 bg-white shadow-sm ring-1 ring-black/[0.02] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200/50 dark:border-gray-700/50 bg-white dark:bg-gray-900 shadow-sm ring-1 ring-black/[0.02] dark:ring-white/[0.05] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       {/* Image Section */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-50 via-white to-brand-light/40">
+      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-50 via-white to-brand-light/40 dark:from-gray-800 dark:via-gray-900 dark:to-brand-dark/20">
         {!imgError && product.image_url ? (
           <>
             {!imgLoaded && (
-              <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+              <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent dark:via-gray-600/40" />
             )}
             <img
               ref={imgRef}
@@ -132,14 +132,14 @@ export default function ProductCard({ product, onDelete }) {
           </>
         ) : (
           <div className="flex h-full items-center justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100">
-              <Store className="h-8 w-8 text-gray-300" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 dark:bg-gray-800">
+              <Store className="h-8 w-8 text-gray-300 dark:text-gray-600" />
             </div>
           </div>
         )}
 
         <div className="absolute left-3 top-3 flex flex-col gap-1.5">
-          <span className="inline-flex items-center gap-1 rounded-full bg-black/70 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm backdrop-blur-sm">
+          <span className="inline-flex items-center gap-1 rounded-full bg-black/70 dark:bg-black/80 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm backdrop-blur-sm">
             <Activity className="h-3 w-3" />
             Live
           </span>
@@ -157,12 +157,12 @@ export default function ProductCard({ product, onDelete }) {
         {/* Product Header */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-gray-500">
+            <span className="inline-flex items-center gap-1 rounded-md bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
               <Store className="h-2.5 w-2.5" />
               {getStoreName(product.url)}
             </span>
             {product.updated_at && (
-              <span className="inline-flex items-center gap-1 text-[10px] text-gray-400">
+              <span className="inline-flex items-center gap-1 text-[10px] text-gray-400 dark:text-gray-500">
                 <Clock className="h-3 w-3" />
                 {getRelativeTime(product.updated_at)}
               </span>
@@ -170,25 +170,25 @@ export default function ProductCard({ product, onDelete }) {
           </div>
           <h3
             title={product.name}
-            className="line-clamp-2 text-sm font-semibold leading-snug text-gray-900"
+            className="line-clamp-2 text-sm font-semibold leading-snug text-gray-900 dark:text-white"
           >
             {product.name}
           </h3>
         </div>
 
         {/* Price Display */}
-        <div className="rounded-xl bg-gray-50/80 p-3">
+        <div className="rounded-xl bg-gray-50/80 dark:bg-gray-800/60 p-3">
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500">
                 Current Price
               </p>
-              <span className="text-xl font-bold tracking-tight text-gray-900">
+              <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {formatPrice(product.current_price, product.currency)}
               </span>
               {prevPrice !== null && (
                 <div className="mt-0.5">
-                  <span className="text-xs text-gray-400 line-through">
+                  <span className="text-xs text-gray-400 dark:text-gray-500 line-through">
                     {formatPrice(prevPrice, product.currency)}
                   </span>
                 </div>
@@ -199,10 +199,10 @@ export default function ProductCard({ product, onDelete }) {
                 <span
                   className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${
                     isDrop
-                      ? "bg-emerald-50 text-emerald-700"
+                      ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
                       : isIncrease
-                        ? "bg-red-50 text-red-600"
-                        : "bg-gray-100 text-gray-500"
+                        ? "bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+                        : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
                   }`}
                 >
                   {isDrop ? (
@@ -217,7 +217,7 @@ export default function ProductCard({ product, onDelete }) {
                     : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
                 </span>
                 {isDrop && savings > 0 && (
-                  <span className="text-[10px] font-medium text-emerald-600">
+                  <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
                     Save {formatPrice(savings, product.currency)}
                   </span>
                 )}
@@ -230,7 +230,7 @@ export default function ProductCard({ product, onDelete }) {
         {hasTarget && (
           <div className="rounded-xl bg-brand-light/40 p-3">
             <div className="mb-1.5 flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-xs font-medium text-brand-700">
+              <span className="flex items-center gap-1.5 text-xs font-medium text-brand-700 dark:text-brand-300">
                 <Target className="h-3.5 w-3.5" />
                 Target:{" "}
                 <span className="font-semibold">
@@ -241,13 +241,13 @@ export default function ProductCard({ product, onDelete }) {
                 {targetProgress.toFixed(0)}%
               </span>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-brand-300/40">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-brand-300/40 dark:bg-brand-700/40">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-brand to-brand-dark transition-all duration-500"
                 style={{ width: `${targetProgress}%` }}
               />
             </div>
-            <p className="mt-1 text-[10px] text-gray-400">
+            <p className="mt-1 text-[10px] text-gray-400 dark:text-gray-500">
               {targetProgress >= 100
                 ? "Target reached!"
                 : `${(100 - targetProgress).toFixed(0)}% away from target`}
@@ -262,7 +262,7 @@ export default function ProductCard({ product, onDelete }) {
             onClick={() =>
               window.open(product.url, "_blank", "noopener,noreferrer")
             }
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-all duration-200 hover:bg-brand-light hover:text-brand"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 dark:text-gray-500 transition-all duration-200 hover:bg-brand-light hover:text-brand"
           >
             <ExternalLink className="h-4 w-4" />
           </button>
@@ -272,7 +272,7 @@ export default function ProductCard({ product, onDelete }) {
               render={
                 <button
                   disabled={deleting}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-all duration-200 hover:bg-red-50 hover:text-red-500"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 dark:text-gray-500 transition-all duration-200 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -280,7 +280,7 @@ export default function ProductCard({ product, onDelete }) {
             />
             <DialogContent className="sm:max-w-sm">
               <DialogHeader>
-                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 ring-1 ring-red-100">
+                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-900/30 ring-1 ring-red-100 dark:ring-red-800/50">
                   <AlertTriangle className="h-7 w-7 text-red-500" />
                 </div>
                 <DialogTitle className="text-center text-lg">
@@ -344,7 +344,7 @@ export default function ProductCard({ product, onDelete }) {
         <div className="mt-auto">
           <Link
             href={`/products/${product.id}`}
-            className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-gray-900 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-md active:scale-[0.98]"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-gray-900 dark:bg-brand text-sm font-medium text-white dark:text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-800 dark:hover:bg-brand-dark hover:shadow-md active:scale-[0.98]"
           >
             <Eye className="h-4 w-4" />
             View Details

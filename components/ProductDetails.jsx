@@ -72,10 +72,10 @@ function getInsight(product, priceChange) {
       title: "Excellent time to buy",
       description: "Significant price drop detected. Consider purchasing now.",
       color: "emerald",
-      bg: "bg-emerald-50/60",
-      border: "border-emerald-200",
-      text: "text-emerald-700",
-      iconBg: "bg-emerald-100",
+      bg: "bg-emerald-50/60 dark:bg-emerald-900/20",
+      border: "border-emerald-200 dark:border-emerald-800/50",
+      text: "text-emerald-700 dark:text-emerald-300",
+      iconBg: "bg-emerald-100 dark:bg-emerald-900/40",
     };
   }
   if (targetReached) {
@@ -85,7 +85,7 @@ function getInsight(product, priceChange) {
       description: "Current price matches or beats your target price.",
       color: "brand",
       bg: "bg-brand-light/60",
-      border: "border-brand-300/40",
+      border: "border-brand-300/40 dark:border-brand-700/40",
       text: "text-brand-700",
       iconBg: "bg-brand-light",
     };
@@ -96,10 +96,10 @@ function getInsight(product, priceChange) {
       title: "Price dropped",
       description: `Price decreased by ${Math.abs(priceChange).toFixed(1)}% from the last check.`,
       color: "emerald",
-      bg: "bg-emerald-50/40",
-      border: "border-emerald-200/50",
-      text: "text-emerald-700",
-      iconBg: "bg-emerald-100",
+      bg: "bg-emerald-50/40 dark:bg-emerald-900/20",
+      border: "border-emerald-200/50 dark:border-emerald-800/50",
+      text: "text-emerald-700 dark:text-emerald-300",
+      iconBg: "bg-emerald-100 dark:bg-emerald-900/40",
     };
   }
   if (isIncrease) {
@@ -108,10 +108,10 @@ function getInsight(product, priceChange) {
       title: "Price increased",
       description: `Price rose by ${priceChange.toFixed(1)}%. Consider waiting for a drop.`,
       color: "amber",
-      bg: "bg-amber-50/40",
-      border: "border-amber-200/50",
-      text: "text-amber-700",
-      iconBg: "bg-amber-100",
+      bg: "bg-amber-50/40 dark:bg-amber-900/20",
+      border: "border-amber-200/50 dark:border-amber-800/50",
+      text: "text-amber-700 dark:text-amber-300",
+      iconBg: "bg-amber-100 dark:bg-amber-900/40",
     };
   }
   return {
@@ -119,10 +119,10 @@ function getInsight(product, priceChange) {
     title: "Price stable",
     description: "No significant price change since last check.",
     color: "gray",
-    bg: "bg-gray-50/40",
-    border: "border-gray-200/50",
-    text: "text-gray-600",
-    iconBg: "bg-gray-100",
+    bg: "bg-gray-50/40 dark:bg-gray-800/30",
+    border: "border-gray-200/50 dark:border-gray-700/50",
+    text: "text-gray-600 dark:text-gray-300",
+    iconBg: "bg-gray-100 dark:bg-gray-800",
   };
 }
 
@@ -180,7 +180,7 @@ export default function ProductDetails({ product }) {
         {/* Left Column - Image & Actions */}
         <div className="space-y-6 lg:col-span-2">
           {/* Image */}
-          <div className="group relative overflow-hidden rounded-2xl border border-gray-200/50 bg-white shadow-sm">
+            <div className="group relative overflow-hidden rounded-2xl border border-gray-200/50 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
             <div className="relative aspect-square bg-gradient-to-br from-gray-50 via-white to-brand-light/30">
               {!imgError && product.image_url ? (
                 <>
@@ -201,8 +201,8 @@ export default function ProductDetails({ product }) {
                 </>
               ) : (
                 <div className="flex h-full items-center justify-center">
-                  <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gray-100">
-                    <ShoppingCart className="h-12 w-12 text-gray-300" />
+                  <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gray-100 dark:bg-gray-800">
+                    <ShoppingCart className="h-12 w-12 text-gray-300 dark:text-gray-600" />
                   </div>
                 </div>
               )}
@@ -223,8 +223,8 @@ export default function ProductDetails({ product }) {
           </div>
 
           {/* Quick Actions */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-4 shadow-sm">
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
+          <div className="rounded-2xl border border-gray-200/50 bg-white p-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
               Quick Actions
             </h3>
             <div className="flex flex-col gap-2">
@@ -254,7 +254,7 @@ export default function ProductDetails({ product }) {
                 />
                 <DialogContent className="sm:max-w-sm">
                   <DialogHeader>
-                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 ring-1 ring-red-100">
+                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 ring-1 ring-red-100 dark:bg-red-900/30 dark:ring-red-800/50">
                       <AlertTriangle className="h-7 w-7 text-red-500" />
                     </div>
                     <DialogTitle className="text-center text-lg">
@@ -269,23 +269,23 @@ export default function ProductDetails({ product }) {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex justify-center">
-                    <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
+                    <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3 dark:bg-gray-800">
                       {product.image_url && !imgError ? (
                         <img
                           src={product.image_url}
                           alt=""
-                          className="h-12 w-12 rounded-lg object-contain bg-white"
+                          className="h-12 w-12 rounded-lg object-contain bg-white dark:bg-gray-900"
                         />
                       ) : (
-                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white">
-                          <ShoppingCart className="h-6 w-6 text-gray-300" />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white dark:bg-gray-900">
+                          <ShoppingCart className="h-6 w-6 text-gray-300 dark:text-gray-600" />
                         </div>
                       )}
                       <div className="text-sm">
-                        <p className="font-medium text-gray-900 line-clamp-1">
+                        <p className="font-medium text-gray-900 line-clamp-1 dark:text-white">
                           {product.name}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           {formatPrice(product.current_price, product.currency)}
                         </p>
                       </div>
@@ -339,37 +339,37 @@ export default function ProductDetails({ product }) {
           </div>
 
           {/* Tracking Status */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-4 shadow-sm">
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
+          <div className="rounded-2xl border border-gray-200/50 bg-white p-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
               Tracking Status
             </h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-sm text-gray-600">
+                <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <Activity className="h-4 w-4 text-emerald-500" />
                   Status
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   Active
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-sm text-gray-600">
+                <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <Store className="h-4 w-4" />
                   Store
                 </span>
-                <span className="text-sm font-medium capitalize text-gray-900">
+                <span className="text-sm font-medium capitalize text-gray-900 dark:text-white">
                   {getStoreName(product.url)}
                 </span>
               </div>
               {product.updated_at && (
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-2 text-sm text-gray-600">
+                  <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                     <Clock className="h-4 w-4" />
                     Last Checked
                   </span>
-                  <span className="text-sm text-gray-900">
+                  <span className="text-sm text-gray-900 dark:text-white">
                     {getRelativeTime(product.updated_at)}
                   </span>
                 </div>
@@ -381,35 +381,35 @@ export default function ProductDetails({ product }) {
         {/* Right Column - Info, Pricing, Insights, Chart */}
         <div className="space-y-6 lg:col-span-3">
           {/* Title & Store */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8">
+          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
             <div className="mb-1 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-medium capitalize text-gray-500">
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-medium capitalize text-gray-500 dark:bg-gray-800 dark:text-gray-400">
                 <Store className="h-3.5 w-3.5" />
                 {getStoreName(product.url)}
               </span>
             </div>
-            <h1 className="mt-2 text-xl font-bold leading-tight text-gray-900 sm:text-2xl">
+            <h1 className="mt-2 text-xl font-bold leading-tight text-gray-900 sm:text-2xl dark:text-white">
               {product.name}
             </h1>
           </div>
 
           {/* Pricing */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
+          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
               Current Price
             </p>
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <span className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                <span className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
                   {formatPrice(product.current_price, product.currency)}
                 </span>
                 {prevPrice !== null && (
                   <div className="mt-1">
-                    <span className="text-sm text-gray-400 line-through">
+                    <span className="text-sm text-gray-400 line-through dark:text-gray-500">
                       {formatPrice(prevPrice, product.currency)}
                     </span>
-                    <span className="mx-2 text-gray-300">|</span>
-                    <span className="text-sm text-gray-500">
+                    <span className="mx-2 text-gray-300 dark:text-gray-600">|</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
                       {isDrop
                         ? `Down ${formatPrice(savings, product.currency)}`
                         : isIncrease
@@ -424,10 +424,10 @@ export default function ProductDetails({ product }) {
                   <span
                     className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium ${
                       isDrop
-                        ? "bg-emerald-50 text-emerald-700"
+                        ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
                         : isIncrease
-                          ? "bg-red-50 text-red-600"
-                          : "bg-gray-100 text-gray-500"
+                          ? "bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+                          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
                     }`}
                   >
                     {isDrop ? (
@@ -441,7 +441,7 @@ export default function ProductDetails({ product }) {
                       ? "0%"
                       : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
                   </span>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-gray-400 dark:text-gray-500">
                     {isDrop ? "Price Dropped" : isIncrease ? "Price Increased" : "No Change"}
                   </span>
                 </div>
@@ -466,32 +466,32 @@ export default function ProductDetails({ product }) {
 
           {/* Target Price */}
           {hasTarget && (
-            <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8">
+            <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
               <div className="flex items-center justify-between">
-                <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200">
                   <Target className="h-4 w-4 text-brand" />
                   Target Price
                 </h3>
-                <span className="text-lg font-bold text-gray-900">
+                <span className="text-lg font-bold text-gray-900 dark:text-white">
                   {formatPrice(product.target_price, product.currency)}
                 </span>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-4">
-                <div className="rounded-xl bg-gray-50 p-3">
-                  <p className="text-xs text-gray-500">Current</p>
-                  <p className="mt-0.5 font-semibold text-gray-900">
+                <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-800/50">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Current</p>
+                  <p className="mt-0.5 font-semibold text-gray-900 dark:text-white">
                     {formatPrice(product.current_price, product.currency)}
                   </p>
                 </div>
                 <div className="rounded-xl bg-brand-light/40 p-3">
-                  <p className="text-xs text-gray-500">Target</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Target</p>
                   <p className="mt-0.5 font-semibold text-brand-700">
                     {formatPrice(product.target_price, product.currency)}
                   </p>
                 </div>
               </div>
               {targetGap > 0 && (
-                <p className="mt-3 text-sm text-gray-500">
+                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
                   <span className="font-medium text-brand">
                     {formatPrice(targetGap, product.currency)}
                   </span>{" "}
@@ -500,7 +500,7 @@ export default function ProductDetails({ product }) {
               )}
               <div className="mt-3">
                 <div className="mb-1 flex items-center justify-between text-xs">
-                  <span className="text-gray-400">Progress</span>
+                  <span className="text-gray-400 dark:text-gray-500">Progress</span>
                   <span className="font-medium text-brand">
                     {targetProgress.toFixed(0)}%
                   </span>
@@ -511,7 +511,7 @@ export default function ProductDetails({ product }) {
                     style={{ width: `${targetProgress}%` }}
                   />
                 </div>
-                <p className="mt-1.5 text-xs text-gray-400">
+                <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">
                   {targetProgress >= 100
                     ? "Target reached! 🎉"
                     : `${(100 - targetProgress).toFixed(0)}% of the way to your target`}
@@ -521,7 +521,7 @@ export default function ProductDetails({ product }) {
           )}
 
           {/* Price Chart */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8">
+          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
             <PriceChart productId={product.id} currency={product.currency} />
           </div>
         </div>

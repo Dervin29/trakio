@@ -27,14 +27,14 @@ export default function Pagination({ page, totalPages }) {
         <Link
           href={`/products?page=${page - 1}`}
           aria-label="Go to previous page"
-          className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-400 transition-all duration-200 hover:bg-brand-light hover:text-brand-dark"
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-400 transition-all duration-200 hover:bg-brand-light hover:text-brand-dark dark:text-gray-500"
         >
           <ChevronLeft className="h-4 w-4" />
         </Link>
       ) : (
         <span
           aria-disabled="true"
-          className="flex h-9 w-9 cursor-not-allowed items-center justify-center rounded-xl text-gray-300"
+          className="flex h-9 w-9 cursor-not-allowed items-center justify-center rounded-xl text-gray-300 dark:text-gray-600"
         >
           <ChevronLeft className="h-4 w-4" />
         </span>
@@ -45,7 +45,7 @@ export default function Pagination({ page, totalPages }) {
         p === "..." ? (
           <span
             key={`ellipsis-${i}`}
-            className="flex h-9 w-9 items-center justify-center text-sm text-gray-400"
+            className="flex h-9 w-9 items-center justify-center text-sm text-gray-400 dark:text-gray-500"
           >
             &hellip;
           </span>
@@ -57,8 +57,8 @@ export default function Pagination({ page, totalPages }) {
             aria-current={p === page ? "page" : undefined}
             className={`flex h-9 min-w-9 items-center justify-center rounded-xl px-2 text-sm font-medium transition-all duration-200 ${
               p === page
-                ? "bg-gray-900 text-white shadow-sm"
-                : "text-gray-600 hover:bg-brand-light hover:text-brand-dark"
+                ? "bg-gray-900 text-white shadow-sm dark:bg-brand dark:text-white"
+                : "text-gray-600 hover:bg-brand-light hover:text-brand-dark dark:text-gray-300"
             }`}
           >
             {p}
@@ -71,14 +71,14 @@ export default function Pagination({ page, totalPages }) {
         <Link
           href={`/products?page=${page + 1}`}
           aria-label="Go to next page"
-          className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-400 transition-all duration-200 hover:bg-brand-light hover:text-brand-dark"
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-400 transition-all duration-200 hover:bg-brand-light hover:text-brand-dark dark:text-gray-500"
         >
           <ChevronRight className="h-4 w-4" />
         </Link>
       ) : (
         <span
           aria-disabled="true"
-          className="flex h-9 w-9 cursor-not-allowed items-center justify-center rounded-xl text-gray-300"
+          className="flex h-9 w-9 cursor-not-allowed items-center justify-center rounded-xl text-gray-300 dark:text-gray-600"
         >
           <ChevronRight className="h-4 w-4" />
         </span>

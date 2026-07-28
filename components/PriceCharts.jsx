@@ -36,9 +36,9 @@ function CustomTooltip({ active, payload, label, currency }) {
   if (!active || !payload?.length) return null;
 
   return (
-    <div className="rounded-xl border bg-white px-4 py-3 shadow-xl">
-      <p className="mb-1 text-xs text-gray-400">{label}</p>
-      <p className="font-bold text-gray-900">
+    <div className="rounded-xl border bg-white px-4 py-3 shadow-xl dark:bg-gray-800 dark:shadow-black/30">
+      <p className="mb-1 text-xs text-gray-400 dark:text-gray-500">{label}</p>
+      <p className="font-bold text-gray-900 dark:text-white">
         {formatPrice(payload[0].value, currency)}
       </p>
     </div>
@@ -91,7 +91,7 @@ export default function PriceChart({ productId, currency = "INR" }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-400">
+      <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-400 dark:text-gray-500">
         <Loader2 className="h-4 w-4 animate-spin" />
         Loading price history...
       </div>
@@ -100,7 +100,7 @@ export default function PriceChart({ productId, currency = "INR" }) {
 
   if (error) {
     return (
-      <div className="rounded-xl bg-red-50 p-5 text-center text-sm text-red-600">
+      <div className="rounded-xl bg-red-50 p-5 text-center text-sm text-red-600 dark:bg-red-900/30 dark:text-red-400">
         Unable to load price history.
       </div>
     );
@@ -108,10 +108,10 @@ export default function PriceChart({ productId, currency = "INR" }) {
 
   if (!data.length) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl bg-gray-50 py-16 text-center">
-        <History className="mb-3 h-10 w-10 text-gray-300" />
-        <p className="font-medium text-gray-700">No price history yet</p>
-        <p className="mt-1 text-xs text-gray-400">
+      <div className="flex flex-col items-center justify-center rounded-xl bg-gray-50 py-16 text-center dark:bg-gray-800/50">
+        <History className="mb-3 h-10 w-10 text-gray-300 dark:text-gray-600" />
+        <p className="font-medium text-gray-700 dark:text-gray-200">No price history yet</p>
+        <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
           Data will appear after the next price check.
         </p>
       </div>
@@ -123,23 +123,23 @@ export default function PriceChart({ productId, currency = "INR" }) {
       <div className="space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+            <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
               <History className="h-4 w-4 text-brand" />
               Price History
             </h3>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-400 dark:text-gray-500">
               {data.length} price checks recorded
             </p>
           </div>
-          <div className="inline-flex gap-1 rounded-lg bg-gray-100 p-0.5">
+          <div className="inline-flex gap-1 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-800">
             {RANGES.map((r) => (
               <button
                 key={r.label}
                 onClick={() => setRange(r.label)}
                 className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
                   range === r.label
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 }`}
               >
                 {r.label}
@@ -148,8 +148,8 @@ export default function PriceChart({ productId, currency = "INR" }) {
           </div>
         </div>
         <div className="flex flex-col items-center justify-center py-10 text-center">
-          <Calendar className="mb-2 h-8 w-8 text-gray-300" />
-          <p className="text-sm text-gray-500">No data for this range</p>
+          <Calendar className="mb-2 h-8 w-8 text-gray-300 dark:text-gray-600" />
+          <p className="text-sm text-gray-500 dark:text-gray-400">No data for this range</p>
           <button
             onClick={() => setRange("All")}
             className="mt-2 text-xs font-medium text-brand hover:text-brand-dark"
@@ -173,54 +173,54 @@ export default function PriceChart({ productId, currency = "INR" }) {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+          <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
             <History className="h-4 w-4 text-brand" />
             Price History
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-400 dark:text-gray-500">
             {filteredData.length} of {data.length} price checks
           </p>
         </div>
-        <div className="inline-flex gap-1 rounded-lg bg-gray-100 p-0.5">
+        <div className="inline-flex gap-1 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-800">
           {RANGES.map((r) => (
             <button
               key={r.label}
               onClick={() => setRange(r.label)}
               className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
-                range === r.label
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              {r.label}
-            </button>
-          ))}
+                  range === r.label
+                    ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                }`}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Stats */}
+        {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-gray-50 p-3">
-          <p className="text-xs text-gray-500">Current</p>
-          <p className="mt-1 font-bold text-gray-900">
+        <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-800/50">
+          <p className="text-xs text-gray-500 dark:text-gray-400">Current</p>
+          <p className="mt-1 font-bold text-gray-900 dark:text-white">
             {formatPrice(currentPrice, currency)}
           </p>
         </div>
-        <div className="rounded-xl bg-emerald-50 p-3">
-          <p className="flex items-center gap-1 text-xs text-emerald-700">
+        <div className="rounded-xl bg-emerald-50 p-3 dark:bg-emerald-900/30">
+          <p className="flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-300">
             <ArrowDown className="h-3 w-3" />
             Lowest
           </p>
-          <p className="mt-1 font-bold text-emerald-700">
+          <p className="mt-1 font-bold text-emerald-700 dark:text-emerald-300">
             {formatPrice(lowest, currency)}
           </p>
         </div>
-        <div className="rounded-xl bg-red-50 p-3">
-          <p className="flex items-center gap-1 text-xs text-red-700">
+        <div className="rounded-xl bg-red-50 p-3 dark:bg-red-900/30">
+          <p className="flex items-center gap-1 text-xs text-red-700 dark:text-red-300">
             <ArrowUp className="h-3 w-3" />
             Highest
           </p>
-          <p className="mt-1 font-bold text-red-700">
+          <p className="mt-1 font-bold text-red-700 dark:text-red-300">
             {formatPrice(highest, currency)}
           </p>
         </div>
@@ -230,10 +230,10 @@ export default function PriceChart({ productId, currency = "INR" }) {
       <div
         className={`flex items-center gap-2 text-sm font-medium ${
           priceDropped
-            ? "text-emerald-600"
+            ? "text-emerald-600 dark:text-emerald-400"
             : change > 0
-              ? "text-red-600"
-              : "text-gray-500"
+              ? "text-red-600 dark:text-red-400"
+              : "text-gray-500 dark:text-gray-400"
         }`}
       >
         {priceDropped ? (

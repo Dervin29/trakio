@@ -42,7 +42,7 @@ export default async function ProductDetailsPage({ params }) {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/20">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/20 dark:from-gray-950 dark:via-gray-900 dark:to-brand-dark/10">
       <BackgroundEffects />
       <Header user={user} />
 
@@ -50,11 +50,11 @@ export default async function ProductDetailsPage({ params }) {
         {/* Breadcrumb */}
         <nav
           aria-label="Breadcrumb"
-          className="mb-6 flex animate-fade-in items-center gap-1.5 text-sm text-gray-400"
+          className="mb-6 flex animate-fade-in items-center gap-1.5 text-sm text-gray-400 dark:text-gray-500"
         >
           <Link
             href="/"
-            className="flex items-center gap-1 transition-colors hover:text-gray-600"
+            className="flex items-center gap-1 transition-colors hover:text-gray-600 dark:hover:text-gray-300"
           >
             <Home className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Home</span>
@@ -62,12 +62,12 @@ export default async function ProductDetailsPage({ params }) {
           <ChevronRight className="h-3.5 w-3.5" />
           <Link
             href="/products"
-            className="transition-colors hover:text-gray-600"
+            className="transition-colors hover:text-gray-600 dark:hover:text-gray-300"
           >
             Products
           </Link>
           <ChevronRight className="h-3.5 w-3.5" />
-          <span className="max-w-[120px] truncate font-medium text-gray-700 sm:max-w-[200px]">
+          <span className="max-w-[120px] truncate font-medium text-gray-700 sm:max-w-[200px] dark:text-gray-200">
             {product.name}
           </span>
         </nav>
@@ -75,17 +75,17 @@ export default async function ProductDetailsPage({ params }) {
         {/* Page Header */}
         <div className="mb-8 flex animate-fade-in-up flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
               Product Details
             </h1>
-            <p className="flex items-center gap-2 text-sm text-gray-500">
+            <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
               <Activity className="h-4 w-4" />
               View detailed pricing and tracking information
             </p>
           </div>
           <Link
             href="/products"
-            className="inline-flex h-9 items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 shadow-sm transition-all duration-200 hover:-translate-x-0.5 hover:border-gray-300 hover:text-gray-900 hover:shadow-md active:scale-[0.97]"
+            className="inline-flex h-9 items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 shadow-sm transition-all duration-200 hover:-translate-x-0.5 hover:border-gray-300 hover:text-gray-900 hover:shadow-md active:scale-[0.97] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:shadow-black/10 dark:hover:border-gray-600 dark:hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Products
