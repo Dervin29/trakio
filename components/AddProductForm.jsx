@@ -5,7 +5,7 @@ import { addProduct } from "@/app/actions";
 import AuthModal from "./AuthModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader2, Link2, CheckCircle2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AddProductForm({ user }) {
@@ -40,35 +40,44 @@ export default function AddProductForm({ user }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Input
-            type="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="Paste product URL (Amazon, Walmart, etc.)"
-            className="h-12 text-base"
-            required
-            disabled={loading}
-          />
-
-          <Button
-            type="submit"
-            disabled={loading}
-            className="bg-brand hover:bg-brand-dark h-10 sm:h-12 px-8"
-            size="lg"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Adding...
-              </>
-            ) : (
-              "Track Price"
-            )}
-          </Button>
-        </div>
-      </form>
+      <div className="animate-fade-in-up rounded-2xl border border-gray-200/50 bg-white/70 p-6 shadow-lg shadow-gray-200/50 backdrop-blur-xl sm:p-8">
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-3 sm:flex-row sm:gap-3">
+            <div className="relative flex-1">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                <Link2 className="h-4 w-4 text-gray-400" />
+              </div>
+              <Input
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="Paste product URL from any store..."
+                className="h-12 w-full rounded-xl border-gray-200 bg-white pl-11 text-base shadow-sm transition-all duration-200 placeholder:text-gray-400 focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/15"
+                required
+                disabled={loading}
+              />
+            </div>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="h-12 rounded-xl bg-gradient-to-r from-brand to-brand-dark px-8 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand/30 active:scale-[0.98] disabled:hover:translate-y-0 disabled:hover:shadow-lg"
+              size="lg"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Tracking...
+                </>
+              ) : (
+                "Track Price"
+              )}
+            </Button>
+          </div>
+        </form>
+        <p className="mt-3 text-xs text-gray-400">
+          Supports Amazon, Flipkart, Myntra, and hundreds of online stores.
+        </p>
+      </div>
 
       <AuthModal
         isOpen={showAuthModal}

@@ -15,9 +15,10 @@ import {
   Activity,
   Eye,
   AlertTriangle,
+  ArrowRight,
+  Tag,
 } from "lucide-react";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -68,6 +69,7 @@ export default function ProductCard({ product, onDelete }) {
   const [deleting, setDeleting] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const imgRef = useRef(null);
 
@@ -78,19 +80,28 @@ export default function ProductCard({ product, onDelete }) {
   }, []);
 
   const priceChange = product.price_change;
-
   const isDrop = priceChange !== null && priceChange < 0;
-
+  const isIncrease = priceChange !== null && priceChange > 0;
   const isGoodDeal = priceChange !== null && priceChange <= -10;
+
+  const prevPrice =
+    priceChange !== null
+      ? product.current_price / (1 + priceChange / 100)
+      : null;
+  const savings = prevPrice !== null && isDrop ? prevPrice - product.current_price : 0;
+
+  const hasTarget = product.target_price != null && product.target_price > 0;
+  const targetProgress = hasTarget
+    ? Math.min(100, Math.max(0, (product.target_price / product.current_price) * 100))
+    : 0;
 
   async function handleDelete() {
     setDeleting(true);
-
     const result = await deleteProduct(product.id);
-
     setDeleting(false);
 
     if (result.success) {
+      setDialogOpen(false);
       toast.success("Product removed");
       onDelete?.(product.id);
     } else {
@@ -99,320 +110,248 @@ export default function ProductCard({ product, onDelete }) {
   }
 
   return (
-    <Card
-      className="
-        group overflow-hidden rounded-3xl
-        border border-gray-200/70
-        bg-white
-        shadow-sm
-        transition-all duration-300
-        hover:-translate-y-1
-        hover:shadow-xl
-      "
-    >
-      <div className="flex p-3 gap-4">
-        {/* IMAGE */}
-        <div
-          className="
-            relative flex h-32 w-32 shrink-0
-            items-center justify-center
-            overflow-hidden rounded-2xl
-            bg-gradient-to-br
-            from-gray-50
-            via-white
-            to-brand-light
-          "
-        >
-          {!imgError && product.image_url ? (
-            <>
-              {!imgLoaded && (
-                <div
-                  className="
-                  absolute inset-0 animate-pulse bg-gray-100
-                "
-                />
-              )}
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200/50 bg-white shadow-sm ring-1 ring-black/[0.02] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      {/* Image Section */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-50 via-white to-brand-light/40">
+        {!imgError && product.image_url ? (
+          <>
+            {!imgLoaded && (
+              <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+            )}
+            <img
+              ref={imgRef}
+              src={product.image_url}
+              alt={product.name}
+              loading="lazy"
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgError(true)}
+              className={`h-full w-full object-contain p-6 transition-all duration-700 group-hover:scale-110 ${
+                imgLoaded ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </>
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100">
+              <Store className="h-8 w-8 text-gray-300" />
+            </div>
+          </div>
+        )}
 
-              <img
-                ref={imgRef}
-                src={product.image_url}
-                alt={product.name}
-                loading="lazy"
-                onLoad={() => setImgLoaded(true)}
-                onError={() => setImgError(true)}
-                className="
-                  h-full w-full object-contain
-                  p-4
-                  transition-transform duration-500
-                  group-hover:scale-110
-                "
-              />
-            </>
-          ) : (
-            <Store className="h-10 w-10 text-gray-300" />
-          )}
-
-          <Badge
-            className="
-              absolute left-2 top-2
-              rounded-full
-              bg-black/80
-              px-2 py-0.5
-              text-[10px]
-              text-white
-            "
-          >
-            <Activity className="mr-1 h-3 w-3" />
+        <div className="absolute left-3 top-3 flex flex-col gap-1.5">
+          <span className="inline-flex items-center gap-1 rounded-full bg-black/70 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm backdrop-blur-sm">
+            <Activity className="h-3 w-3" />
             Live
-          </Badge>
-
+          </span>
           {isGoodDeal && (
-            <Badge
-              className="
-                absolute bottom-2 left-2
-                rounded-full
-                bg-green-500
-                px-2 py-0.5
-                text-[10px]
-              "
-            >
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/90 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm backdrop-blur-sm">
+              <Tag className="h-3 w-3" />
               Best Deal
-            </Badge>
+            </span>
           )}
         </div>
+      </div>
 
-        {/* CONTENT */}
-        <CardContent className="flex min-w-0 flex-1 flex-col p-0">
-          {/* HEADER */}
-          <div className="flex justify-between gap-2">
-            <div className="min-w-0">
-              <div
-                className="
-                flex items-center gap-2
-                text-xs text-gray-400
-              "
-              >
-                <Badge
-                  variant="outline"
-                  className="
-                    rounded-full
-                    px-2 py-0
-                    text-[10px]
-                    capitalize
-                  "
+      {/* Content */}
+      <div className="flex flex-1 flex-col gap-3 p-4">
+        {/* Product Header */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
+            <span className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-gray-500">
+              <Store className="h-2.5 w-2.5" />
+              {getStoreName(product.url)}
+            </span>
+            {product.updated_at && (
+              <span className="inline-flex items-center gap-1 text-[10px] text-gray-400">
+                <Clock className="h-3 w-3" />
+                {getRelativeTime(product.updated_at)}
+              </span>
+            )}
+          </div>
+          <h3
+            title={product.name}
+            className="line-clamp-2 text-sm font-semibold leading-snug text-gray-900"
+          >
+            {product.name}
+          </h3>
+        </div>
+
+        {/* Price Display */}
+        <div className="rounded-xl bg-gray-50/80 p-3">
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
+                Current Price
+              </p>
+              <span className="text-xl font-bold tracking-tight text-gray-900">
+                {formatPrice(product.current_price, product.currency)}
+              </span>
+              {prevPrice !== null && (
+                <div className="mt-0.5">
+                  <span className="text-xs text-gray-400 line-through">
+                    {formatPrice(prevPrice, product.currency)}
+                  </span>
+                </div>
+              )}
+            </div>
+            {priceChange !== null && (
+              <div className="flex flex-col items-end gap-0.5">
+                <span
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                    isDrop
+                      ? "bg-emerald-50 text-emerald-700"
+                      : isIncrease
+                        ? "bg-red-50 text-red-600"
+                        : "bg-gray-100 text-gray-500"
+                  }`}
                 >
-                  <Store className="mr-1 h-3 w-3" />
-                  {getStoreName(product.url)}
-                </Badge>
-
-                {product.updated_at && (
-                  <span className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    {getRelativeTime(product.updated_at)}
+                  {isDrop ? (
+                    <TrendingDown className="h-3 w-3" />
+                  ) : isIncrease ? (
+                    <TrendingUp className="h-3 w-3" />
+                  ) : (
+                    <Minus className="h-3 w-3" />
+                  )}
+                  {priceChange === 0
+                    ? "0%"
+                    : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
+                </span>
+                {isDrop && savings > 0 && (
+                  <span className="text-[10px] font-medium text-emerald-600">
+                    Save {formatPrice(savings, product.currency)}
                   </span>
                 )}
               </div>
-
-              <h3
-                title={product.name}
-                className="
-                  mt-2
-                  line-clamp-2
-                  text-sm
-                  font-semibold
-                  leading-5
-                "
-              >
-                {product.name}
-              </h3>
-            </div>
-
-            <div className="flex gap-1">
-              <button
-                title="Open product"
-                onClick={() =>
-                  window.open(product.url, "_blank", "noopener,noreferrer")
-                }
-                className="
-                  h-7 w-7
-                  rounded-lg
-                  text-gray-400
-                  transition
-                  hover:bg-brand-light
-                  hover:text-brand
-                "
-              >
-                <ExternalLink className="mx-auto h-4 w-4" />
-              </button>
-
-              <Dialog>
-                <DialogTrigger
-                  render={
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      disabled={deleting}
-                      className="
-                        h-7 w-7
-                        rounded-lg
-                        text-gray-400
-                        hover:bg-red-50
-                        hover:text-red-500
-                      "
-                    />
-                  }
-                >
-                  <Trash2 className="h-4 w-4" />
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-                      <AlertTriangle className="h-6 w-6 text-red-600" />
-                    </div>
-                    <DialogTitle className="text-center">Delete product?</DialogTitle>
-                    <DialogDescription className="text-center">
-                      Are you sure you want to remove{" "}
-                      <span className="font-medium text-foreground">{product.name}</span>?
-                      This cannot be undone.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <DialogClose
-                      render={<Button variant="outline" className="w-full sm:w-auto" />}
-                    >
-                      Cancel
-                    </DialogClose>
-                    <Button
-                      variant="destructive"
-                      disabled={deleting}
-                      onClick={handleDelete}
-                      className="w-full sm:w-auto"
-                    >
-                      {deleting ? "Removing..." : "Delete"}
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
-
-          {/* PRICE */}
-          <div className="mt-4 flex items-end justify-between">
-            <div>
-              <p
-                className="
-                text-[10px]
-                font-medium
-                uppercase
-                tracking-wider
-                text-gray-400
-              "
-              >
-                Current Price
-              </p>
-
-              <div className="flex items-center gap-2">
-                <span
-                  className="
-                  text-2xl
-                  font-bold
-                  tracking-tight
-                "
-                >
-                  {formatPrice(product.current_price, product.currency)}
-                </span>
-
-                {priceChange !== null && (
-                  <Badge
-                    className={`
-                      rounded-full
-                      border
-                      px-2
-                      text-[11px]
-
-                      ${
-                        isDrop
-                          ? "border-green-200 bg-green-50 text-green-700"
-                          : priceChange > 0
-                            ? "border-red-200 bg-red-50 text-red-700"
-                            : "border-gray-200 bg-gray-100 text-gray-600"
-                      }
-                    `}
-                  >
-                    {isDrop ? (
-                      <TrendingDown className="mr-1 h-3 w-3" />
-                    ) : priceChange > 0 ? (
-                      <TrendingUp className="mr-1 h-3 w-3" />
-                    ) : (
-                      <Minus className="mr-1 h-3 w-3" />
-                    )}
-
-                    {priceChange === 0
-                      ? "0%"
-                      : `${priceChange > 0 ? "+" : ""}
-                    ${priceChange.toFixed(1)}%`}
-                  </Badge>
-                )}
-              </div>
-            </div>
-
-            {product.target_price && (
-              <div
-                className="
-                  rounded-xl
-                  bg-brand-light
-                  px-3 py-2
-                "
-              >
-                <p
-                  className="
-                  flex items-center gap-1
-                  text-[10px]
-                  text-brand
-                "
-                >
-                  <Target className="h-3 w-3" />
-                  Target
-                </p>
-
-                <p
-                  className="
-                  text-xs
-                  font-semibold
-                  text-brand-700
-                "
-                >
-                  {formatPrice(product.target_price, product.currency)}
-                </p>
-              </div>
             )}
           </div>
+        </div>
 
-          {/* ACTION */}
-          <Button
-            asChild
-            size="sm"
-            className="
-              mt-4
-              h-9
-              rounded-xl
-              text-xs
-            "
+        {/* Target Price */}
+        {hasTarget && (
+          <div className="rounded-xl bg-brand-light/40 p-3">
+            <div className="mb-1.5 flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-xs font-medium text-brand-700">
+                <Target className="h-3.5 w-3.5" />
+                Target:{" "}
+                <span className="font-semibold">
+                  {formatPrice(product.target_price, product.currency)}
+                </span>
+              </span>
+              <span className="text-[11px] font-semibold text-brand">
+                {targetProgress.toFixed(0)}%
+              </span>
+            </div>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-brand-300/40">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-brand to-brand-dark transition-all duration-500"
+                style={{ width: `${targetProgress}%` }}
+              />
+            </div>
+            <p className="mt-1 text-[10px] text-gray-400">
+              {targetProgress >= 100
+                ? "Target reached!"
+                : `${(100 - targetProgress).toFixed(0)}% away from target`}
+            </p>
+          </div>
+        )}
+
+        {/* Quick Actions */}
+        <div className="flex items-center gap-2">
+          <button
+            title="Open product in new tab"
+            onClick={() =>
+              window.open(product.url, "_blank", "noopener,noreferrer")
+            }
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-all duration-200 hover:bg-brand-light hover:text-brand"
           >
-            <Link
-              href={`/products/${product.id}`}
-              className="
-                flex items-center
-                justify-center
-                gap-2
-              "
-            >
-              <Eye className="h-4 w-4" />
-              View Details
-            </Link>
-          </Button>
-        </CardContent>
+            <ExternalLink className="h-4 w-4" />
+          </button>
+
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger
+              render={
+                <button
+                  disabled={deleting}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-all duration-200 hover:bg-red-50 hover:text-red-500"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              }
+            />
+            <DialogContent className="sm:max-w-sm">
+              <DialogHeader>
+                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 ring-1 ring-red-100">
+                  <AlertTriangle className="h-7 w-7 text-red-500" />
+                </div>
+                <DialogTitle className="text-center text-lg">
+                  Remove product?
+                </DialogTitle>
+                <DialogDescription className="text-center leading-relaxed">
+                  Are you sure you want to remove{" "}
+                  <span className="font-medium text-foreground">
+                    {product.name}
+                  </span>
+                  ? This action cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="mt-2 gap-2">
+                <DialogClose
+                  render={
+                    <Button variant="outline" className="flex-1 rounded-xl" />
+                  }
+                >
+                  Cancel
+                </DialogClose>
+                <Button
+                  variant="destructive"
+                  disabled={deleting}
+                  onClick={handleDelete}
+                  className="flex-1 rounded-xl"
+                >
+                  {deleting ? (
+                    <span className="flex items-center gap-2">
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
+                      </svg>
+                      Removing...
+                    </span>
+                  ) : (
+                    "Remove"
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Primary CTA */}
+        <div className="mt-auto">
+          <Link
+            href={`/products/${product.id}`}
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-gray-900 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-md active:scale-[0.98]"
+          >
+            <Eye className="h-4 w-4" />
+            View Details
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </Link>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 }
