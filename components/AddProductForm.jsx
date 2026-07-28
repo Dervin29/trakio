@@ -5,7 +5,7 @@ import { addProduct } from "@/app/actions";
 import AuthModal from "./AuthModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Link2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AddProductForm({ user }) {
@@ -31,7 +31,7 @@ export default function AddProductForm({ user }) {
     if (result.error) {
       toast.error(result.error);
     } else {
-      toast.success(result.message || "Product tracked successfully!");
+      toast.success(result.message || "Product added successfully");
       setUrl("");
     }
 
@@ -40,28 +40,25 @@ export default function AddProductForm({ user }) {
 
   return (
     <>
-      <div className="animate-fade-in-up rounded-2xl border border-gray-200/50 bg-white/70 p-6 shadow-lg shadow-gray-200/50 backdrop-blur-xl sm:p-8 dark:border-gray-700/50 dark:bg-gray-900/70 dark:shadow-black/20">
+      <div className="rounded-xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-6 dark:border-gray-700 dark:bg-gray-900/50">
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-3 sm:flex-row sm:gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-                <Link2 className="h-4 w-4 text-gray-400 dark:text-gray-500" />
-              </div>
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
               <Input
                 type="url"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="Paste product URL from any store..."
-                className="h-12 w-full rounded-xl border-gray-200 bg-white pl-11 text-base shadow-sm transition-all duration-200 placeholder:text-gray-400 focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/15 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-gray-500"
+                placeholder="Paste any product URL..."
+                className="h-12 pl-9 border-0 bg-white shadow-sm dark:bg-gray-800 focus:ring-2 focus:ring-brand"
                 required
                 disabled={loading}
               />
             </div>
             <Button
               type="submit"
-              disabled={loading}
-              className="h-12 rounded-xl bg-gradient-to-r from-brand to-brand-dark px-8 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand/30 active:scale-[0.98] disabled:hover:translate-y-0 disabled:hover:shadow-lg"
-              size="lg"
+              disabled={loading || !url}
+              className="h-12 px-8 bg-brand hover:bg-brand-dark text-white font-medium shadow-sm hover:shadow transition-all"
             >
               {loading ? (
                 <>
@@ -69,13 +66,13 @@ export default function AddProductForm({ user }) {
                   Tracking...
                 </>
               ) : (
-                "Track Price"
+                "Start Tracking"
               )}
             </Button>
           </div>
         </form>
-        <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">
-          Supports Amazon, Flipkart, Myntra, and hundreds of online stores.
+        <p className="mt-3 text-center text-xs text-gray-400 dark:text-gray-500">
+          Works with Amazon, Flipkart, Myntra, and hundreds of online stores
         </p>
       </div>
 

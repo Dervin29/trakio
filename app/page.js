@@ -3,15 +3,7 @@ import AddProductForm from "@/components/AddProductForm";
 import Header from "@/components/Header";
 import { createClient } from "@/utils/supabase/server";
 import { getProducts } from "@/app/actions";
-import {
-  Bell,
-  Shield,
-  TrendingDown,
-  ArrowRight,
-  Sparkles,
-  Zap,
-  BarChart3,
-} from "lucide-react";
+import { Bell, Shield, TrendingDown, ArrowRight, BarChart3, Sparkles } from "lucide-react";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -21,156 +13,129 @@ export default async function Home() {
 
   const { products = [] } = user ? await getProducts() : {};
 
-  const FEATURES = [
+  const totalDrops = products.reduce(
+    (acc, p) => acc + (p.price_drops?.length || 0),
+    0
+  );
+
+  const STATS = [
+    { label: "Products", value: products.length },
+    { label: "Price Drops", value: totalDrops },
+    { label: "Active Alerts", value: products.filter((p) => p.price_alert_active).length },
+  ];
+
+  const features = [
     {
-      icon: Zap,
-      title: "Lightning Fast",
-      description:
-        "Trakio extracts prices in seconds, handling JavaScript and dynamic content across all major platforms.",
-      gradient: "from-brand to-brand-dark",
+      icon: Bell,
+      title: "Real-time alerts",
+      desc: "Get notified instantly when prices drop below your target.",
     },
     {
       icon: Shield,
-      title: "Always Reliable",
-      description:
-        "Works seamlessly across all major e-commerce sites with built-in anti-bot protection and smart retry logic.",
-      gradient: "from-brand to-brand-dark",
+      title: "Works everywhere",
+      desc: "Supports all major e-commerce platforms out of the box.",
     },
     {
-      icon: Bell,
-      title: "Smart Alerts",
-      description:
-        "Get notified instantly when prices drop below your target. Never miss a deal on your favorite products.",
-      gradient: "from-brand to-brand-dark",
-    },
-  ];
-
-  const STATS = [
-    { label: "Products Tracked", value: products.length },
-    {
-      label: "Price Drops Found",
-      value: products.reduce((acc, p) => acc + (p.price_drops?.length || 0), 0),
-    },
-    {
-      label: "Active Alerts",
-      value: products.filter((p) => p.price_alert_active).length,
+      icon: TrendingDown,
+      title: "Track savings",
+      desc: "Monitor price history and see how much you've saved.",
     },
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 dark:from-gray-950 via-white dark:via-gray-900 to-brand-light/30 dark:to-brand-dark/10">
+    <main className="min-h-screen bg-white dark:bg-gray-950">
       <Header user={user} />
 
-      <section className="relative py-16 sm:py-28 lg:py-36 px-4 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 -right-20 w-72 h-72 bg-brand-300/30 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 -left-20 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-light/80 to-brand-light text-brand-700 px-6 py-2 rounded-full text-sm font-medium mb-6 border border-brand-300/50 shadow-sm">
-            <Sparkles className="w-4 h-4" />
-            Built by Alan Derwin
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-[1.1]">
-            Never miss a{" "}
-            <span className="bg-gradient-to-r from-brand to-brand-dark bg-clip-text text-transparent">
-              deal
-            </span>
-          </h1>
-
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Track prices from any major e-commerce site with just a few clicks.
-            Get instant alerts when prices drop below your target.
-          </p>
-
-          <div className="max-w-2xl mx-auto">
-            <AddProductForm user={user} />
-          </div>
-
-          {user && products.length > 0 && (
-            <div className="mt-8">
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 text-brand-dark hover:text-brand-700 font-medium text-sm bg-brand-light hover:bg-brand-light/80 px-6 py-3 rounded-full border border-brand-300 transition-colors"
-              >
-                <BarChart3 className="w-4 h-4" />
-                View your tracked products
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+      <section className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 sm:py-16">
+        <div className="w-full max-w-3xl mx-auto">
+          <div className="text-center">
+            {/* Badge */}
+            <div className="animate-fade-in-up inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-800 px-4 py-1.5 rounded-full text-xs font-medium text-gray-600 dark:text-gray-300 mb-6">
+              <Sparkles className="w-3.5 h-3.5" />
+              Track prices smarter
             </div>
-          )}
+
+            <h1 className="animate-fade-in-up text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
+              Never miss a{" "}
+              <span className="text-brand">deal</span>
+            </h1>
+
+            <p className="animate-fade-in-up text-gray-600 dark:text-gray-400 mb-10 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+              Enter any product URL and set your target price. We'll notify you instantly when it drops.
+            </p>
+
+            <div className="animate-fade-in-up max-w-xl mx-auto">
+              <AddProductForm user={user} />
+            </div>
+
+            {user && products.length > 0 && (
+              <div className="animate-fade-in-up mt-6">
+                <Link
+                  href="/products"
+                  className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors group"
+                >
+                  <BarChart3 className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  View all products
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+            )}
+          </div>
 
           {user && products.length > 0 && (
-            <div className="mt-10 flex flex-wrap justify-center gap-6 sm:gap-8">
+            <div className="animate-fade-in-up mt-12 grid grid-cols-3 gap-3 max-w-md mx-auto">
               {STATS.map((stat, index) => (
                 <div
-                  key={index}
-                  className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm px-6 py-3 rounded-xl border border-slate-200 dark:border-gray-700 shadow-sm"
+                  key={stat.label}
+                  className="text-center p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-brand/50 dark:hover:border-brand/50 transition-all hover:shadow-sm cursor-default"
                 >
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {stat.label}
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
-          {products.length === 0 && (
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-20">
-              {FEATURES.map(({ icon: Icon, title, description, gradient }) => (
+          {(!user || products.length === 0) && (
+            <div className="animate-fade-in-up mt-16 grid sm:grid-cols-3 gap-4">
+              {features.map(({ icon: Icon, title, desc }, index) => (
                 <div
                   key={title}
-                  className="group bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-200 dark:border-gray-700 hover:border-brand-300 transition-all duration-300 hover:shadow-lg hover:shadow-brand-light/50 hover:-translate-y-1"
+                  className="group text-center p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-brand/50 dark:hover:border-brand/50 transition-all hover:-translate-y-0.5 hover:shadow-sm cursor-default"
                 >
-                  <div
-                    className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 mx-auto shadow-lg`}
-                  >
-                    <Icon className="w-6 h-6 text-white" />
+                  <div className="w-11 h-11 mx-auto mb-3 rounded-xl bg-gray-100 dark:bg-gray-800 group-hover:bg-brand/10 dark:group-hover:bg-brand/20 transition-colors flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-brand transition-colors" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                    {description}
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">
+                    {title}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                    {desc}
                   </p>
                 </div>
               ))}
             </div>
           )}
+
+          {user && products.length === 0 && (
+            <div className="animate-fade-in-up mt-12 text-center p-8 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-800 hover:border-brand/50 dark:hover:border-brand/50 transition-all cursor-default group">
+              <div className="w-14 h-14 mx-auto mb-3 rounded-xl bg-gray-100 dark:bg-gray-800 group-hover:bg-brand/10 dark:group-hover:bg-brand/20 transition-colors flex items-center justify-center">
+                <TrendingDown className="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-brand transition-colors" />
+              </div>
+              <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">
+                No products yet
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Add your first product above to start tracking prices.
+              </p>
+            </div>
+          )}
         </div>
       </section>
-
-      {user && products.length === 0 && (
-        <section className="max-w-2xl mx-auto px-4 pb-28 -mt-8">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border-2 border-dashed border-slate-300 dark:border-gray-600 p-12 text-center transition-all hover:border-brand-muted hover:bg-brand-light/30">
-            <div className="w-20 h-20 bg-gradient-to-br from-brand-light/80 to-brand-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <TrendingDown className="w-10 h-10 text-brand" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              No products yet
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 max-w-sm mx-auto">
-              Add your first product above to start tracking prices and never
-              miss a deal
-            </p>
-            <div className="mt-6 flex justify-center gap-2 text-sm text-gray-400 dark:text-gray-500">
-              <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
-                Enter product URL
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
-                Set target price
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
-                Get alerts
-              </span>
-            </div>
-          </div>
-        </section>
-      )}
     </main>
   );
 }
