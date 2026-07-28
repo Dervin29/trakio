@@ -1,28 +1,38 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import {
   ExternalLink,
   Trash2,
   TrendingUp,
   TrendingDown,
   Minus,
-  ChevronDown,
-  ChevronUp,
   Store,
   Clock,
   Target,
   Activity,
+  Eye,
+  AlertTriangle,
 } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+
 import { deleteProduct } from "@/app/actions";
 import { toast } from "sonner";
-import PriceChart from "./PriceCharts";
-
 import { formatPrice } from "@/utils/currency";
 
 function getStoreName(url) {
@@ -38,7 +48,6 @@ function getRelativeTime(dateString) {
   const date = new Date(dateString);
 
   const diff = now - date;
-
   const mins = Math.floor(diff / 60000);
 
   if (mins < 1) return "Just now";
@@ -56,9 +65,6 @@ function getRelativeTime(dateString) {
 }
 
 export default function ProductCard({ product, onDelete }) {
-  const router = useRouter();
-
-  const [showChart, setShowChart] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -72,7 +78,10 @@ export default function ProductCard({ product, onDelete }) {
   }, []);
 
   const priceChange = product.price_change;
-  const isGoodDeal = priceChange !== null && priceChange < -10;
+
+  const isDrop = priceChange !== null && priceChange < 0;
+
+  const isGoodDeal = priceChange !== null && priceChange <= -10;
 
   async function handleDelete() {
     setDeleting(true);
@@ -83,25 +92,45 @@ export default function ProductCard({ product, onDelete }) {
 
     if (result.success) {
       toast.success("Product removed");
-
       onDelete?.(product.id);
-
-      router.refresh();
     } else {
       toast.error(result.error);
     }
   }
 
   return (
-    <Card className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl">
-      {/* IMAGE */}
-
-      <div className="relative">
-        <div className="aspect-[4/3] bg-gradient-to-b from-gray-50 to-white">
+    <Card
+      className="
+        group overflow-hidden rounded-3xl
+        border border-gray-200/70
+        bg-white
+        shadow-sm
+        transition-all duration-300
+        hover:-translate-y-1
+        hover:shadow-xl
+      "
+    >
+      <div className="flex p-3 gap-4">
+        {/* IMAGE */}
+        <div
+          className="
+            relative flex h-32 w-32 shrink-0
+            items-center justify-center
+            overflow-hidden rounded-2xl
+            bg-gradient-to-br
+            from-gray-50
+            via-white
+            to-orange-50
+          "
+        >
           {!imgError && product.image_url ? (
             <>
               {!imgLoaded && (
-                <div className="absolute inset-0 animate-pulse bg-gray-100" />
+                <div
+                  className="
+                  absolute inset-0 animate-pulse bg-gray-100
+                "
+                />
               )}
 
               <img
@@ -111,168 +140,279 @@ export default function ProductCard({ product, onDelete }) {
                 loading="lazy"
                 onLoad={() => setImgLoaded(true)}
                 onError={() => setImgError(true)}
-                className="h-full w-full object-contain p-6 transition duration-500 group-hover:scale-105"
+                className="
+                  h-full w-full object-contain
+                  p-4
+                  transition-transform duration-500
+                  group-hover:scale-110
+                "
               />
             </>
           ) : (
-            <div className="flex h-full items-center justify-center text-gray-300">
-              <Store className="h-14 w-14" />
-            </div>
+            <Store className="h-10 w-10 text-gray-300" />
           )}
-        </div>
 
-        <div className="absolute left-3 top-3 flex items-center gap-2">
-          <Badge className="border-0 bg-green-500 text-white">
+          <Badge
+            className="
+              absolute left-2 top-2
+              rounded-full
+              bg-black/80
+              px-2 py-0.5
+              text-[10px]
+              text-white
+            "
+          >
             <Activity className="mr-1 h-3 w-3" />
-            Tracking
+            Live
           </Badge>
 
           {isGoodDeal && (
-            <Badge className="border-0 bg-orange-500 text-white">Deal</Badge>
-          )}
-        </div>
-
-        <Button
-          size="icon"
-          variant="secondary"
-          disabled={deleting}
-          onClick={handleDelete}
-          className="absolute right-3 top-3 h-9 w-9 rounded-full opacity-0 shadow transition group-hover:opacity-100 hover:bg-red-50 hover:text-red-600"
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </div>
-
-      <CardContent className="space-y-5 p-5">
-        {/* STORE */}
-
-        <div className="flex items-center justify-between">
-          <Badge variant="outline" className="rounded-full capitalize">
-            <Store className="mr-1 h-3 w-3" />
-            {getStoreName(product.url)}
-          </Badge>
-
-          {product.updated_at && (
-            <span className="flex items-center gap-1 text-xs text-gray-500">
-              <Clock className="h-3 w-3" />
-              {getRelativeTime(product.updated_at)}
-            </span>
-          )}
-        </div>
-
-        {/* TITLE */}
-
-        <h3
-          className="line-clamp-2 text-base font-semibold leading-6"
-          title={product.name}
-        >
-          {product.name}
-        </h3>
-
-        {/* PRICE */}
-
-        <div className="flex items-end justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-gray-500">
-              Current Price
-            </p>
-
-            <h2 className="text-3xl font-bold">
-              {formatPrice(product.current_price, product.currency)}
-            </h2>
-          </div>
-
-          {priceChange !== null && (
             <Badge
-              className={
-                priceChange < 0
-                  ? "bg-green-50 text-green-700 border border-green-200"
-                  : priceChange > 0
-                    ? "bg-red-50 text-red-700 border border-red-200"
-                    : "bg-gray-100 text-gray-600"
-              }
+              className="
+                absolute bottom-2 left-2
+                rounded-full
+                bg-green-500
+                px-2 py-0.5
+                text-[10px]
+              "
             >
-              {priceChange < 0 ? (
-                <TrendingDown className="mr-1 h-3 w-3" />
-              ) : priceChange > 0 ? (
-                <TrendingUp className="mr-1 h-3 w-3" />
-              ) : (
-                <Minus className="mr-1 h-3 w-3" />
-              )}
-
-              {priceChange === 0
-                ? "0%"
-                : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
+              Best Deal
             </Badge>
           )}
         </div>
 
-        {/* TARGET */}
+        {/* CONTENT */}
+        <CardContent className="flex min-w-0 flex-1 flex-col p-0">
+          {/* HEADER */}
+          <div className="flex justify-between gap-2">
+            <div className="min-w-0">
+              <div
+                className="
+                flex items-center gap-2
+                text-xs text-gray-400
+              "
+              >
+                <Badge
+                  variant="outline"
+                  className="
+                    rounded-full
+                    px-2 py-0
+                    text-[10px]
+                    capitalize
+                  "
+                >
+                  <Store className="mr-1 h-3 w-3" />
+                  {getStoreName(product.url)}
+                </Badge>
 
-        {product.target_price && (
-          <div className="flex items-center justify-between rounded-xl bg-orange-50 px-4 py-3">
-            <div className="flex items-center gap-2">
-              <Target className="h-4 w-4 text-orange-500" />
+                {product.updated_at && (
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {getRelativeTime(product.updated_at)}
+                  </span>
+                )}
+              </div>
 
-              <span className="text-sm text-gray-600">Target Price</span>
+              <h3
+                title={product.name}
+                className="
+                  mt-2
+                  line-clamp-2
+                  text-sm
+                  font-semibold
+                  leading-5
+                "
+              >
+                {product.name}
+              </h3>
             </div>
 
-            <span className="font-semibold">
-              {formatPrice(product.target_price, product.currency)}
-            </span>
+            <div className="flex gap-1">
+              <button
+                title="Open product"
+                onClick={() =>
+                  window.open(product.url, "_blank", "noopener,noreferrer")
+                }
+                className="
+                  h-7 w-7
+                  rounded-lg
+                  text-gray-400
+                  transition
+                  hover:bg-orange-50
+                  hover:text-orange-500
+                "
+              >
+                <ExternalLink className="mx-auto h-4 w-4" />
+              </button>
+
+              <Dialog>
+                <DialogTrigger
+                  render={
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      disabled={deleting}
+                      className="
+                        h-7 w-7
+                        rounded-lg
+                        text-gray-400
+                        hover:bg-red-50
+                        hover:text-red-500
+                      "
+                    />
+                  }
+                >
+                  <Trash2 className="h-4 w-4" />
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                      <AlertTriangle className="h-6 w-6 text-red-600" />
+                    </div>
+                    <DialogTitle className="text-center">Delete product?</DialogTitle>
+                    <DialogDescription className="text-center">
+                      Are you sure you want to remove{" "}
+                      <span className="font-medium text-foreground">{product.name}</span>?
+                      This cannot be undone.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <DialogClose
+                      render={<Button variant="outline" className="w-full sm:w-auto" />}
+                    >
+                      Cancel
+                    </DialogClose>
+                    <Button
+                      variant="destructive"
+                      disabled={deleting}
+                      onClick={handleDelete}
+                      className="w-full sm:w-auto"
+                    >
+                      {deleting ? "Removing..." : "Delete"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
-        )}
 
-        {isGoodDeal && (
-          <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
-            🎉 Great deal! This product dropped significantly.
-          </div>
-        )}
+          {/* PRICE */}
+          <div className="mt-4 flex items-end justify-between">
+            <div>
+              <p
+                className="
+                text-[10px]
+                font-medium
+                uppercase
+                tracking-wider
+                text-gray-400
+              "
+              >
+                Current Price
+              </p>
 
-        {/* ACTIONS */}
+              <div className="flex items-center gap-2">
+                <span
+                  className="
+                  text-2xl
+                  font-bold
+                  tracking-tight
+                "
+                >
+                  {formatPrice(product.current_price, product.currency)}
+                </span>
 
-        <div className="grid grid-cols-2 gap-3">
-          <Button
-            className="rounded-xl"
-            onClick={() =>
-              window.open(product.url, "_blank", "noopener,noreferrer")
-            }
-          >
-            <ExternalLink className="mr-2 h-4 w-4" />
-            View Product
-          </Button>
+                {priceChange !== null && (
+                  <Badge
+                    className={`
+                      rounded-full
+                      border
+                      px-2
+                      text-[11px]
 
-          <Button
-            variant="outline"
-            className="rounded-xl"
-            onClick={() => setShowChart((v) => !v)}
-          >
-            {showChart ? (
-              <>
-                <ChevronUp className="mr-2 h-4 w-4" />
-                Hide Chart
-              </>
-            ) : (
-              <>
-                <ChevronDown className="mr-2 h-4 w-4" />
-                Price Chart
-              </>
+                      ${
+                        isDrop
+                          ? "border-green-200 bg-green-50 text-green-700"
+                          : priceChange > 0
+                            ? "border-red-200 bg-red-50 text-red-700"
+                            : "border-gray-200 bg-gray-100 text-gray-600"
+                      }
+                    `}
+                  >
+                    {isDrop ? (
+                      <TrendingDown className="mr-1 h-3 w-3" />
+                    ) : priceChange > 0 ? (
+                      <TrendingUp className="mr-1 h-3 w-3" />
+                    ) : (
+                      <Minus className="mr-1 h-3 w-3" />
+                    )}
+
+                    {priceChange === 0
+                      ? "0%"
+                      : `${priceChange > 0 ? "+" : ""}
+                    ${priceChange.toFixed(1)}%`}
+                  </Badge>
+                )}
+              </div>
+            </div>
+
+            {product.target_price && (
+              <div
+                className="
+                  rounded-xl
+                  bg-orange-50
+                  px-3 py-2
+                "
+              >
+                <p
+                  className="
+                  flex items-center gap-1
+                  text-[10px]
+                  text-orange-500
+                "
+                >
+                  <Target className="h-3 w-3" />
+                  Target
+                </p>
+
+                <p
+                  className="
+                  text-xs
+                  font-semibold
+                  text-orange-700
+                "
+                >
+                  {formatPrice(product.target_price, product.currency)}
+                </p>
+              </div>
             )}
-          </Button>
-        </div>
-
-        {/* CHART */}
-
-        <div
-          className={`overflow-hidden transition-all duration-500 ${
-            showChart ? "max-h-[450px] opacity-100 pt-5" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="border-t pt-5">
-            <PriceChart productId={product.id} currency={product.currency} />
           </div>
-        </div>
-      </CardContent>
+
+          {/* ACTION */}
+          <Button
+            asChild
+            size="sm"
+            className="
+              mt-4
+              h-9
+              rounded-xl
+              text-xs
+            "
+          >
+            <Link
+              href={`/products/${product.id}`}
+              className="
+                flex items-center
+                justify-center
+                gap-2
+              "
+            >
+              <Eye className="h-4 w-4" />
+              View Details
+            </Link>
+          </Button>
+        </CardContent>
+      </div>
     </Card>
   );
 }

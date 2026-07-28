@@ -135,7 +135,7 @@ export default function PriceChart({ productId, currency = "INR" }) {
         <div
           className={`flex items-center gap-1 text-sm font-semibold ${
             priceDropped
-              ? "text-green-600"
+              ? "text-emerald-600"
               : change > 0
                 ? "text-red-600"
                 : "text-gray-500"
@@ -164,13 +164,13 @@ export default function PriceChart({ productId, currency = "INR" }) {
           </p>
         </div>
 
-        <div className="rounded-xl bg-green-50 p-3">
-          <p className="flex items-center gap-1 text-xs text-green-700">
+        <div className="rounded-xl bg-emerald-50 p-3">
+          <p className="flex items-center gap-1 text-xs text-emerald-700">
             <ArrowDown className="h-3 w-3" />
             Lowest
           </p>
 
-          <p className="mt-1 font-bold text-green-700">
+          <p className="mt-1 font-bold text-emerald-700">
             {formatPrice(lowest, currency)}
           </p>
         </div>

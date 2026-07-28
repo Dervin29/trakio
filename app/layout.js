@@ -1,6 +1,7 @@
 import { Toaster } from "sonner";
 import "./globals.css";
 import { Roboto, Geist_Mono } from "next/font/google";
+import Footer from "@/components/Footer";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -23,8 +24,11 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${roboto.variable} ${geistMono.variable}`}
     >
-      <body suppressHydrationWarning>
-        {children}
+      <body suppressHydrationWarning className="flex flex-col min-h-screen">
+        <div className="flex-1">
+          {children}
+        </div>
+        <Footer />
         <Toaster />
       </body>
     </html>

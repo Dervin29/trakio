@@ -6,7 +6,6 @@ import { normalizeCurrency } from "@/utils/currency";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-// Function to add a new product
 export async function addProduct(formData) {
   const url = formData.get("url");
 
@@ -24,7 +23,6 @@ export async function addProduct(formData) {
       return { error: "Not authenticated" };
     }
 
-    // Scrape product data with Firecrawl
     const productData = await scrapeProduct(url);
 
     if (!productData.productName || !productData.currentPrice) {
@@ -35,7 +33,6 @@ export async function addProduct(formData) {
     const newPrice = parseFloat(productData.currentPrice);
     const currency = normalizeCurrency(productData.currencyCode);
 
-    // Check if product exists to determine if it's an update
     const { data: existingProduct } = await supabase
       .from("products")
       .select("id, current_price")
@@ -45,7 +42,6 @@ export async function addProduct(formData) {
 
     const isUpdate = !!existingProduct;
 
-    // Upsert product (insert or update based on user_id + url)
     const { data: product, error } = await supabase
       .from("products")
       .upsert(
@@ -59,8 +55,8 @@ export async function addProduct(formData) {
           updated_at: new Date().toISOString(),
         },
         {
-          onConflict: "user_id,url", // Unique constraint on user_id + url
-          ignoreDuplicates: false, // Always update if exists
+          onConflict: "user_id,url",
+          ignoreDuplicates: false,
         }
       )
       .select()
@@ -68,7 +64,6 @@ export async function addProduct(formData) {
 
     if (error) throw error;
 
-    // Add to price history if it's a new product OR price changed
     const shouldAddHistory =
       !isUpdate || existingProduct.current_price !== newPrice;
 
@@ -81,6 +76,7 @@ export async function addProduct(formData) {
     }
 
     revalidatePath("/");
+    revalidatePath("/products");
     return {
       success: true,
       product,
@@ -94,7 +90,6 @@ export async function addProduct(formData) {
   }
 }
 
-// Function to delete a product
 export async function deleteProduct(productId) {
   try {
     const supabase = await createClient();
@@ -106,25 +101,37 @@ export async function deleteProduct(productId) {
     if (error) throw error;
 
     revalidatePath("/");
+    revalidatePath("/products");
     return { success: true };
   } catch (error) {
     return { error: error.message };
   }
 }
 
-// Function to get all products
-export async function getProducts() {
+export async function getProducts(page = 1, pageSize = 12) {
   try {
     const supabase = await createClient();
+
+    const { count } = await supabase
+      .from("products")
+      .select("*", { count: "exact", head: true });
+
+    const total = count || 0;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
     const { data: products, error } = await supabase
       .from("products")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(from, to);
 
     if (error) throw error;
-    if (!products || products.length === 0) return [];
+    if (!products || products.length === 0) {
+      return { products: [], total, page, pageSize, totalPages };
+    }
 
-    // Get the two most recent price entries per product for change calculation
     const productIds = products.map((p) => p.id);
     const { data: priceHistory } = await supabase
       .from("price_history")
@@ -140,7 +147,7 @@ export async function getProducts() {
       }
     }
 
-    return products.map((product) => {
+    const productsWithChange = products.map((product) => {
       const history = historyMap[product.id] || [];
       const currentPrice = parseFloat(product.current_price);
       let priceChange = null;
@@ -150,13 +157,53 @@ export async function getProducts() {
       }
       return { ...product, price_change: priceChange };
     });
+
+    return { products: productsWithChange, total, page, pageSize, totalPages };
   } catch (error) {
     console.error("Get products error:", error);
-    return [];
+    return { products: [], total: 0, page, pageSize, totalPages: 1 };
   }
 }
 
-// Function to get price history
+export async function getProduct(productId) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return null;
+
+    const { data: product, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", productId)
+      .eq("user_id", user.id)
+      .single();
+
+    if (error) throw error;
+    if (!product) return null;
+
+    const { data: priceHistory } = await supabase
+      .from("price_history")
+      .select("product_id, price, checked_at")
+      .eq("product_id", product.id)
+      .order("checked_at", { ascending: false });
+
+    const currentPrice = parseFloat(product.current_price);
+    let priceChange = null;
+    if (priceHistory && priceHistory.length >= 2) {
+      const prevPrice = parseFloat(priceHistory[1].price);
+      priceChange = ((currentPrice - prevPrice) / prevPrice) * 100;
+    }
+
+    return { ...product, price_change: priceChange };
+  } catch (error) {
+    console.error("Get product error:", error);
+    return null;
+  }
+}
+
 export async function getPriceHistory(productId) {
   try {
     const supabase = await createClient();
@@ -174,7 +221,6 @@ export async function getPriceHistory(productId) {
   }
 }
 
-// Function to sign out
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
