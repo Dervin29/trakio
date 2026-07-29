@@ -96,9 +96,9 @@ export default function ProductCard({ product, onDelete }) {
   }
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
-      {/* Image Section */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-50 dark:bg-gray-900">
+    <div className="group flex flex-col sm:flex-row overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
+      {/* Image Section - Smaller on desktop */}
+      <div className="relative w-full sm:w-48 md:w-56 lg:w-64 aspect-[4/3] sm:aspect-square shrink-0 overflow-hidden bg-gray-50 dark:bg-gray-900">
         {!imgError && product.image_url ? (
           <>
             {!imgLoaded && (
@@ -134,7 +134,7 @@ export default function ProductCard({ product, onDelete }) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col gap-3 p-4">
+      <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
@@ -154,69 +154,70 @@ export default function ProductCard({ product, onDelete }) {
           </div>
         </div>
 
-        {/* Price */}
-        <div>
-          <div className="flex items-end justify-between">
-            <div>
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                {formatPrice(product.current_price, product.currency)}
-              </span>
-              {prevPrice !== null && (
-                <span className="ml-2 text-sm text-gray-400 dark:text-gray-500 line-through">
-                  {formatPrice(prevPrice, product.currency)}
-                </span>
-              )}
-            </div>
-            {priceChange !== null && (
-              <span
-                className={`inline-flex items-center gap-1 text-sm font-medium ${
-                  isDrop
-                    ? "text-emerald-600 dark:text-emerald-400"
-                    : isIncrease
-                    ? "text-red-600 dark:text-red-400"
-                    : "text-gray-500 dark:text-gray-400"
-                }`}
-              >
-                {isDrop ? (
-                  <TrendingDown className="h-4 w-4" />
-                ) : isIncrease ? (
-                  <TrendingUp className="h-4 w-4" />
-                ) : (
-                  <Minus className="h-4 w-4" />
-                )}
-                {priceChange === 0
-                  ? "0%"
-                  : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
+        {/* Price & Change - Horizontal layout */}
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">
+              {formatPrice(product.current_price, product.currency)}
+            </span>
+            {prevPrice !== null && (
+              <span className="ml-2 text-sm text-gray-400 dark:text-gray-500 line-through">
+                {formatPrice(prevPrice, product.currency)}
               </span>
             )}
           </div>
-          {isDrop && savings > 0 && (
-            <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-0.5">
-              Save {formatPrice(savings, product.currency)}
-            </p>
+          {priceChange !== null && (
+            <span
+              className={`inline-flex items-center gap-1 text-sm font-medium ${
+                isDrop
+                  ? "text-emerald-600 dark:text-emerald-400"
+                  : isIncrease
+                  ? "text-red-600 dark:text-red-400"
+                  : "text-gray-500 dark:text-gray-400"
+              }`}
+            >
+              {isDrop ? (
+                <TrendingDown className="h-4 w-4" />
+              ) : isIncrease ? (
+                <TrendingUp className="h-4 w-4" />
+              ) : (
+                <Minus className="h-4 w-4" />
+              )}
+              {priceChange === 0
+                ? "0%"
+                : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
+            </span>
           )}
         </div>
 
-        {/* Target Progress */}
-        {hasTarget && (
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
-                <Target className="h-4 w-4" />
-                Target: {formatPrice(product.target_price, product.currency)}
-              </span>
-              <span className="font-medium text-gray-900 dark:text-white">
-                {targetProgress.toFixed(0)}%
-              </span>
+        {/* Savings & Target */}
+        <div className="flex flex-wrap items-center gap-3">
+          {isDrop && savings > 0 && (
+            <span className="text-sm text-emerald-600 dark:text-emerald-400">
+              Save {formatPrice(savings, product.currency)}
+            </span>
+          )}
+          
+          {hasTarget && (
+            <div className="flex-1 min-w-[120px]">
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                  <Target className="h-3 w-3" />
+                  Target
+                </span>
+                <span className="font-medium text-gray-700 dark:text-gray-300">
+                  {targetProgress.toFixed(0)}%
+                </span>
+              </div>
+              <div className="h-1 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
+                <div
+                  className="h-full rounded-full bg-brand transition-all duration-500"
+                  style={{ width: `${targetProgress}%` }}
+                />
+              </div>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
-              <div
-                className="h-full rounded-full bg-brand transition-all duration-500"
-                style={{ width: `${targetProgress}%` }}
-              />
-            </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Actions */}
         <div className="flex items-center gap-1 pt-3 mt-auto border-t border-gray-100 dark:border-gray-800">
