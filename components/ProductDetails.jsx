@@ -64,7 +64,8 @@ function getInsight(product, priceChange) {
   const isIncrease = priceChange > 0;
   const isGoodDeal = priceChange <= -10;
   const hasTarget = product.target_price > 0;
-  const targetReached = hasTarget && product.current_price <= product.target_price;
+  const targetReached =
+    hasTarget && product.current_price <= product.target_price;
 
   if (isGoodDeal) {
     return {
@@ -149,11 +150,15 @@ export default function ProductDetails({ product }) {
     priceChange !== null
       ? product.current_price / (1 + priceChange / 100)
       : null;
-  const savings = prevPrice !== null && isDrop ? prevPrice - product.current_price : 0;
+  const savings =
+    prevPrice !== null && isDrop ? prevPrice - product.current_price : 0;
 
   const hasTarget = product.target_price != null && product.target_price > 0;
   const targetProgress = hasTarget
-    ? Math.min(100, Math.max(0, (product.target_price / product.current_price) * 100))
+    ? Math.min(
+        100,
+        Math.max(0, (product.target_price / product.current_price) * 100),
+      )
     : 0;
   const targetGap = hasTarget
     ? Math.max(0, product.current_price - product.target_price)
@@ -180,44 +185,45 @@ export default function ProductDetails({ product }) {
         {/* Left Column - Image & Actions */}
         <div className="space-y-6 lg:col-span-2">
           {/* Image */}
-            <div className="group relative overflow-hidden rounded-2xl border border-gray-200/50 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
-            <div className="relative aspect-square bg-gradient-to-br from-gray-50 via-white to-brand-light/30">
-              {!imgError && product.image_url ? (
-                <>
-                  {!imgLoaded && (
-                    <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+          <div className="group relative overflow-hidden rounded-2xl border border-gray-200/50 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
+            <div
+              className="relative w-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+              style={{ paddingBottom: "75%" }}
+            >
+              <div className="absolute inset-0 p-3">
+                <div className="relative h-full w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+                  {!imgError && product.image_url ? (
+                    <>
+                      {!imgLoaded && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 animate-pulse" />
+                      )}
+                      <img
+                        ref={imgRef}
+                        src={product.image_url}
+                        alt={product.name}
+                        loading="lazy"
+                        onLoad={() => setImgLoaded(true)}
+                        onError={() => setImgError(true)}
+                        className={`h-full w-full object-contain transition-all duration-500 ${
+                          imgLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                        } group-hover:scale-105`}
+                      />
+                    </>
+                  ) : (
+                    <div className="flex h-full items-center justify-center">
+                      <Store className="h-16 w-16 text-gray-300 dark:text-gray-600" />
+                    </div>
                   )}
-                  <img
-                    ref={imgRef}
-                    src={product.image_url}
-                    alt={product.name}
-                    loading="lazy"
-                    onLoad={() => setImgLoaded(true)}
-                    onError={() => setImgError(true)}
-                    className={`h-full w-full object-contain p-4 sm:p-8 transition-all duration-700 group-hover:scale-110 ${
-                      imgLoaded ? "opacity-100" : "opacity-0"
-                    }`}
-                  />
-                </>
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gray-100 dark:bg-gray-800">
-                    <ShoppingCart className="h-12 w-12 text-gray-300 dark:text-gray-600" />
+
+                  <div className="absolute left-2 top-2 flex flex-col gap-1.5">
+                    {isGoodDeal && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">
+                        <TrendingDown className="h-3 w-3" />
+                        Best Deal
+                      </span>
+                    )}
                   </div>
                 </div>
-              )}
-
-              <div className="absolute left-4 top-4 flex flex-col gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
-                  <Activity className="h-3.5 w-3.5" />
-                  Live Tracking
-                </span>
-                {isGoodDeal && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/90 px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
-                    <TrendingDown className="h-3.5 w-3.5" />
-                    Best Deal
-                  </span>
-                )}
               </div>
             </div>
           </div>
@@ -294,7 +300,10 @@ export default function ProductDetails({ product }) {
                   <DialogFooter className="mt-2 gap-2">
                     <DialogClose
                       render={
-                        <Button variant="outline" className="flex-1 rounded-xl" />
+                        <Button
+                          variant="outline"
+                          className="flex-1 rounded-xl"
+                        />
                       }
                     >
                       Cancel
@@ -408,7 +417,9 @@ export default function ProductDetails({ product }) {
                     <span className="text-sm text-gray-400 line-through dark:text-gray-500">
                       {formatPrice(prevPrice, product.currency)}
                     </span>
-                    <span className="mx-2 text-gray-300 dark:text-gray-600">|</span>
+                    <span className="mx-2 text-gray-300 dark:text-gray-600">
+                      |
+                    </span>
                     <span className="text-sm text-gray-500 dark:text-gray-400">
                       {isDrop
                         ? `Down ${formatPrice(savings, product.currency)}`
@@ -442,7 +453,11 @@ export default function ProductDetails({ product }) {
                       : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
                   </span>
                   <span className="text-xs text-gray-400 dark:text-gray-500">
-                    {isDrop ? "Price Dropped" : isIncrease ? "Price Increased" : "No Change"}
+                    {isDrop
+                      ? "Price Dropped"
+                      : isIncrease
+                        ? "Price Increased"
+                        : "No Change"}
                   </span>
                 </div>
               )}
@@ -454,12 +469,16 @@ export default function ProductDetails({ product }) {
             className={`rounded-2xl border-l-4 ${insight.border} ${insight.bg} ${insight.text} p-5 shadow-sm`}
           >
             <div className="flex items-start gap-3">
-              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${insight.iconBg}`}>
+              <div
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${insight.iconBg}`}
+              >
                 <insight.icon className="h-5 w-5" />
               </div>
               <div>
                 <h3 className="text-sm font-semibold">{insight.title}</h3>
-                <p className="mt-0.5 text-sm opacity-80">{insight.description}</p>
+                <p className="mt-0.5 text-sm opacity-80">
+                  {insight.description}
+                </p>
               </div>
             </div>
           </div>
@@ -478,13 +497,17 @@ export default function ProductDetails({ product }) {
               </div>
               <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
                 <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-800/50">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Current</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Current
+                  </p>
                   <p className="mt-0.5 font-semibold text-gray-900 dark:text-white">
                     {formatPrice(product.current_price, product.currency)}
                   </p>
                 </div>
                 <div className="rounded-xl bg-brand-light/40 p-3">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Target</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Target
+                  </p>
                   <p className="mt-0.5 font-semibold text-brand-700">
                     {formatPrice(product.target_price, product.currency)}
                   </p>
@@ -500,7 +523,9 @@ export default function ProductDetails({ product }) {
               )}
               <div className="mt-3">
                 <div className="mb-1 flex items-center justify-between text-xs">
-                  <span className="text-gray-400 dark:text-gray-500">Progress</span>
+                  <span className="text-gray-400 dark:text-gray-500">
+                    Progress
+                  </span>
                   <span className="font-medium text-brand">
                     {targetProgress.toFixed(0)}%
                   </span>

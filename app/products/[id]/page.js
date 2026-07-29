@@ -42,11 +42,11 @@ export default async function ProductDetailsPage({ params }) {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-light/20 dark:from-gray-950 dark:via-gray-900 dark:to-brand-dark/10">
+    <>
       <BackgroundEffects />
       <Header user={user} />
 
-      <section className="mx-auto max-w-6xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav
           aria-label="Breadcrumb"
@@ -94,6 +94,6 @@ export default async function ProductDetailsPage({ params }) {
 
         <ProductDetails product={product} />
       </section>
-    </main>
+    </>
   );
 }

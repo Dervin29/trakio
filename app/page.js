@@ -43,7 +43,7 @@ export default async function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-950">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-950 dark:to-gray-900">
       <Header user={user} />
 
       <section className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 sm:py-16">
