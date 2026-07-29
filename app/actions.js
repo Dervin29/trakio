@@ -112,22 +112,20 @@ export async function getProducts(page = 1, pageSize = 12) {
   try {
     const supabase = await createClient();
 
-    const { count } = await supabase
-      .from("products")
-      .select("*", { count: "exact", head: true });
-
-    const total = count || 0;
-    const totalPages = Math.max(1, Math.ceil(total / pageSize));
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
-    const { data: products, error } = await supabase
+    const { data: products, count, error } = await supabase
       .from("products")
-      .select("*")
+      .select("*", { count: "exact" })
       .order("created_at", { ascending: false })
       .range(from, to);
 
     if (error) throw error;
+
+    const total = count || 0;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
     if (!products || products.length === 0) {
       return { products: [], total, page, pageSize, totalPages };
     }
@@ -186,9 +184,10 @@ export async function getProduct(productId) {
 
     const { data: priceHistory } = await supabase
       .from("price_history")
-      .select("product_id, price, checked_at")
+      .select("price, checked_at")
       .eq("product_id", product.id)
-      .order("checked_at", { ascending: false });
+      .order("checked_at", { ascending: false })
+      .limit(2);
 
     const currentPrice = parseFloat(product.current_price);
     let priceChange = null;

@@ -35,6 +35,7 @@ const DotField = memo(
     const sizeRef = useRef({ w: 0, h: 0, offsetX: 0, offsetY: 0 });
     const glowOpacity = useRef(0);
     const engagement = useRef(0);
+    const isPaused = useRef(false);
     const propsRef = useRef({});
     propsRef.current = {
       dotRadius,
@@ -138,6 +139,10 @@ const DotField = memo(
       let frameCount = 0;
 
       function tick() {
+        if (isPaused.current) {
+          rafRef.current = requestAnimationFrame(tick);
+          return;
+        }
         frameCount++;
         const dots = dotsRef.current;
         const m = mouseRef.current;
@@ -237,6 +242,17 @@ const DotField = memo(
         rafRef.current = requestAnimationFrame(tick);
       }
 
+      const observer = new IntersectionObserver(
+        ([entry]) => { isPaused.current = !entry.isIntersecting; },
+        { threshold: 0 }
+      );
+      observer.observe(canvas.parentElement);
+
+      function onVisibilityChange() {
+        isPaused.current = document.hidden;
+      }
+      document.addEventListener("visibilitychange", onVisibilityChange);
+
       doResize();
       window.addEventListener("resize", resize);
       window.addEventListener("mousemove", onMouseMove, { passive: true });
@@ -251,6 +267,8 @@ const DotField = memo(
         cancelAnimationFrame(rafRef.current);
         clearInterval(speedInterval);
         clearTimeout(resizeTimer);
+        observer.disconnect();
+        document.removeEventListener("visibilitychange", onVisibilityChange);
         window.removeEventListener("resize", resize);
         window.removeEventListener("mousemove", onMouseMove);
       };
