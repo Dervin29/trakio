@@ -249,25 +249,21 @@ export default function ProductCard({ product, onDelete }) {
         </div>
 
         <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-          <DropdownMenuTrigger asChild>
-            <button
-              onClick={(e) => e.stopPropagation()}
-              className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
-              aria-label="More options"
-            >
-              <MoreVertical className="h-4 w-4" />
-            </button>
+          <DropdownMenuTrigger
+            onClick={(e) => e.stopPropagation()}
+            className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+            aria-label="More options"
+          >
+            <MoreVertical className="h-4 w-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem asChild>
-              <Link
-                href={`/products/${product.id}`}
-                className="flex items-center gap-2 cursor-pointer"
-                onClick={() => setDropdownOpen(false)}
-              >
-                <Eye className="h-4 w-4" />
-                View Details
-              </Link>
+            <DropdownMenuItem
+              render={<Link href={`/products/${product.id}`} />}
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => setDropdownOpen(false)}
+            >
+              <Eye className="h-4 w-4" />
+              View Details
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={(e) => {
