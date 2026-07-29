@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ExternalLink,
   Trash2,
@@ -9,16 +9,15 @@ import {
   TrendingDown,
   Minus,
   Store,
-  Clock,
   Target,
   Eye,
   AlertTriangle,
   Tag,
+  MoreHorizontal,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -26,6 +25,12 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { deleteProduct } from "@/app/actions";
 import { toast } from "sonner";
 import { formatPrice } from "@/utils/currency";
@@ -54,6 +59,7 @@ function getRelativeTime(dateString) {
 }
 
 export default function ProductCard({ product, onDelete }) {
+  const router = useRouter();
   const [deleting, setDeleting] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -96,7 +102,10 @@ export default function ProductCard({ product, onDelete }) {
   }
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
+    <div
+      onClick={() => router.push(`/products/${product.id}`)}
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700 transition-colors cursor-pointer"
+    >
       {/* Image Section */}
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-50 dark:bg-gray-900">
         {!imgError && product.image_url ? (
@@ -219,63 +228,78 @@ export default function ProductCard({ product, onDelete }) {
         )}
 
         {/* Actions */}
-        <div className="flex items-center gap-1 pt-3 mt-auto border-t border-gray-100 dark:border-gray-800">
-          <button
-            onClick={() => window.open(product.url, "_blank", "noopener,noreferrer")}
-            className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Open product"
-          >
-            <ExternalLink className="h-4 w-4" />
-          </button>
-
-          <Link
-            href={`/products/${product.id}`}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-gray-800"
-          >
-            <Eye className="h-4 w-4" />
-            Details
-          </Link>
-
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <button
-                disabled={deleting}
-                className="p-2 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 dark:text-gray-500 dark:hover:text-red-400 dark:hover:bg-red-900/20 transition-colors"
-                aria-label="Delete product"
+        <div className="flex items-center justify-end pt-3 mt-auto border-t border-gray-100 dark:border-gray-800">
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              onClick={(e) => e.stopPropagation()}
+              className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Product actions"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(product.url, "_blank", "noopener,noreferrer");
+                }}
+              >
+                <ExternalLink className="h-4 w-4" />
+                Visit Store
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(`/products/${product.id}`);
+                }}
+              >
+                <Eye className="h-4 w-4" />
+                Details
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDialogOpen(true);
+                }}
+                className="text-red-600 dark:text-red-400"
               >
                 <Trash2 className="h-4 w-4" />
-              </button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[400px]">
-              <DialogHeader>
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
-                  <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
-                </div>
-                <DialogTitle className="text-center text-lg">
-                  Remove product?
-                </DialogTitle>
-                <DialogDescription className="text-center">
-                  Are you sure you want to remove "{product.name}"? This action cannot be undone.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="gap-2">
-                <DialogClose asChild>
-                  <Button variant="outline" className="flex-1">
-                    Cancel
-                  </Button>
-                </DialogClose>
-                <Button
-                  variant="destructive"
-                  disabled={deleting}
-                  onClick={handleDelete}
-                  className="flex-1"
-                >
-                  {deleting ? "Removing..." : "Remove"}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
+
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent className="sm:max-w-[400px]">
+            <DialogHeader>
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
+                <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
+              </div>
+              <DialogTitle className="text-center text-lg">
+                Remove product?
+              </DialogTitle>
+              <DialogDescription className="text-center">
+                Are you sure you want to remove "{product.name}"? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="gap-2">
+              <DialogClose asChild>
+                <Button variant="outline" className="flex-1">
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button
+                variant="destructive"
+                disabled={deleting}
+                onClick={handleDelete}
+                className="flex-1"
+              >
+                {deleting ? "Removing..." : "Remove"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
