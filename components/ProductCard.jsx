@@ -270,10 +270,10 @@ export default function ProductCard({ product, onDelete }) {
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter className="gap-2">
-                <DialogClose asChild>
-                  <Button variant="outline" className="flex-1">
-                    Cancel
-                  </Button>
+                <DialogClose
+                  render={<Button variant="outline" className="flex-1" />}
+                >
+                  Cancel
                 </DialogClose>
                 <Button
                   variant="destructive"

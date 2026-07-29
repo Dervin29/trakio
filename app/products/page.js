@@ -12,7 +12,7 @@ import {
   Bell,
   Package,
   TrendingDown,
-  DollarSign,
+  Wallet,
   ShoppingCart,
   Home,
   ChevronRight,
@@ -23,6 +23,14 @@ import {
   Zap,
   Sparkles,
 } from "lucide-react";
+
+function getCommonCurrency(products) {
+  const currencies = products.map((p) => p.currency).filter(Boolean);
+  if (currencies.length === 0) return "INR";
+  const counts = {};
+  currencies.forEach((c) => (counts[c] = (counts[c] || 0) + 1));
+  return Object.keys(counts).reduce((a, b) => (counts[a] > counts[b] ? a : b), "INR");
+}
 
 function computeMetrics(products, total) {
   const activeAlerts = products.filter((p) => p.target_price != null).length;
@@ -82,6 +90,7 @@ export default async function ProductsPage({ searchParams }) {
 
   const { products, total, page, totalPages } = await getProducts(currentPage);
   const metrics = computeMetrics(products, total);
+  const commonCurrency = getCommonCurrency(products);
   const isEmpty = products.length === 0 && total === 0;
 
   return (
@@ -216,9 +225,9 @@ export default async function ProductsPage({ searchParams }) {
                 subtext="Recent drops detected"
               />
               <MetricCard
-                icon={DollarSign}
+                icon={Wallet}
                 label="Avg Savings"
-                value={metrics.avgSavings > 0 ? formatPrice(metrics.avgSavings, "USD") : "$0.00"}
+                value={metrics.avgSavings > 0 ? formatPrice(metrics.avgSavings, commonCurrency) : formatPrice(0, commonCurrency)}
                 subtext="Per drop on average"
               />
             </div>

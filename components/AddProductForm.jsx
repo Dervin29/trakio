@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { addProduct } from "@/app/actions";
 import AuthModal from "./AuthModal";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Loader2, Search } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AddProductForm({ user }) {
+  const router = useRouter();
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -30,12 +32,11 @@ export default function AddProductForm({ user }) {
 
     if (result.error) {
       toast.error(result.error);
+      setLoading(false);
     } else {
       toast.success(result.message || "Product added successfully");
-      setUrl("");
+      router.push("/products");
     }
-
-    setLoading(false);
   };
 
   return (
