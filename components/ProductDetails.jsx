@@ -15,12 +15,7 @@ import {
   ShoppingCart,
   AlertTriangle,
   ArrowRight,
-  Sparkles,
-  ChevronDown,
-  Zap,
 } from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -182,7 +177,7 @@ export default function ProductDetails({ product }) {
   return (
     <div className="animate-fade-in space-y-6">
       <div className="grid gap-6 lg:grid-cols-5">
-        {/* Left Column - Image & Actions */}
+        {/* ── Left Column: Image + Quick Actions + Status ── */}
         <div className="space-y-6 lg:col-span-2">
           {/* Image */}
           <div className="group relative overflow-hidden rounded-2xl border border-gray-200/50 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
@@ -195,7 +190,7 @@ export default function ProductDetails({ product }) {
                   {!imgError && product.image_url ? (
                     <>
                       {!imgLoaded && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 animate-pulse" />
+                        <div className="absolute inset-0 bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 animate-shimmer" />
                       )}
                       <img
                         ref={imgRef}
@@ -242,7 +237,7 @@ export default function ProductDetails({ product }) {
               >
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Visit Store
-                <ArrowRight className="ml-auto h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                <ArrowRight className="ml-auto h-4 w-4" />
               </Button>
 
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -387,7 +382,7 @@ export default function ProductDetails({ product }) {
           </div>
         </div>
 
-        {/* Right Column - Info, Pricing, Insights, Chart */}
+        {/* ── Right Column: Info + Pricing + Insights + Target + Chart ── */}
         <div className="space-y-6 lg:col-span-3">
           {/* Title & Store */}
           <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
