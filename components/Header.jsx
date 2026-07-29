@@ -38,17 +38,18 @@ export default function Header({ user }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [signOutDialogOpen, setSignOutDialogOpen] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+      if (menuRef.current && !menuRef.current.contains(e.target) && !signOutDialogOpen) {
         setMenuOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [signOutDialogOpen]);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -65,7 +66,7 @@ export default function Header({ user }) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-border bg-background">
+      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex shrink-0 items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-brand-foreground">
@@ -156,7 +157,7 @@ export default function Header({ user }) {
 
                     <div className="border-t border-border" />
 
-                    <Dialog>
+                    <Dialog open={signOutDialogOpen} onOpenChange={setSignOutDialogOpen}>
                       <DialogTrigger className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors">
                         <LogOut className="h-4 w-4" />
                         Sign Out
@@ -174,16 +175,16 @@ export default function Header({ user }) {
                           </DialogDescription>
                         </DialogHeader>
                         <DialogFooter className="gap-2">
-                          <DialogClose asChild>
-                            <Button variant="outline" className="flex-1">
-                              Cancel
-                            </Button>
+                          <DialogClose
+                            render={<Button variant="outline" className="flex-1" />}
+                          >
+                            Cancel
                           </DialogClose>
-                          <form action={signOut} className="flex-1">
-                            <Button type="submit" variant="destructive" className="w-full">
-                              Sign Out
-                            </Button>
-                          </form>
+<form action={signOut} className="flex-1">
+                        <Button type="submit" variant="destructive" className="w-full">
+                          Sign Out
+                        </Button>
+                      </form>
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
@@ -279,11 +280,11 @@ export default function Header({ user }) {
                           You'll need to sign in again to access your products.
                         </DialogDescription>
                       </DialogHeader>
-                      <DialogFooter className="gap-2">
-                        <DialogClose asChild>
-                          <Button variant="outline" className="flex-1">
-                            Cancel
-                          </Button>
+                        <DialogFooter className="gap-2">
+                        <DialogClose
+                          render={<Button variant="outline" className="flex-1" />}
+                        >
+                          Cancel
                         </DialogClose>
                         <form action={signOut} className="flex-1">
                           <Button type="submit" variant="destructive" className="w-full">

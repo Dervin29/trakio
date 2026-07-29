@@ -1,8 +1,33 @@
 "use client";
 
-import { useEffect, useRef, useId, memo } from "react";
+import { useEffect, useRef, useId, memo, useState } from "react";
+import { useTheme } from "next-themes";
 
 const TWO_PI = Math.PI * 2;
+
+function resolveCSSColor(varName, alpha = 1) {
+  if (typeof document === "undefined") return `rgba(128,128,128,${alpha})`;
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(varName)
+    .trim();
+  if (!value) return `rgba(128,128,128,${alpha})`;
+
+  const ctx = document.createElement("canvas").getContext("2d");
+  if (!ctx) return `rgba(128,128,128,${alpha})`;
+
+  ctx.fillStyle = value;
+  const computed = ctx.fillStyle;
+
+  if (computed.startsWith("rgba")) {
+    const m = computed.match(/rgba\((\d+),\s*(\d+),\s*(\d+)/);
+    if (m) return `rgba(${m[1]},${m[2]},${m[3]},${alpha})`;
+  }
+  if (computed.startsWith("rgb")) {
+    const m = computed.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    if (m) return `rgba(${m[1]},${m[2]},${m[3]},${alpha})`;
+  }
+  return `rgba(128,128,128,${alpha})`;
+}
 
 const DotField = memo(
   ({
@@ -15,11 +40,42 @@ const DotField = memo(
     glowRadius = 200,
     sparkle = false,
     waveAmplitude = 0,
-    gradientFrom = "rgba(99, 102, 241, 0.6)",
-    gradientTo = "rgba(148, 163, 184, 0.3)",
-    glowColor = "rgba(99, 102, 241, 0.12)",
+    gradientFrom: gradientFromProp,
+    gradientTo: gradientToProp,
+    glowColor: glowColorProp,
     ...rest
   }) => {
+    const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    const [colors, setColors] = useState({
+      gradientFrom: "rgba(120,120,120,0.35)",
+      gradientTo: "rgba(180,180,180,0.12)",
+      glowColor: "rgba(120,120,120,0.05)",
+    });
+
+    useEffect(() => {
+      setMounted(true);
+    }, []);
+
+    useEffect(() => {
+      if (!mounted) return;
+      const isDark = theme === "dark";
+      setColors({
+        gradientFrom: resolveCSSColor(
+          "--color-foreground",
+          isDark ? 0.35 : 0.5
+        ),
+        gradientTo: resolveCSSColor(
+          "--color-muted-foreground",
+          isDark ? 0.15 : 0.25
+        ),
+        glowColor: resolveCSSColor("--color-foreground", isDark ? 0.06 : 0.1),
+      });
+    }, [theme, mounted]);
+
+    const gradientFrom = gradientFromProp ?? colors.gradientFrom;
+    const gradientTo = gradientToProp ?? colors.gradientTo;
+    const glowColor = glowColorProp ?? colors.glowColor;
     const canvasRef = useRef(null);
     const svgRef = useRef(null);
     const glowRef = useRef(null);

@@ -11,7 +11,7 @@ export default function AuthButton({ user }) {
 
   if (user !== null) {
     return (
-      <form action={signOut}>
+      <form action={signOut} method="post">
         <Button 
           variant="ghost" 
           size="sm" 

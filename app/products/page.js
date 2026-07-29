@@ -163,27 +163,36 @@ export default async function ProductsPage({ searchParams }) {
                   icon: Search,
                   title: "Paste URL",
                   desc: "Copy any product link from your favorite store",
-                  color: "from-blue-500/20 to-blue-500/5",
+                  iconBg: "from-brand/20 to-brand/5",
+                  iconColor: "text-brand",
+                  cardBg: "from-brand/5 to-transparent",
+                  border: "border-brand/10",
                 },
                 {
                   icon: Target,
                   title: "Set target",
                   desc: "Enter your desired price and we'll watch it",
-                  color: "from-emerald-500/20 to-emerald-500/5",
+                  iconBg: "from-brand/15 to-brand/5",
+                  iconColor: "text-brand",
+                  cardBg: "from-brand/5 to-transparent",
+                  border: "border-brand/10",
                 },
                 {
                   icon: Zap,
                   title: "Get alerts",
                   desc: "We'll notify you instantly when price drops",
-                  color: "from-purple-500/20 to-purple-500/5",
+                  iconBg: "from-brand/20 to-brand/5",
+                  iconColor: "text-brand",
+                  cardBg: "from-brand/5 to-transparent",
+                  border: "border-brand/10",
                 },
               ].map((item) => (
                 <div
                   key={item.title}
-                  className={`p-5 rounded-xl border border-gray-200/80 dark:border-gray-800 bg-gradient-to-br ${item.color} hover:shadow-md transition-all duration-300 hover:scale-[1.02]`}
+                  className={`p-5 rounded-xl border ${item.border} bg-gradient-to-br ${item.cardBg} hover:shadow-md transition-all duration-300 hover:scale-[1.02]`}
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white dark:bg-gray-900 shadow-sm mb-4">
-                    <item.icon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${item.iconBg} shadow-sm mb-4`}>
+                    <item.icon className={`h-6 w-6 ${item.iconColor}`} />
                   </div>
                   <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
                     {item.title}
@@ -195,7 +204,7 @@ export default async function ProductsPage({ searchParams }) {
 
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-brand hover:bg-brand-dark text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-brand/30"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-brand hover:bg-brand-dark text-brand-foreground font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-brand/30"
             >
               <Plus className="h-5 w-5" />
               Add Your First Product
