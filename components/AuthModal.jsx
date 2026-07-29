@@ -44,10 +44,10 @@ export default function AuthModal({ isOpen, onClose }) {
               <path d="M2 12l10 5 10-5" />
             </svg>
           </div>
-          <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white">
+          <DialogTitle className="text-xl font-bold text-foreground">
             Welcome back
           </DialogTitle>
-          <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
+          <DialogDescription className="text-sm text-muted-foreground">
             Sign in to track products and get price alerts
           </DialogDescription>
         </DialogHeader>
@@ -57,7 +57,7 @@ export default function AuthModal({ isOpen, onClose }) {
             onClick={handleGoogleLogin}
             disabled={loading}
             variant="outline"
-            className="w-full h-11 gap-3 border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 transition-all"
+            className="w-full h-11 gap-3 border-border hover:bg-muted transition-all"
           >
             {loading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -88,10 +88,10 @@ export default function AuthModal({ isOpen, onClose }) {
 
           <div className="relative my-2">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200 dark:border-gray-800" />
+              <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-2 text-gray-400 dark:bg-gray-950 dark:text-gray-500">
+              <span className="bg-background px-2 text-muted-foreground">
                 Secure sign in
               </span>
             </div>

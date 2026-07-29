@@ -97,15 +97,15 @@ export default function ProductCard({ product, onDelete }) {
   }
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-gray-200/80 bg-white shadow-sm hover:shadow-md dark:border-gray-800 dark:bg-gray-950 transition-all duration-300 hover:shadow-lg">
+    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:shadow-md dark:shadow-sm transition-all duration-300 hover:shadow-lg">
       {/* Image Section - Fixed aspect ratio with proper containment */}
-      <div className="relative w-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800" style={{ paddingBottom: '75%' }}>
+      <div className="relative w-full bg-muted/50 dark:bg-muted/30" style={{ paddingBottom: '75%' }}>
         <div className="absolute inset-0 p-3">
-          <div className="relative h-full w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+          <div className="relative h-full w-full overflow-hidden rounded-lg bg-muted">
             {!imgError && product.image_url ? (
               <>
                 {!imgLoaded && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 animate-pulse" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-muted to-muted/50 dark:from-muted/50 dark:to-muted animate-pulse" />
                 )}
                 <img
                   ref={imgRef}
@@ -121,14 +121,14 @@ export default function ProductCard({ product, onDelete }) {
               </>
             ) : (
               <div className="flex h-full items-center justify-center">
-                <Store className="h-16 w-16 text-gray-300 dark:text-gray-600" />
+                <Store className="h-16 w-16 text-muted-foreground/50 dark:text-muted-foreground/40" />
               </div>
             )}
 
             {/* Badges */}
             <div className="absolute left-2 top-2 flex flex-col gap-1.5">
               {isGoodDeal && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">
+                <span className="inline-flex items-center gap-1 rounded-full bg-success px-2.5 py-1 text-xs font-semibold text-success-foreground shadow-lg shadow-success/30">
                   <Tag className="h-3 w-3" />
                   Best Deal
                 </span>
@@ -137,14 +137,14 @@ export default function ProductCard({ product, onDelete }) {
 
             {/* Price Change Badge on Image */}
             {priceChange !== null && (
-              <div className="absolute bottom-2 right-2 rounded-full bg-white/95 backdrop-blur-sm px-2.5 py-1 shadow-lg dark:bg-gray-900/95">
+              <div className="absolute bottom-2 right-2 rounded-full bg-popover/95 backdrop-blur-sm px-2.5 py-1 shadow-lg">
                 <span
                   className={`inline-flex items-center gap-1 text-xs font-semibold ${
                     isDrop
-                      ? "text-emerald-600 dark:text-emerald-400"
+                      ? "text-success dark:text-success-foreground"
                       : isIncrease
-                      ? "text-red-600 dark:text-red-400"
-                      : "text-gray-500 dark:text-gray-400"
+                      ? "text-destructive dark:text-destructive-foreground"
+                      : "text-muted-foreground"
                   }`}
                 >
                   {isDrop ? (
@@ -169,36 +169,36 @@ export default function ProductCard({ product, onDelete }) {
         {/* Header */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400 uppercase">
+            <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground uppercase">
               <Store className="h-3 w-3" />
               {getStoreName(product.url)}
             </span>
             {product.updated_at && (
-              <span className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
                 {getRelativeTime(product.updated_at)}
               </span>
             )}
           </div>
-          <h3 className="line-clamp-2 text-sm font-semibold text-gray-900 dark:text-white leading-snug">
+          <h3 className="line-clamp-2 text-sm font-semibold text-foreground leading-snug">
             {product.name}
           </h3>
         </div>
 
         {/* Price */}
-        <div className="flex items-end justify-between border-t border-gray-100/60 pt-2.5 dark:border-gray-800/60">
+        <div className="flex items-end justify-between border-t border-border/60 pt-2.5 dark:border-border/60">
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
+            <span className="text-xl font-bold text-foreground tracking-tight">
               {formatPrice(product.current_price, product.currency)}
             </span>
             {prevPrice !== null && (
-              <span className="text-xs text-gray-400 dark:text-gray-500 line-through">
+              <span className="text-xs text-muted-foreground line-through">
                 {formatPrice(prevPrice, product.currency)}
               </span>
             )}
           </div>
           {isDrop && savings > 0 && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+            <span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-xs font-semibold text-success dark:bg-success/20">
               <DollarSign className="h-3 w-3" />
               Save {formatPrice(savings, product.currency)}
             </span>
@@ -217,14 +217,14 @@ export default function ProductCard({ product, onDelete }) {
                 {targetProgress.toFixed(0)}%
               </span>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted dark:bg-muted/50">
               <div
                 className={`h-full rounded-full transition-all duration-700 ${
                   targetProgress <= 30
-                    ? "bg-emerald-500"
+                    ? "bg-success"
                     : targetProgress <= 60
-                    ? "bg-yellow-500"
-                    : "bg-blue-500"
+                    ? "bg-warning"
+                    : "bg-brand"
                 }`}
                 style={{ width: `${targetProgress}%` }}
               />
@@ -233,10 +233,10 @@ export default function ProductCard({ product, onDelete }) {
         )}
 
         {/* Actions */}
-        <div className="mt-auto flex items-center gap-1 pt-2.5 border-t border-gray-100/60 dark:border-gray-800/60">
+        <div className="mt-auto flex items-center gap-1 pt-2.5 border-t border-border/60 dark:border-border/60">
           <button
             onClick={() => window.open(product.url, "_blank", "noopener,noreferrer")}
-            className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-all duration-200"
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
             aria-label="Open product"
           >
             <ExternalLink className="h-4 w-4" />
@@ -244,7 +244,7 @@ export default function ProductCard({ product, onDelete }) {
 
           <Link
             href={`/products/${product.id}`}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 rounded-lg hover:bg-muted"
           >
             <Eye className="h-4 w-4" />
             <span>Details</span>
@@ -252,15 +252,15 @@ export default function ProductCard({ product, onDelete }) {
 
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger
-              className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:text-gray-500 dark:hover:text-red-400 dark:hover:bg-red-900/20 transition-all duration-200"
+              className="p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20 transition-all duration-200"
               aria-label="Delete product"
             >
               <Trash2 className="h-4 w-4" />
             </DialogTrigger>
             <DialogContent className="sm:max-w-[400px]">
               <DialogHeader>
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
-                  <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 dark:bg-destructive/30">
+                  <AlertTriangle className="h-6 w-6 text-destructive dark:text-destructive-foreground" />
                 </div>
                 <DialogTitle className="text-center text-lg">
                   Remove product?

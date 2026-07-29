@@ -41,17 +41,17 @@ export default function AddProductForm({ user }) {
 
   return (
     <>
-      <div className="rounded-xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-6 dark:border-gray-700 dark:bg-gray-900/50">
+      <div className="rounded-xl border-2 border-dashed border-border bg-muted/50 p-6">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="url"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Paste any product URL..."
-                className="h-12 pl-9 border-0 bg-white shadow-sm dark:bg-gray-800 focus:ring-2 focus:ring-brand"
+                className="h-12 pl-9 border-0 bg-background shadow-sm dark:bg-input focus:ring-2 focus:ring-brand"
                 required
                 disabled={loading}
               />
@@ -59,7 +59,7 @@ export default function AddProductForm({ user }) {
             <Button
               type="submit"
               disabled={loading || !url}
-              className="h-12 px-8 bg-brand hover:bg-brand-dark text-white font-medium shadow-sm hover:shadow transition-all"
+              className="h-12 px-8 bg-brand hover:bg-brand-dark text-brand-foreground font-medium shadow-sm hover:shadow transition-all"
             >
               {loading ? (
                 <>
@@ -72,7 +72,7 @@ export default function AddProductForm({ user }) {
             </Button>
           </div>
         </form>
-        <p className="mt-3 text-center text-xs text-gray-400 dark:text-gray-500">
+        <p className="mt-3 text-center text-xs text-muted-foreground">
           Works with Amazon, Flipkart, Myntra, and hundreds of online stores
         </p>
       </div>
