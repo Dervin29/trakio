@@ -1,6 +1,8 @@
 import Link from "next/link";
 import AddProductForm from "@/components/AddProductForm";
 import Header from "@/components/Header";
+import DotField from "@/components/DotField";
+import CountUp from "@/components/CountUp";
 import { createClient } from "@/utils/supabase/server";
 import { getProducts } from "@/app/actions";
 import { Bell, Shield, TrendingDown, ArrowRight, BarChart3, Sparkles } from "lucide-react";
@@ -43,8 +45,10 @@ export default async function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-950 dark:to-gray-900">
-      <Header user={user} />
+    <main className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-950 dark:to-gray-900">
+      <DotField />
+      <div className="relative z-10">
+        <Header user={user} />
 
       <section className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 sm:py-16">
         <div className="w-full max-w-3xl mx-auto">
@@ -90,7 +94,7 @@ export default async function Home() {
                   className="text-center p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-brand/50 dark:hover:border-brand/50 transition-all hover:shadow-sm cursor-default"
                 >
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stat.value}
+                    <CountUp to={stat.value} duration={2} />
                   </div>
                   <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {stat.label}
@@ -136,6 +140,7 @@ export default async function Home() {
           )}
         </div>
       </section>
+      </div>
     </main>
   );
 }

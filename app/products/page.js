@@ -6,6 +6,7 @@ import Pagination from "@/components/Pagination";
 import { createClient } from "@/utils/supabase/server";
 import { getProducts } from "@/app/actions";
 import { formatPrice } from "@/utils/currency";
+import CountUp from "@/components/CountUp";
 import {
   ArrowLeft,
   Bell,
@@ -46,7 +47,7 @@ function MetricCard({ icon: Icon, label, value, subtext, trend }) {
       <div className="flex items-start justify-between">
         <div>
           <div className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-            {value}
+            {typeof value === "number" ? <CountUp to={value} duration={2} /> : value}
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{label}</div>
           {subtext && (
