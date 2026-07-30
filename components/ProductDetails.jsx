@@ -175,17 +175,17 @@ export default function ProductDetails({ product }) {
   }
 
   return (
-    <div className="animate-fade-in space-y-6">
-      <div className="grid gap-6 lg:grid-cols-5">
+    <div className="animate-fade-in space-y-4 sm:space-y-6">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-5">
         {/* ── Left Column: Image + Quick Actions + Status ── */}
-        <div className="space-y-6 lg:col-span-2">
+        <div className="space-y-4 sm:space-y-6 lg:col-span-2">
           {/* Image */}
-          <div className="group relative overflow-hidden rounded-2xl border border-gray-200/50 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
+          <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200/50 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
             <div
               className="relative w-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
               style={{ paddingBottom: "75%" }}
             >
-              <div className="absolute inset-0 p-3">
+              <div className="absolute inset-0 p-2 sm:p-3">
                 <div className="relative h-full w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
                   {!imgError && product.image_url ? (
                     <>
@@ -206,14 +206,14 @@ export default function ProductDetails({ product }) {
                     </>
                   ) : (
                     <div className="flex h-full items-center justify-center">
-                      <Store className="h-16 w-16 text-gray-300 dark:text-gray-600" />
+                      <Store className="h-12 w-12 sm:h-16 sm:w-16 text-gray-300 dark:text-gray-600" />
                     </div>
                   )}
 
                   <div className="absolute left-2 top-2 flex flex-col gap-1.5">
                     {isGoodDeal && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">
-                        <TrendingDown className="h-3 w-3" />
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">
+                        <TrendingDown className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                         Best Deal
                       </span>
                     )}
@@ -224,20 +224,20 @@ export default function ProductDetails({ product }) {
           </div>
 
           {/* Quick Actions */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+          <div className="rounded-xl sm:rounded-2xl border border-gray-200/50 bg-white p-3 sm:p-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
+            <h3 className="mb-2 sm:mb-3 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
               Quick Actions
             </h3>
             <div className="flex flex-col gap-2">
               <Button
-                className="h-11 w-full justify-start rounded-xl text-sm font-medium"
+                className="h-10 sm:h-11 w-full justify-start rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium"
                 onClick={() =>
                   window.open(product.url, "_blank", "noopener,noreferrer")
                 }
               >
-                <ExternalLink className="mr-2 h-4 w-4" />
+                <ExternalLink className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Visit Store
-                <ArrowRight className="ml-auto h-4 w-4" />
+                <ArrowRight className="ml-auto h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </Button>
 
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -246,22 +246,22 @@ export default function ProductDetails({ product }) {
                     <Button
                       variant="destructive"
                       disabled={deleting}
-                      className="h-11 w-full justify-start rounded-xl text-sm font-medium"
+                      className="h-10 sm:h-11 w-full justify-start rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium"
                     >
-                      <Trash2 className="mr-2 h-4 w-4" />
+                      <Trash2 className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       Remove Product
                     </Button>
                   }
                 />
                 <DialogContent className="sm:max-w-sm">
                   <DialogHeader>
-                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 ring-1 ring-red-100 dark:bg-red-900/30 dark:ring-red-800/50">
-                      <AlertTriangle className="h-7 w-7 text-red-500" />
+                    <div className="mx-auto mb-3 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-red-50 ring-1 ring-red-100 dark:bg-red-900/30 dark:ring-red-800/50">
+                      <AlertTriangle className="h-6 w-6 sm:h-7 sm:w-7 text-red-500" />
                     </div>
-                    <DialogTitle className="text-center text-lg">
+                    <DialogTitle className="text-center text-base sm:text-lg">
                       Remove product?
                     </DialogTitle>
-                    <DialogDescription className="text-center leading-relaxed">
+                    <DialogDescription className="text-center text-sm leading-relaxed">
                       Are you sure you want to remove{" "}
                       <span className="font-medium text-foreground">
                         {product.name}
@@ -275,18 +275,18 @@ export default function ProductDetails({ product }) {
                         <img
                           src={product.image_url}
                           alt=""
-                          className="h-12 w-12 rounded-lg object-contain bg-white dark:bg-gray-900"
+                          className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg object-contain bg-white dark:bg-gray-900"
                         />
                       ) : (
-                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white dark:bg-gray-900">
-                          <ShoppingCart className="h-6 w-6 text-gray-300 dark:text-gray-600" />
+                        <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-white dark:bg-gray-900">
+                          <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 text-gray-300 dark:text-gray-600" />
                         </div>
                       )}
-                      <div className="text-sm">
+                      <div className="text-xs sm:text-sm">
                         <p className="font-medium text-gray-900 line-clamp-1 dark:text-white">
                           {product.name}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
                           {formatPrice(product.current_price, product.currency)}
                         </p>
                       </div>
@@ -297,7 +297,7 @@ export default function ProductDetails({ product }) {
                       render={
                         <Button
                           variant="outline"
-                          className="flex-1 rounded-xl"
+                          className="flex-1 rounded-lg sm:rounded-xl"
                         />
                       }
                     >
@@ -307,7 +307,7 @@ export default function ProductDetails({ product }) {
                       variant="destructive"
                       disabled={deleting}
                       onClick={handleDelete}
-                      className="flex-1 rounded-xl"
+                      className="flex-1 rounded-lg sm:rounded-xl"
                     >
                       {deleting ? (
                         <span className="flex items-center gap-2">
@@ -343,37 +343,37 @@ export default function ProductDetails({ product }) {
           </div>
 
           {/* Tracking Status */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+          <div className="rounded-xl sm:rounded-2xl border border-gray-200/50 bg-white p-3 sm:p-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
+            <h3 className="mb-2 sm:mb-3 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
               Tracking Status
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-2.5 sm:space-y-3">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Activity className="h-4 w-4 text-emerald-500" />
+                <span className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  <Activity className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-500" />
                   Status
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                  <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-emerald-500" />
                   Active
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Store className="h-4 w-4" />
+                <span className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  <Store className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   Store
                 </span>
-                <span className="text-sm font-medium capitalize text-gray-900 dark:text-white">
+                <span className="text-xs sm:text-sm font-medium capitalize text-gray-900 dark:text-white">
                   {getStoreName(product.url)}
                 </span>
               </div>
               {product.updated_at && (
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                    <Clock className="h-4 w-4" />
+                  <span className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     Last Checked
                   </span>
-                  <span className="text-sm text-gray-900 dark:text-white">
+                  <span className="text-xs sm:text-sm text-gray-900 dark:text-white">
                     {getRelativeTime(product.updated_at)}
                   </span>
                 </div>
@@ -383,39 +383,37 @@ export default function ProductDetails({ product }) {
         </div>
 
         {/* ── Right Column: Info + Pricing + Insights + Target + Chart ── */}
-        <div className="space-y-6 lg:col-span-3">
+        <div className="space-y-4 sm:space-y-6 lg:col-span-3">
           {/* Title & Store */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
+          <div className="rounded-xl sm:rounded-2xl border border-gray-200/50 bg-white p-4 sm:p-5 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
             <div className="mb-1 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-medium capitalize text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-                <Store className="h-3.5 w-3.5" />
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-xs font-medium capitalize text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                <Store className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 {getStoreName(product.url)}
               </span>
             </div>
-            <h1 className="mt-2 text-lg font-bold leading-tight text-gray-900 sm:text-xl md:text-2xl dark:text-white">
+            <h1 className="mt-1.5 sm:mt-2 text-base sm:text-lg md:text-xl font-bold leading-tight text-gray-900 dark:text-white">
               {product.name}
             </h1>
           </div>
 
           {/* Pricing */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+          <div className="rounded-xl sm:rounded-2xl border border-gray-200/50 bg-white p-4 sm:p-5 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
+            <p className="mb-1 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
               Current Price
             </p>
-            <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end justify-between gap-2 sm:gap-3">
               <div>
-                <span className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl dark:text-white">
+                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {formatPrice(product.current_price, product.currency)}
                 </span>
                 {prevPrice !== null && (
-                  <div className="mt-1">
-                    <span className="text-sm text-gray-400 line-through dark:text-gray-500">
+                  <div className="mt-0.5 sm:mt-1 flex flex-wrap items-center gap-1 text-xs sm:text-sm">
+                    <span className="text-gray-400 line-through dark:text-gray-500">
                       {formatPrice(prevPrice, product.currency)}
                     </span>
-                    <span className="mx-2 text-gray-300 dark:text-gray-600">
-                      |
-                    </span>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className="text-gray-300 dark:text-gray-600">|</span>
+                    <span className="text-gray-500 dark:text-gray-400">
                       {isDrop
                         ? `Down ${formatPrice(savings, product.currency)}`
                         : isIncrease
@@ -426,9 +424,9 @@ export default function ProductDetails({ product }) {
                 )}
               </div>
               {priceChange !== null && (
-                <div className="flex flex-col items-end gap-0.5">
+                <div className="flex flex-row sm:flex-col items-center sm:items-end gap-1 sm:gap-0.5">
                   <span
-                    className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium ${
+                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 sm:px-3 sm:py-1 text-xs sm:text-sm font-medium ${
                       isDrop
                         ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
                         : isIncrease
@@ -437,17 +435,17 @@ export default function ProductDetails({ product }) {
                     }`}
                   >
                     {isDrop ? (
-                      <TrendingDown className="h-4 w-4" />
+                      <TrendingDown className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     ) : isIncrease ? (
-                      <TrendingUp className="h-4 w-4" />
+                      <TrendingUp className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     ) : (
-                      <Minus className="h-4 w-4" />
+                      <Minus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     )}
                     {priceChange === 0
                       ? "0%"
                       : `${priceChange > 0 ? "+" : ""}${priceChange.toFixed(1)}%`}
                   </span>
-                  <span className="text-xs text-gray-400 dark:text-gray-500">
+                  <span className="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500">
                     {isDrop
                       ? "Price Dropped"
                       : isIncrease
@@ -461,17 +459,17 @@ export default function ProductDetails({ product }) {
 
           {/* Insights */}
           <div
-            className={`rounded-2xl border-l-4 ${insight.border} ${insight.bg} ${insight.text} p-5 shadow-sm`}
+            className={`rounded-xl sm:rounded-2xl border-l-4 ${insight.border} ${insight.bg} ${insight.text} p-3 sm:p-4 shadow-sm`}
           >
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-2.5 sm:gap-3">
               <div
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${insight.iconBg}`}
+                className={`flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg sm:rounded-xl ${insight.iconBg}`}
               >
-                <insight.icon className="h-5 w-5" />
+                <insight.icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
               </div>
-              <div>
-                <h3 className="text-sm font-semibold">{insight.title}</h3>
-                <p className="mt-0.5 text-sm opacity-80">
+              <div className="min-w-0 flex-1">
+                <h3 className="text-xs sm:text-sm font-semibold">{insight.title}</h3>
+                <p className="mt-0.5 text-[10px] sm:text-xs opacity-80">
                   {insight.description}
                 </p>
               </div>
@@ -480,36 +478,36 @@ export default function ProductDetails({ product }) {
 
           {/* Target Price */}
           {hasTarget && (
-            <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
-              <div className="flex items-center justify-between">
-                <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  <Target className="h-4 w-4 text-brand" />
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200/50 bg-white p-4 sm:p-5 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <h3 className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200">
+                  <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand" />
                   Target Price
                 </h3>
-                <span className="text-lg font-bold text-gray-900 dark:text-white">
+                <span className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
                   {formatPrice(product.target_price, product.currency)}
                 </span>
               </div>
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
-                <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-800/50">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="rounded-lg sm:rounded-xl bg-gray-50 p-2.5 sm:p-3 dark:bg-gray-800/50">
+                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
                     Current
                   </p>
-                  <p className="mt-0.5 font-semibold text-gray-900 dark:text-white">
+                  <p className="mt-0.5 text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">
                     {formatPrice(product.current_price, product.currency)}
                   </p>
                 </div>
-                <div className="rounded-xl bg-brand-light/40 p-3">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                <div className="rounded-lg sm:rounded-xl bg-brand-light/40 p-2.5 sm:p-3">
+                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
                     Target
                   </p>
-                  <p className="mt-0.5 font-semibold text-brand-700">
+                  <p className="mt-0.5 text-xs sm:text-sm font-semibold text-brand-700">
                     {formatPrice(product.target_price, product.currency)}
                   </p>
                 </div>
               </div>
               {targetGap > 0 && (
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                <p className="mt-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                   <span className="font-medium text-brand">
                     {formatPrice(targetGap, product.currency)}
                   </span>{" "}
@@ -517,7 +515,7 @@ export default function ProductDetails({ product }) {
                 </p>
               )}
               <div className="mt-3">
-                <div className="mb-1 flex items-center justify-between text-xs">
+                <div className="mb-1 flex items-center justify-between text-[10px] sm:text-xs">
                   <span className="text-gray-400 dark:text-gray-500">
                     Progress
                   </span>
@@ -525,13 +523,13 @@ export default function ProductDetails({ product }) {
                     {targetProgress.toFixed(0)}%
                   </span>
                 </div>
-                <div className="h-2 w-full overflow-hidden rounded-full bg-brand-300/40">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-brand-300/40">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-brand to-brand-dark transition-all duration-700"
                     style={{ width: `${targetProgress}%` }}
                   />
                 </div>
-                <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">
+                <p className="mt-1.5 text-[10px] sm:text-xs text-gray-400 dark:text-gray-500">
                   {targetProgress >= 100
                     ? "Target reached! 🎉"
                     : `${(100 - targetProgress).toFixed(0)}% of the way to your target`}
@@ -541,7 +539,7 @@ export default function ProductDetails({ product }) {
           )}
 
           {/* Price Chart */}
-          <div className="rounded-2xl border border-gray-200/50 bg-white p-6 shadow-sm sm:p-8 dark:border-gray-700/50 dark:bg-gray-900">
+          <div className="rounded-xl sm:rounded-2xl border border-gray-200/50 bg-white p-4 sm:p-5 shadow-sm dark:border-gray-700/50 dark:bg-gray-900">
             <PriceChart productId={product.id} currency={product.currency} />
           </div>
         </div>

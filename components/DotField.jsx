@@ -12,11 +12,12 @@ function resolveCSSColor(varName, alpha = 1) {
     .trim();
   if (!value) return `rgba(128,128,128,${alpha})`;
 
-  const ctx = document.createElement("canvas").getContext("2d");
-  if (!ctx) return `rgba(128,128,128,${alpha})`;
-
-  ctx.fillStyle = value;
-  const computed = ctx.fillStyle;
+  const el = document.createElement("div");
+  el.style.color = value;
+  el.style.display = "none";
+  document.body.appendChild(el);
+  const computed = getComputedStyle(el).color;
+  document.body.removeChild(el);
 
   if (computed.startsWith("rgba")) {
     const m = computed.match(/rgba\((\d+),\s*(\d+),\s*(\d+)/);
@@ -43,6 +44,7 @@ const DotField = memo(
     gradientFrom: gradientFromProp,
     gradientTo: gradientToProp,
     glowColor: glowColorProp,
+    className = "",
     ...rest
   }) => {
     const { theme } = useTheme();
@@ -63,13 +65,13 @@ const DotField = memo(
       setColors({
         gradientFrom: resolveCSSColor(
           "--color-foreground",
-          isDark ? 0.35 : 0.5
+          isDark ? 0.55 : 0.5
         ),
         gradientTo: resolveCSSColor(
           "--color-muted-foreground",
-          isDark ? 0.15 : 0.25
+          isDark ? 0.35 : 0.25
         ),
-        glowColor: resolveCSSColor("--color-foreground", isDark ? 0.06 : 0.1),
+        glowColor: resolveCSSColor("--color-foreground", isDark ? 0.08 : 0.1),
       });
     }, [theme, mounted]);
 
@@ -335,8 +337,15 @@ const DotField = memo(
 
     return (
       <div
-        className="dot-field-container"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 0 }}
+        className={`dot-field-container ${className}`}
+        style={{ 
+          position: "absolute", 
+          inset: 0, 
+          width: "100%", 
+          height: "100%", 
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
         {...rest}
       >
         <canvas
