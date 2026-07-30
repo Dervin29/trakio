@@ -76,6 +76,7 @@ export async function addProduct(formData) {
     }
 
     revalidatePath("/");
+    revalidatePath("/home");
     revalidatePath("/products");
     return {
       success: true,
@@ -101,6 +102,7 @@ export async function deleteProduct(productId) {
     if (error) throw error;
 
     revalidatePath("/");
+    revalidatePath("/home");
     revalidatePath("/products");
     return { success: true };
   } catch (error) {

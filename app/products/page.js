@@ -96,7 +96,7 @@ export default async function ProductsPage({ searchParams }) {
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
           <Link
-            href="/"
+            href="/home"
             className="flex items-center gap-1.5 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <Home className="h-4 w-4" />
@@ -123,11 +123,11 @@ export default async function ProductsPage({ searchParams }) {
             </p>
           </div>
           <Link
-            href="/"
+            href="/home"
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200/60 dark:border-gray-800 shrink-0"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Home
+            Back to Dashboard
           </Link>
         </div>
 
@@ -198,7 +198,7 @@ export default async function ProductsPage({ searchParams }) {
             </div>
 
             <Link
-              href="/"
+              href="/home"
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-brand hover:bg-brand-dark text-brand-foreground font-semibold rounded-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-brand/30"
             >
               <Plus className="h-5 w-5" />

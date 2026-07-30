@@ -16,7 +16,7 @@ export default function Footer() {
           </Link>
 
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <Link href="/" className="hover:text-foreground transition-colors">
+            <Link href="/home" className="hover:text-foreground transition-colors">
               Dashboard
             </Link>
             <Link href="/products" className="hover:text-foreground transition-colors">

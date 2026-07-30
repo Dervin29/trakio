@@ -2,9 +2,9 @@ import DotField from "@/components/DotField";
 
 export default function ProductsLayout({ children }) {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-950 dark:to-gray-900">
+    <main className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-950 dark:to-gray-900">
       {/* DotField as background */}
-      <div className="absolute inset-0 -z-10 h-full w-full">
+      <div className="absolute inset-0 z-0 h-full w-full">
         <DotField
           dotRadius={2.5}
           dotSpacing={20}

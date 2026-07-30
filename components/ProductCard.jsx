@@ -5,10 +5,13 @@ import Link from "next/link";
 import {
   Trash2,
   TrendingDown,
+  TrendingUp,
   Target,
   AlertTriangle,
   ShoppingCart,
   ExternalLink,
+  Clock,
+  Store,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -63,9 +66,6 @@ export default function ProductCard({ product, onDelete }) {
     ? product.current_price / (1 + priceChange / 100)
     : null;
   const savings = prevPrice !== null && isDrop ? prevPrice - product.current_price : 0;
-  const savingsPercent = prevPrice !== null && isDrop
-    ? ((savings / prevPrice) * 100).toFixed(0)
-    : null;
 
   const hasTarget = product.target_price != null && product.target_price > 0;
   const targetProgress = hasTarget
@@ -87,15 +87,17 @@ export default function ProductCard({ product, onDelete }) {
   }
 
   return (
-    <div className="group relative flex h-full flex-col rounded-2xl bg-gradient-to-b from-white to-gray-50 shadow-[0_2px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)] hover:-translate-y-1 hover:scale-[1.01] transition-all duration-500 will-change-transform ring-1 ring-black/5 dark:from-gray-900 dark:to-gray-950 dark:shadow-[0_2px_12px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] dark:ring-white/5">
-
-      {/* Image Section - Balanced proportion */}
-      <div className="relative m-3 overflow-hidden rounded-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
+    <Link
+      href={`/products/${product.id}`}
+      className="group relative flex h-full flex-col rounded-2xl bg-white dark:bg-gray-950 shadow-depth ring-1 ring-gray-200/80 dark:ring-gray-800 hover:ring-brand/30 dark:hover:ring-brand/30 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+    >
+      {/* Image */}
+      <div className="relative m-2.5 overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-900">
         <div className="relative aspect-[4/3]">
           {!imgError && product.image_url ? (
             <>
               {!imgLoaded && (
-                <div className="absolute inset-0 bg-linear-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 animate-shimmer" />
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 animate-shimmer" />
               )}
               <img
                 src={product.image_url}
@@ -108,110 +110,90 @@ export default function ProductCard({ product, onDelete }) {
               />
             </>
           ) : (
-            <div className="flex h-full flex-col items-center justify-center gap-3">
-              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gray-200/50 dark:bg-gray-700/50">
-                <svg className="h-10 w-10 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                </svg>
+            <div className="flex h-full flex-col items-center justify-center gap-2">
+              <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800">
+                <ShoppingCart className="h-8 w-8 text-gray-300 dark:text-gray-600" />
               </div>
-              <span className="text-sm font-medium text-gray-300 dark:text-gray-600">No image</span>
+              <span className="text-xs font-medium text-gray-300 dark:text-gray-600">No image</span>
             </div>
           )}
 
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-black/20 via-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/15 via-transparent" />
         </div>
 
-        {/* Store Badge */}
+        {/* Store badge */}
         <div className="absolute left-2.5 top-2.5">
-          <span className="inline-flex items-center rounded-md bg-white/90 backdrop-blur-sm text-[11px] px-2 py-1 font-medium text-gray-700 shadow-sm ring-1 ring-black/5 dark:bg-gray-900/90 dark:text-gray-300 dark:ring-white/10">
+          <span className="inline-flex items-center gap-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] px-2 py-1 font-medium text-gray-600 shadow-sm ring-1 ring-black/5 dark:bg-gray-900/90 dark:text-gray-400 dark:ring-white/10">
+            <Store className="h-3 w-3" />
             {getStoreName(product.url)}
           </span>
         </div>
 
-        {/* Price Change Badge */}
+        {/* Price change badge */}
         {priceChange !== null && (
-          <div className="absolute right-2.5 top-2.5 rounded-md bg-white/90 backdrop-blur-sm text-[11px] px-2 py-1 shadow-sm ring-1 ring-black/5 dark:bg-gray-900/90 dark:ring-white/10">
-            <span
-              className={
-                `inline-flex items-center gap-1 font-bold ${
-                  isDrop
-                    ? "text-emerald-600 dark:text-emerald-400"
-                    : isIncrease
-                    ? "text-red-600 dark:text-red-400"
-                    : "text-gray-500 dark:text-gray-400"
-                }`
-              }
-            >
+          <div className={`absolute right-2.5 top-2.5 rounded-md backdrop-blur-sm text-[10px] px-2 py-1 font-semibold shadow-sm ring-1 ${
+            isDrop
+              ? "bg-emerald-50/90 text-emerald-700 ring-emerald-200/50 dark:bg-emerald-900/80 dark:text-emerald-300 dark:ring-emerald-700/30"
+              : isIncrease
+              ? "bg-red-50/90 text-red-700 ring-red-200/50 dark:bg-red-900/80 dark:text-red-300 dark:ring-red-700/30"
+              : "bg-gray-100/90 text-gray-600 ring-gray-200/50 dark:bg-gray-800/90 dark:text-gray-400 dark:ring-gray-700/30"
+          }`}>
+            <span className="inline-flex items-center gap-0.5">
               {isDrop && <TrendingDown className="h-3 w-3" />}
-              {priceChange === 0
-                ? "0%"
-                : `${isDrop ? "" : isIncrease ? "+" : ""}${priceChange.toFixed(1)}%`}
+              {isIncrease && <TrendingUp className="h-3 w-3" />}
+              {priceChange === 0 ? "0%" : `${isDrop ? "" : "+"}${priceChange.toFixed(1)}%`}
             </span>
           </div>
         )}
 
-        {/* Best Deal Badge */}
+        {/* Best deal badge */}
         {isGoodDeal && (
           <div className="absolute bottom-2.5 left-2.5">
-            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500 text-[11px] px-2 py-1 font-semibold text-white shadow-sm ring-1 ring-emerald-600/20">
+            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500 text-[10px] px-2 py-1 font-semibold text-white shadow-sm">
+              <TrendingDown className="h-3 w-3" />
               Best Deal
             </span>
           </div>
         )}
       </div>
 
-      {/* Content Section - Balanced spacing */}
-      <div className="flex flex-1 flex-col gap-3 p-4 pt-2">
+      {/* Content */}
+      <div className="flex flex-1 flex-col gap-2.5 p-4 pt-2">
+        {/* Product name */}
+        <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-gray-900 dark:text-gray-100 min-h-[2.5rem]">
+          {product.name}
+        </h3>
 
-        {/* Product Name */}
-        <Link href={`/products/${product.id}`} className="group/title">
-          <h3 className="line-clamp-2 text-base font-semibold leading-snug text-gray-900 group-hover/title:text-brand transition-colors dark:text-gray-100 dark:group-hover/title:text-brand min-h-[2.5rem]">
-            {product.name}
-          </h3>
-        </Link>
-
-        {/* Price Section - More compact */}
-        <div className="space-y-1">
-          <div className="flex items-end gap-2">
-            <span className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {formatPrice(product.current_price, product.currency)}
-            </span>
-            {prevPrice !== null && isDrop && savings > 0 && (
-              <span className="inline-flex items-center gap-1 text-xs font-semibold bg-emerald-50 px-2 py-0.5 rounded-full text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
-                -{savingsPercent}%
-              </span>
-            )}
-          </div>
+        {/* Price row */}
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+            {formatPrice(product.current_price, product.currency)}
+          </span>
           {prevPrice !== null && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm line-through opacity-50 text-gray-400 dark:text-gray-500">
-                {formatPrice(prevPrice, product.currency)}
-              </span>
-              {isDrop && savings > 0 && (
-                <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                  Save {formatPrice(savings, product.currency)}
-                </span>
-              )}
-            </div>
+            <span className="text-xs line-through text-gray-400 dark:text-gray-500">
+              {formatPrice(prevPrice, product.currency)}
+            </span>
+          )}
+          {isDrop && savings > 0 && (
+            <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+              -{formatPrice(savings, product.currency)}
+            </span>
           )}
         </div>
 
-        {/* Target Progress - Optional, balanced sizing */}
+        {/* Target bar */}
         {hasTarget && (
-          <div className="rounded-lg bg-gray-50/80 p-2.5 space-y-1.5 dark:bg-gray-800/30">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-200">
-                <Target className="h-3.5 w-3.5 text-brand" />
-                Target
-              </div>
-              <div className="text-xs text-gray-500">{targetProgress.toFixed(0)}%</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-gray-900 dark:text-white">
-                {formatPrice(product.target_price, product.currency)}
+          <div className="space-y-1">
+            <div className="flex items-center justify-between text-[10px]">
+              <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                <Target className="h-3 w-3 text-brand" />
+                Target: {formatPrice(product.target_price, product.currency)}
+              </span>
+              <span className="font-medium text-gray-700 dark:text-gray-300">
+                {targetProgress.toFixed(0)}%
               </span>
             </div>
-            <div className="h-1 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
               <div
                 className={`h-full rounded-full transition-all duration-700 ${
                   targetProgress <= 30
@@ -226,36 +208,28 @@ export default function ProductCard({ product, onDelete }) {
           </div>
         )}
 
-        {/* Metadata - More compact */}
-        <div className="flex items-center gap-3 text-[10px] text-gray-500 dark:text-gray-500 uppercase tracking-wider">
-          <span>{getRelativeTime(product.updated_at || product.created_at)}</span>
-          <span className="text-gray-300 dark:text-gray-600">·</span>
-          <Link href={`/products/${product.id}`} className="hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
-            Details
-          </Link>
-        </div>
+        {/* Footer */}
+        <div className="mt-auto flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-gray-800">
+          <span className="flex items-center gap-1 text-[10px] text-gray-400 dark:text-gray-500">
+            <Clock className="h-3 w-3" />
+            {getRelativeTime(product.updated_at || product.created_at)}
+          </span>
 
-        {/* Actions - Balanced buttons */}
-        <div className="mt-auto pt-3 space-y-2">
-          <Link
-            href={`/products/${product.id}`}
-            className="block w-full text-center rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800 transition-colors dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
-          >
-            View Details
-          </Link>
-
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
             <button
-              onClick={() => window.open(product.url, "_blank", "noopener,noreferrer")}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-800 transition-colors dark:text-gray-400 dark:hover:text-gray-200"
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(product.url, "_blank", "noopener,noreferrer");
+              }}
+              className="p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+              title="Open in store"
             >
               <ExternalLink className="h-3.5 w-3.5" />
-              Open Store
             </button>
 
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger className="text-xs font-medium text-gray-500 hover:text-red-600 transition-colors dark:text-gray-400 dark:hover:text-red-400">
-                <span className="inline-flex items-center gap-1"><Trash2 className="h-3.5 w-3.5" /> Delete</span>
+              <DialogTrigger onClick={(e) => e.preventDefault()} className="p-1.5 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-900/20 transition-colors" title="Delete">
+                <Trash2 className="h-3.5 w-3.5" />
               </DialogTrigger>
               <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
@@ -297,12 +271,10 @@ export default function ProductCard({ product, onDelete }) {
                   </div>
                 </div>
                 <DialogFooter className="mt-2 gap-2">
-                  <DialogClose asChild>
-                    <Button variant="outline" className="flex-1 rounded-xl">
-                      Cancel
-                    </Button>
+                  <DialogClose render={<Button variant="outline" className="flex-1 rounded-xl" />}>
+                    Cancel
                   </DialogClose>
-                  
+
                   <Button
                     variant="destructive"
                     disabled={deleting}
@@ -339,9 +311,10 @@ export default function ProductCard({ product, onDelete }) {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

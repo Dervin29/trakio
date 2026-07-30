@@ -35,7 +35,7 @@ export default function AddProductForm({ user }) {
       setLoading(false);
     } else {
       toast.success(result.message || "Product added successfully");
-      router.push("/products");
+      router.push("/home");
     }
   };
 
