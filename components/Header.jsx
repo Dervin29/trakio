@@ -64,12 +64,44 @@ export default function Header({ user }) {
   const isActive = (path) => pathname === path;
   const avatarLetter = user?.user_metadata?.full_name?.[0] || user?.email?.[0] || "U";
 
+  const SignOutDialog = ({ trigger, inMenu }) => (
+    <Dialog open={signOutDialogOpen} onOpenChange={setSignOutDialogOpen}>
+      <DialogTrigger className={trigger}>
+        <LogOut className="h-4 w-4" />
+        Sign Out
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[400px]">
+        <DialogHeader>
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
+            <LogOut className="h-6 w-6 text-destructive" />
+          </div>
+          <DialogTitle className="text-center text-lg">
+            Sign out?
+          </DialogTitle>
+          <DialogDescription className="text-center">
+            You'll need to sign in again to access your products.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="gap-2">
+          <DialogClose render={<Button variant="outline" className="flex-1" />}>
+            Cancel
+          </DialogClose>
+          <form action={signOut} className="flex-1">
+            <Button type="submit" variant="destructive" className="w-full">
+              Sign Out
+            </Button>
+          </form>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex shrink-0 items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-brand-foreground">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-brand-foreground shadow-sm">
               <TrendingUp className="h-5 w-5" />
             </div>
             <span className="text-xl font-bold text-foreground">
@@ -101,7 +133,7 @@ export default function Header({ user }) {
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open navigation"
-              className="md:hidden p-2.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="md:hidden p-2.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -112,7 +144,7 @@ export default function Header({ user }) {
                   onClick={() => setMenuOpen((v) => !v)}
                   className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-muted transition-colors"
                 >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-brand-foreground">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-brand-foreground shadow-sm">
                     {avatarLetter}
                   </div>
                   <div className="hidden lg:block text-left">
@@ -127,7 +159,7 @@ export default function Header({ user }) {
                 </button>
 
                 {menuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-popover py-2 shadow-lg">
+                  <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-popover py-2 shadow-depth">
                     <div className="px-4 py-3 border-b border-border">
                       <p className="text-sm font-semibold text-foreground">
                         {user?.user_metadata?.full_name || user?.email}
@@ -157,37 +189,9 @@ export default function Header({ user }) {
 
                     <div className="border-t border-border" />
 
-                    <Dialog open={signOutDialogOpen} onOpenChange={setSignOutDialogOpen}>
-                      <DialogTrigger className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors">
-                        <LogOut className="h-4 w-4" />
-                        Sign Out
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[400px]">
-                        <DialogHeader>
-                          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-                            <LogOut className="h-6 w-6 text-destructive" />
-                          </div>
-                          <DialogTitle className="text-center text-lg">
-                            Sign out?
-                          </DialogTitle>
-                          <DialogDescription className="text-center">
-                            You'll need to sign in again to access your products.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter className="gap-2">
-                          <DialogClose
-                            render={<Button variant="outline" className="flex-1" />}
-                          >
-                            Cancel
-                          </DialogClose>
-<form action={signOut} className="flex-1">
-                        <Button type="submit" variant="destructive" className="w-full">
-                          Sign Out
-                        </Button>
-                      </form>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
+                    <SignOutDialog
+                      trigger="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+                    />
                   </div>
                 )}
               </div>
@@ -204,14 +208,14 @@ export default function Header({ user }) {
         </nav>
       </header>
 
-      {/* Mobile menu */}
+      {/* Mobile sheet */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-          <div className="fixed right-0 top-0 h-full w-72 bg-background p-6 shadow-xl">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="fixed right-0 top-0 h-full w-72 bg-background p-6 shadow-depth">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-brand-foreground">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-brand-foreground shadow-sm">
                   <TrendingUp className="h-5 w-5" />
                 </div>
                 <span className="text-xl font-bold text-foreground">
@@ -230,7 +234,7 @@ export default function Header({ user }) {
               <>
                 <div className="mb-6 p-4 rounded-xl bg-muted/50">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-sm font-semibold text-brand-foreground">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-sm font-semibold text-brand-foreground shadow-sm">
                       {avatarLetter}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -263,37 +267,9 @@ export default function Header({ user }) {
                 </nav>
 
                 <div className="mt-6 pt-6 border-t border-border">
-                  <Dialog>
-                    <DialogTrigger className="flex w-full items-center gap-3 px-4 py-3 text-sm text-destructive hover:bg-destructive/10 rounded-xl transition-colors">
-                      <LogOut className="h-4 w-4" />
-                      Sign Out
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[400px]">
-                      <DialogHeader>
-                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-                          <LogOut className="h-6 w-6 text-destructive" />
-                        </div>
-                        <DialogTitle className="text-center text-lg">
-                          Sign out?
-                        </DialogTitle>
-                        <DialogDescription className="text-center">
-                          You'll need to sign in again to access your products.
-                        </DialogDescription>
-                      </DialogHeader>
-                        <DialogFooter className="gap-2">
-                        <DialogClose
-                          render={<Button variant="outline" className="flex-1" />}
-                        >
-                          Cancel
-                        </DialogClose>
-                        <form action={signOut} className="flex-1">
-                          <Button type="submit" variant="destructive" className="w-full">
-                            Sign Out
-                          </Button>
-                        </form>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                  <SignOutDialog
+                    trigger="flex w-full items-center gap-3 px-4 py-3 text-sm text-destructive hover:bg-destructive/10 rounded-xl transition-colors"
+                  />
                 </div>
               </>
             ) : (
